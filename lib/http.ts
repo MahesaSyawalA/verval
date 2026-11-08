@@ -67,6 +67,14 @@ export function apiError(
 }
 
 export function handleRouteError(error: unknown): NextResponse<ApiErrorShape> {
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "digest" in error &&
+    typeof (error as { digest?: unknown }).digest === "string"
+  ) {
+    throw error;
+  }
   if (error instanceof AppError) {
     return apiError(error.code, error.message, error.status, error.fields);
   }
