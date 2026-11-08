@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui";
 import { getServerSession } from "@/lib/session";
-import { RoleOverviewCard } from "@/modules/auth";
+import { KaprodiTicketList } from "@/modules/tiket";
 
 async function TiketContent() {
   const session = await getServerSession();
@@ -10,13 +10,7 @@ async function TiketContent() {
     redirect("/login");
   }
 
-  return (
-    <RoleOverviewCard
-      user={session}
-      pageTitle="Daftar Tiket Penugasan"
-      pageDescription="Setiap target yang ditugaskan ke dosen menjadi satu tiket."
-    />
-  );
+  return <KaprodiTicketList userFullName={session.namaLengkap} />;
 }
 
 export default function TiketPage() {
