@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui";
 import { getServerSession } from "@/lib/session";
-import { RoleOverviewCard } from "@/modules/auth";
+import { ArsipRapatListView } from "@/modules/rapat";
 
 async function ArsipContent() {
   const session = await getServerSession();
@@ -10,13 +10,7 @@ async function ArsipContent() {
     redirect("/login");
   }
 
-  return (
-    <RoleOverviewCard
-      user={session}
-      pageTitle="Arsip Rapat (UANG)"
-      pageDescription="Satu arsip per rapat: Undangan (U), Absensi (A), Notulensi (N), Gambar (G)."
-    />
-  );
+  return <ArsipRapatListView />;
 }
 
 export default function ArsipPage() {

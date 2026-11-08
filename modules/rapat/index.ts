@@ -5,3 +5,5 @@ export * from "./hooks/use-rapat";
 export * from "./components/preview-undangan-modal";
 export * from "./components/create-agenda-modal";
 export * from "./components/rapat-overview-view";
+export * from "./components/arsip-rapat-list-view";
+export * from "./components/arsip-rapat-detail-view";
