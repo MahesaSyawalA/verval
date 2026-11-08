@@ -2,12 +2,16 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui";
 import { getServerSession } from "@/lib/session";
-import { KaprodiTicketList } from "@/modules/tiket";
+import { DosenTicketList, KaprodiTicketList } from "@/modules/tiket";
 
 async function TiketContent() {
   const session = await getServerSession();
   if (!session) {
     redirect("/login");
+  }
+
+  if (session.role === "Dosen") {
+    return <DosenTicketList userFullName={session.namaLengkap} />;
   }
 
   return <KaprodiTicketList userFullName={session.namaLengkap} />;

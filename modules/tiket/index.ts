@@ -5,3 +5,6 @@ export * from "./hooks/use-tickets";
 export * from "./components/ticket-status-steps";
 export * from "./components/create-ticket-modal";
 export * from "./components/kaprodi-ticket-list";
+export * from "./components/upload-bukti-modal";
+export * from "./components/dosen-ticket-list";
+export * from "./components/dosen-ticket-detail";
