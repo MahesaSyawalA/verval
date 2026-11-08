@@ -9,6 +9,7 @@ import {
   StatusChip,
 } from "@/components/ui";
 import { cn, getInitials } from "@/lib/utils";
+import { UploadDokumentasiModal } from "@/modules/dokumentasi";
 import { type RapatItem, useRapatDetail } from "@/modules/rapat";
 import { useSaveNotulensi } from "../hooks/use-notulensi";
 import { saveNotulensiSchema } from "../schemas/notulensi.schema";
@@ -440,6 +441,7 @@ export function NotulensiEditorView({
 }: NotulensiEditorViewProps) {
   const { data: rapat, isLoading, isError, error, refetch } =
     useRapatDetail(rapatId);
+  const [uploadPhotoOpen, setUploadPhotoOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -464,11 +466,22 @@ export function NotulensiEditorView({
   }
 
   return (
-    <NotulensiEditorForm
-      key={`${rapat.id}-${rapat.notulensi?.statusNotulensi ?? "new"}`}
-      rapat={rapat}
-      currentUserId={currentUserId}
-      onOpenUploadDokumentasi={onOpenUploadDokumentasi}
-    />
+    <>
+      <NotulensiEditorForm
+        key={`${rapat.id}-${rapat.notulensi?.statusNotulensi ?? "new"}`}
+        rapat={rapat}
+        currentUserId={currentUserId}
+        onOpenUploadDokumentasi={() => {
+          onOpenUploadDokumentasi?.();
+          setUploadPhotoOpen(true);
+        }}
+      />
+      <UploadDokumentasiModal
+        key={uploadPhotoOpen ? `doc-${rapat.id}` : "closed"}
+        isOpen={uploadPhotoOpen}
+        onClose={() => setUploadPhotoOpen(false)}
+        rapat={rapat}
+      />
+    </>
   );
 }
