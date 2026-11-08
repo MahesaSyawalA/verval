@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui";
 import { getServerSession } from "@/lib/session";
-import { DosenTicketDetail } from "@/modules/tiket";
+import { DosenTicketDetail, KaprodiTicketDetail } from "@/modules/tiket";
 
 interface TiketDetailPageProps {
   params: Promise<{ id: string }>;
@@ -18,8 +18,14 @@ async function TiketDetailContent({
     redirect("/login");
   }
 
+  if (session.role === "Dosen") {
+    return (
+      <DosenTicketDetail ticketId={id} userFullName={session.namaLengkap} />
+    );
+  }
+
   return (
-    <DosenTicketDetail ticketId={id} userFullName={session.namaLengkap} />
+    <KaprodiTicketDetail ticketId={id} userFullName={session.namaLengkap} />
   );
 }
 

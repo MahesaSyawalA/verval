@@ -8,3 +8,4 @@ export * from "./components/kaprodi-ticket-list";
 export * from "./components/upload-bukti-modal";
 export * from "./components/dosen-ticket-list";
 export * from "./components/dosen-ticket-detail";
+export * from "./components/kaprodi-ticket-detail";
