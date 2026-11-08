@@ -18,6 +18,7 @@ import {
 } from "@/config/navigation";
 import type { UserRole } from "@/config/roles";
 import { cn, getInitials } from "@/lib/utils";
+import { SHELL_RAIL_WIDTH } from "./shell-grid";
 
 const ICON_MAP: Record<NavIconName, ReactNode> = {
   dashboard: <LayoutGrid className="h-5 w-5" />,
@@ -41,7 +42,10 @@ export function Sidebar({ role, fullName, onLogout }: SidebarProps) {
   return (
     <aside
       aria-label="Navigasi Utama"
-      className="flex flex-col items-center justify-between w-18 rounded-[36px] bg-white py-4 px-2 shadow-xs border border-border-soft/70 shrink-0 min-h-[calc(100vh-7.5rem)]"
+      className={cn(
+        "flex flex-col items-center justify-between rounded-[36px] bg-white py-4 px-2 shadow-xs border border-border-soft/70 shrink-0 min-h-[calc(100vh-7.5rem)]",
+        SHELL_RAIL_WIDTH,
+      )}
     >
       <nav className="flex flex-col items-center gap-3">
         {navItems.map((item) => {

@@ -2,6 +2,8 @@
 
 import type { ReactNode } from "react";
 import type { UserRole } from "@/config/roles";
+import { cn } from "@/lib/utils";
+import { SHELL_COLUMN_GAP } from "./shell-grid";
 import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
 
@@ -32,7 +34,7 @@ export function DashboardShell({
           subtitle={subtitle}
         />
 
-        <div className="flex gap-6 items-start">
+        <div className={cn("flex items-start", SHELL_COLUMN_GAP)}>
           <Sidebar
             role={user.role}
             fullName={user.namaLengkap}

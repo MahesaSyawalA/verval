@@ -2,8 +2,9 @@
 
 import { Bell, MessageSquare, Search } from "lucide-react";
 import { ROLE_METADATA, type UserRole } from "@/config/roles";
-import { getGreetingName } from "@/lib/utils";
+import { cn, getGreetingName } from "@/lib/utils";
 import { BrandLogo } from "./logo";
+import { SHELL_COLUMN_GAP, SHELL_RAIL_WIDTH } from "./shell-grid";
 
 export interface TopbarProps {
   fullName: string;
@@ -17,8 +18,15 @@ export function Topbar({ fullName, role, subtitle }: TopbarProps) {
 
   return (
     <header className="flex flex-wrap items-center justify-between gap-4 pb-6">
-      <div className="flex items-center gap-4">
-        <BrandLogo />
+      <div className={cn("flex items-center", SHELL_COLUMN_GAP)}>
+        <div
+          className={cn(
+            "flex shrink-0 justify-center",
+            SHELL_RAIL_WIDTH,
+          )}
+        >
+          <BrandLogo />
+        </div>
         <div>
           <h1 className="font-heading text-h5 font-bold text-ink leading-tight">
             Halo, {greetingName}!
