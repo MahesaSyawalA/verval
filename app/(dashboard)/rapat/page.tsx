@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui";
 import { getServerSession } from "@/lib/session";
-import { RoleOverviewCard } from "@/modules/auth";
+import { RapatOverviewView } from "@/modules/rapat";
 
 async function RapatContent() {
   const session = await getServerSession();
@@ -11,11 +11,7 @@ async function RapatContent() {
   }
 
   return (
-    <RoleOverviewCard
-      user={session}
-      pageTitle="Notulensi & Jadwal Rapat"
-      pageDescription="Jadwal rapat, presensi, dan penyusunan notulensi berbasis konsep UANG."
-    />
+    <RapatOverviewView userId={session.userId} userRole={session.role} />
   );
 }
 
