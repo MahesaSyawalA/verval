@@ -3,6 +3,8 @@ import { Suspense } from "react";
 import { Skeleton } from "@/components/ui";
 import { getServerSession } from "@/lib/session";
 import { RoleOverviewCard } from "@/modules/auth";
+import { KaprodiDashboardView } from "@/modules/dashboard";
+import { getKaprodiDashboardSummary } from "@/modules/dashboard/server/dashboard.service";
 
 async function DashboardContent() {
   const session = await getServerSession();
@@ -10,16 +12,15 @@ async function DashboardContent() {
     redirect("/login");
   }
 
+  if (session.role === "Kaprodi" || session.role === "Admin") {
+    const summary = await getKaprodiDashboardSummary();
+    return <KaprodiDashboardView initialData={summary} />;
+  }
+
   return (
     <RoleOverviewCard
       user={session}
-      pageTitle={
-        session.role === "Kaprodi"
-          ? "Dashboard Kinerja Prodi"
-          : session.role === "Dosen"
-            ? "Dashboard Personal Dosen"
-            : "Dashboard Administrasi RPL"
-      }
+      pageTitle="Dashboard Personal Dosen"
       pageDescription="Ringkasan capaian kinerja, penugasan dosen, dan agenda rapat Program Studi RPL."
     />
   );
