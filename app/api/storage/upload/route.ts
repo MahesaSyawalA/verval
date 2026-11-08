@@ -26,9 +26,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const folderParam = formData?.get("folder");
+    const subFolder =
+      typeof folderParam === "string" &&
+      ["bukti", "undangan", "dokumentasi", "lampiran"].includes(folderParam)
+        ? folderParam
+        : "bukti";
+
     const arrayBuffer = await file.arrayBuffer();
     const savedPath = await saveStorageFile(
-      "bukti",
+      subFolder,
       file.name,
       Buffer.from(arrayBuffer),
     );

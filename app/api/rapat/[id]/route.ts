@@ -38,10 +38,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       );
     }
 
-    const data = await changeRapatStatus(id, parsed.data.statusRapat, {
-      id: session.userId,
-      role: session.role,
-    });
+    const data = await changeRapatStatus(id, parsed.data.statusRapat, session);
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {

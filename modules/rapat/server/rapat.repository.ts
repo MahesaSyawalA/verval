@@ -1,5 +1,5 @@
 import type { Prisma } from "@prisma/client";
-import { prisma } from "@/lib/db";
+import prisma from "@/lib/db";
 import { evaluateUangCompleteness } from "@/lib/utils";
 import type { CreateAgendaRapatInput } from "../schemas/rapat.schema";
 import type {
@@ -152,7 +152,7 @@ export async function findAllRapat(
     orderBy: [{ tanggal: "desc" }, { waktu_mulai: "asc" }],
   });
 
-  const mapped = rows.map(mapRapatRecord);
+  const mapped: RapatItem[] = rows.map(mapRapatRecord);
 
   if (filter?.completeness === "COMPLETE") {
     return mapped.filter((item) => item.uangStatus.isComplete);

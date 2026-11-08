@@ -46,7 +46,7 @@ export function PreviewUndanganModal({
       isOpen={isOpen}
       onClose={onClose}
       title="Preview Surat Undangan"
-      description="Dibuat otomatis dari data agenda rapat"
+      subtitle="Dibuat otomatis dari data agenda rapat"
       size="lg"
       footer={
         <>

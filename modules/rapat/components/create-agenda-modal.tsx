@@ -138,7 +138,7 @@ export function CreateAgendaModal({
         isOpen={isOpen && !previewOpen}
         onClose={onClose}
         title="Buat Agenda Rapat"
-        description="Jadwalkan rapat dan undang peserta"
+        subtitle="Jadwalkan rapat dan undang peserta"
         size="lg"
         footer={
           <>
