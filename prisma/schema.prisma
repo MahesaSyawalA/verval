@@ -1,0 +1,251 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  Kaprodi
+  Dosen
+  Admin
+}
+
+enum TipeDataBukti {
+  Teks
+  Angka
+  Tanggal
+  Tautan
+  File
+}
+
+enum StatusIsianBukti {
+  Wajib
+  Opsional
+}
+
+enum PrioritasTiket {
+  Normal
+  Tinggi
+}
+
+enum StatusTiket {
+  Ditugaskan
+  Dikerjakan
+  Menunggu_Verifikasi @map("Menunggu Verifikasi")
+  Tercapai
+  Ditolak
+}
+
+enum FormatRapat {
+  Luring
+  Daring
+  Hybrid
+}
+
+enum MetodeUndangan {
+  Generate_Otomatis @map("Generate Otomatis")
+  Upload_Manual     @map("Upload Manual")
+}
+
+enum StatusRapat {
+  Dijadwalkan
+  Berlangsung
+  Selesai
+}
+
+enum StatusKehadiran {
+  Belum_Hadir @map("Belum Hadir")
+  Hadir
+  Izin
+  Sakit
+}
+
+enum MetodePresensi {
+  Kode
+  Scan_QR @map("Scan QR")
+  Manual
+}
+
+enum StatusNotulensi {
+  Draf
+  Final
+}
+
+model users {
+  id           String @id @default(uuid()) @db.Char(36)
+  nip          String @unique @db.VarChar(50)
+  nama_lengkap String @db.VarChar(150)
+  email        String @unique @db.VarChar(150)
+  role         Role
+  password     String @db.VarChar(255)
+
+  tiket_penugasan tiket_penugasan[]
+  riwayat_tiket   riwayat_tiket[]
+  rapat_notulis   rapat[]           @relation("RapatNotulis")
+  peserta_rapat   peserta_rapat[]
+  notulensi       notulensi[]
+  notifikasi      notifikasi[]
+}
+
+model master_target {
+  id              String @id @default(uuid()) @db.Char(36)
+  kode_target     String @unique @db.VarChar(50)
+  nama_target     String @db.VarChar(255)
+  kuantitas_total Int
+  satuan          String @db.VarChar(50)
+  tahun           Int    @db.Year
+
+  format_bukti    format_bukti[]
+  tiket_penugasan tiket_penugasan[]
+}
+
+model format_bukti {
+  id           String           @id @default(uuid()) @db.Char(36)
+  nama_field   String           @db.VarChar(100)
+  tipe_data    TipeDataBukti
+  status_isian StatusIsianBukti
+  target_id    String           @db.Char(36)
+
+  master_target master_target @relation(fields: [target_id], references: [id], onDelete: Cascade)
+  isian_bukti   isian_bukti[]
+
+  @@index([target_id])
+}
+
+model tiket_penugasan {
+  id                   String         @id @default(uuid()) @db.Char(36)
+  target_id            String         @db.Char(36)
+  kode_tiket           String         @unique @db.VarChar(50)
+  kuantitas_ditugaskan Int
+  tenggat_waktu        DateTime       @db.Date
+  prioritas            PrioritasTiket @default(Normal)
+  is_reminder_active   Boolean        @default(true)
+  status               StatusTiket    @default(Ditugaskan)
+  catatan_kaprodi      String?        @db.Text
+  tanggal_dibuat       DateTime       @default(now())
+  dosen_id             String         @db.Char(36)
+
+  master_target master_target   @relation(fields: [target_id], references: [id], onDelete: Restrict)
+  dosen         users           @relation(fields: [dosen_id], references: [id], onDelete: Restrict)
+  isian_bukti   isian_bukti[]
+  riwayat_tiket riwayat_tiket[]
+
+  @@index([target_id])
+  @@index([dosen_id])
+  @@index([status])
+}
+
+model isian_bukti {
+  id              String @id @default(uuid()) @db.Char(36)
+  format_bukti_id String @db.Char(36)
+  urutan_submisi  Int
+  nilai_isian     String @db.Text
+  tiket_id        String @db.Char(36)
+
+  format_bukti    format_bukti    @relation(fields: [format_bukti_id], references: [id], onDelete: Cascade)
+  tiket_penugasan tiket_penugasan @relation(fields: [tiket_id], references: [id], onDelete: Cascade)
+
+  @@index([tiket_id])
+  @@index([format_bukti_id])
+}
+
+model riwayat_tiket {
+  id             String   @id @default(uuid()) @db.Char(36)
+  tiket_id       String   @db.Char(36)
+  status_riwayat String   @db.VarChar(100)
+  created_at     DateTime @default(now())
+  aktor_id       String   @db.Char(36)
+
+  tiket_penugasan tiket_penugasan @relation(fields: [tiket_id], references: [id], onDelete: Cascade)
+  aktor           users           @relation(fields: [aktor_id], references: [id], onDelete: Restrict)
+
+  @@index([tiket_id])
+  @@index([aktor_id])
+}
+
+model rapat {
+  id                 String         @id @default(uuid()) @db.Char(36)
+  notulis_id         String         @db.Char(36)
+  judul_rapat        String         @db.VarChar(255)
+  tanggal            DateTime       @db.Date
+  waktu_mulai        DateTime       @db.Time(0)
+  waktu_selesai      DateTime       @db.Time(0)
+  format             FormatRapat
+  lokasi             String         @db.VarChar(255)
+  deskripsi_agenda   String         @db.Text
+  kode_presensi      String         @db.VarChar(6)
+  is_reminder_active Boolean        @default(true)
+  metode_undangan    MetodeUndangan
+  file_undangan      String?        @db.VarChar(255)
+  status_rapat       StatusRapat    @default(Dijadwalkan)
+
+  notulis       users           @relation("RapatNotulis", fields: [notulis_id], references: [id], onDelete: Restrict)
+  peserta_rapat peserta_rapat[]
+  notulensi     notulensi?
+  dokumentasi   dokumentasi[]
+
+  @@index([notulis_id])
+  @@index([tanggal])
+  @@index([status_rapat])
+}
+
+model peserta_rapat {
+  id               String          @id @default(uuid()) @db.Char(36)
+  dosen_id         String          @db.Char(36)
+  rapat_id         String          @db.Char(36)
+  status_kehadiran StatusKehadiran @default(Belum_Hadir)
+  waktu_presensi   DateTime?
+  metode_presensi  MetodePresensi?
+  keterangan_absen String?         @db.Text
+
+  dosen users @relation(fields: [dosen_id], references: [id], onDelete: Cascade)
+  rapat rapat @relation(fields: [rapat_id], references: [id], onDelete: Cascade)
+
+  @@unique([dosen_id, rapat_id])
+  @@index([rapat_id])
+}
+
+model notulensi {
+  id                String          @id @default(uuid()) @db.Char(36)
+  agenda_pembahasan String          @db.Text
+  hal_dibahas       String          @db.Text
+  keputusan         String          @db.Text
+  tindak_lanjut     String          @db.Text
+  file_lampiran     String?         @db.VarChar(255)
+  status_notulensi  StatusNotulensi @default(Draf)
+  dibuat_oleh       String          @db.Char(36)
+  rapat_id          String          @unique @db.Char(36)
+
+  pembuat users @relation(fields: [dibuat_oleh], references: [id], onDelete: Restrict)
+  rapat   rapat @relation(fields: [rapat_id], references: [id], onDelete: Cascade)
+
+  @@index([dibuat_oleh])
+}
+
+model dokumentasi {
+  id          String  @id @default(uuid()) @db.Char(36)
+  rapat_id    String  @db.Char(36)
+  file_gambar String  @db.VarChar(255)
+  caption     String? @db.VarChar(255)
+
+  rapat rapat @relation(fields: [rapat_id], references: [id], onDelete: Cascade)
+
+  @@index([rapat_id])
+}
+
+model notifikasi {
+  id               String   @id @default(uuid()) @db.Char(36)
+  tipe_notifikasi  String   @db.VarChar(100)
+  judul_notifikasi String   @db.VarChar(255)
+  pesan            String   @db.Text
+  is_read          Boolean  @default(false)
+  created_at       DateTime @default(now())
+  user_id          String   @db.Char(36)
+
+  user users @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id, is_read])
+}
