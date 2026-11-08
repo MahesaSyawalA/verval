@@ -1,8 +1,9 @@
 "use client";
 
-import { Bell, MessageSquare, Search } from "lucide-react";
+import { MessageSquare, Search } from "lucide-react";
 import { ROLE_METADATA, type UserRole } from "@/config/roles";
 import { getGreetingName } from "@/lib/utils";
+import { NotificationDropdown } from "@/modules/notifikasi";
 import { BrandLogo } from "./logo";
 
 export interface TopbarProps {
@@ -53,14 +54,7 @@ export function Topbar({ fullName, role, subtitle }: TopbarProps) {
           <span className="absolute top-3 right-3 h-2 w-2 rounded-full bg-accent" />
         </button>
 
-        <button
-          type="button"
-          aria-label="Notifikasi"
-          className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white text-ink shadow-xs border border-border-soft/70 hover:bg-primary-50 transition-colors cursor-pointer"
-        >
-          <Bell className="h-5 w-5" />
-          <span className="absolute top-3 right-3 h-2 w-2 rounded-full bg-accent" />
-        </button>
+        <NotificationDropdown />
       </div>
     </header>
   );
