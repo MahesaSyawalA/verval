@@ -13,6 +13,7 @@ import type {
   TicketItem,
 } from "../types";
 import {
+  appendAttendanceBuktiToTargetT03,
   countTotalTickets,
   findAllTickets,
   findDosenOptions,
@@ -57,6 +58,7 @@ export interface TiketRepositoryDeps {
   insert: typeof insertTicketRecord;
   updateStatus: typeof updateTicketStatusWithHistory;
   saveBukti: typeof saveTicketBuktiAndStatus;
+  appendAttendanceT03?: typeof appendAttendanceBuktiToTargetT03;
   notifyEvent?: typeof createEventNotifikasi;
 }
 
@@ -68,6 +70,7 @@ const defaultDeps: TiketRepositoryDeps = {
   insert: insertTicketRecord,
   updateStatus: updateTicketStatusWithHistory,
   saveBukti: saveTicketBuktiAndStatus,
+  appendAttendanceT03: appendAttendanceBuktiToTargetT03,
   notifyEvent: createEventNotifikasi,
 };
 
@@ -280,4 +283,13 @@ export async function verifyTicketByKaprodi(
   }
 
   return updated;
+}
+
+export async function recordMeetingAttendanceForTargetT03(
+  dosenId: string,
+  judulRapat: string,
+  deps: TiketRepositoryDeps = defaultDeps,
+): Promise<TicketItem | null> {
+  if (!deps.appendAttendanceT03) return null;
+  return deps.appendAttendanceT03(dosenId, judulRapat);
 }

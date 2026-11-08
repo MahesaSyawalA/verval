@@ -21,4 +21,18 @@ export const saveNotulensiSchema = z.object({
   }),
 });
 
+export const createTindakLanjutTiketSchema = z.object({
+  targetId: z.string().min(1, "Target wajib dipilih."),
+  dosenId: z.string().min(1, "Dosen wajib dipilih."),
+  kuantitasDitugaskan: z.coerce
+    .number()
+    .int()
+    .min(1, "Kuantitas penugasan minimal 1."),
+  tenggatWaktu: z.string().min(1, "Tenggat waktu wajib diisi."),
+  prioritas: z.enum(["Normal", "Tinggi"]).default("Normal"),
+});
+
 export type SaveNotulensiInput = z.infer<typeof saveNotulensiSchema>;
+export type CreateTindakLanjutTiketInput = z.infer<
+  typeof createTindakLanjutTiketSchema
+>;

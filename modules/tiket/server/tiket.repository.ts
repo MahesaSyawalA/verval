@@ -273,3 +273,67 @@ export async function saveTicketBuktiAndStatus(
 
   return mapTicketRecord(updated);
 }
+
+export async function appendAttendanceBuktiToTargetT03(
+  dosenId: string,
+  judulRapat: string,
+): Promise<TicketItem | null> {
+  const record = await db.tiket_penugasan.findFirst({
+    where: {
+      dosen_id: dosenId,
+      master_target: {
+        kode_target: "T-03",
+      },
+    },
+    include: TICKET_INCLUDE,
+    orderBy: { tanggal_dibuat: "desc" },
+  });
+
+  if (!record) return null;
+
+  const formatField = record.master_target.format_bukti[0];
+  if (!formatField) return mapTicketRecord(record);
+
+  const alreadyLogged = record.isian_bukti.some(
+    (b) => b.nilai_isian.toLowerCase() === judulRapat.toLowerCase(),
+  );
+  if (alreadyLogged) {
+    return mapTicketRecord(record);
+  }
+
+  const maxUrutan = record.isian_bukti.reduce(
+    (max, item) => Math.max(max, item.urutan_submisi),
+    0,
+  );
+  const nextStatus: StatusTiketType =
+    record.status === "Ditugaskan" ? "Dikerjakan" : record.status;
+
+  const updated = await db.$transaction(async (tx) => {
+    await tx.isian_bukti.create({
+      data: {
+        tiket_id: record.id,
+        format_bukti_id: formatField.id,
+        urutan_submisi: maxUrutan + 1,
+        nilai_isian: judulRapat,
+      },
+    });
+
+    await tx.riwayat_tiket.create({
+      data: {
+        tiket_id: record.id,
+        status_riwayat: `Presensi Rapat: ${judulRapat}`,
+        aktor_id: dosenId,
+      },
+    });
+
+    return tx.tiket_penugasan.update({
+      where: { id: record.id },
+      data: {
+        status: nextStatus,
+      },
+      include: TICKET_INCLUDE,
+    });
+  });
+
+  return mapTicketRecord(updated);
+}

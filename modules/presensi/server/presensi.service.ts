@@ -1,5 +1,6 @@
 import type { UserRole } from "@/config/roles";
 import { AppError } from "@/lib/http";
+import { recordMeetingAttendanceForTargetT03 } from "@/modules/tiket/server/tiket.service";
 import type { SubmitPresensiInput } from "../schemas/presensi.schema";
 import type { PresensiSubmissionResult } from "../types";
 import {
@@ -10,19 +11,22 @@ import {
 export interface PresensiRepositoryDeps {
   findContext: typeof findRapatPresensiContext;
   savePresensi: typeof upsertPesertaPresensiRecord;
+  recordAttendanceToKinerja?: typeof recordMeetingAttendanceForTargetT03;
 }
 
 const defaultDeps: PresensiRepositoryDeps = {
   findContext: findRapatPresensiContext,
   savePresensi: upsertPesertaPresensiRecord,
+  recordAttendanceToKinerja: recordMeetingAttendanceForTargetT03,
 };
 
 /**
- * Aturan bisnis 4 (Spec Bagian 8):
+ * Aturan bisnis 4 (Spec Bagian 8) & Integrasi Fase 15:
  * - Presensi hanya dapat diisi saat rapat berstatus Berlangsung.
  * - Metode: Kode, Scan_QR, atau Manual.
  * - Satu dosen satu presensi per rapat (menolak pengisian ganda bila sudah tercatat Hadir/Izin/Sakit).
  * - Kode presensi 6 karakter diverifikasi terhadap rapat.kode_presensi.
+ * - Ketika dosen hadir, otomatis tercatat sebagai riwayat kinerja pada tiket target T-03.
  */
 export async function submitPresensiRapat(
   rapatId: string,
@@ -67,7 +71,7 @@ export async function submitPresensiRapat(
   const effectiveMetode =
     input.statusKehadiran === "Hadir" ? input.metodePresensi : "Manual";
 
-  return deps.savePresensi({
+  const result = await deps.savePresensi({
     rapatId: ctx.rapatId,
     judulRapat: ctx.judulRapat,
     dosenId: actor.id,
@@ -75,4 +79,14 @@ export async function submitPresensiRapat(
     metodePresensi: effectiveMetode,
     keteranganAbsen: input.keteranganAbsen,
   });
+
+  if (input.statusKehadiran === "Hadir" && deps.recordAttendanceToKinerja) {
+    try {
+      await deps.recordAttendanceToKinerja(actor.id, ctx.judulRapat);
+    } catch {
+      // Non-fatal cross-module sync error
+    }
+  }
+
+  return result;
 }
