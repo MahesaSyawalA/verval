@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils";
 
-export function BrandLogo({ className }: { className?: string }) {
+export function BrandLogo({ className = "w-12" }: { className?: string }) {
   return (
     <div
       className={cn(
-        "flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-xs border border-border-soft/70 shrink-0",
+        "flex h-12 items-center justify-center rounded-2xl bg-white shadow-xs border border-border-soft/70 shrink-0",
         className,
       )}
       aria-label="Logo Sistem Informasi RPL NodeCraft.ID"

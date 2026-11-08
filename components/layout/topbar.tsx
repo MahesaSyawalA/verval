@@ -25,7 +25,7 @@ export function Topbar({ fullName, role, subtitle }: TopbarProps) {
             SHELL_RAIL_WIDTH,
           )}
         >
-          <BrandLogo />
+          <BrandLogo className="w-full" />
         </div>
         <div>
           <h1 className="font-heading text-h5 font-bold text-ink leading-tight">
