@@ -43,7 +43,7 @@ export function KaprodiTicketList({ userFullName }: KaprodiTicketListProps) {
   const { data, isLoading, isError, error, refetch } = useTickets();
   const { data: targets = [] } = useTargets();
 
-  const allTickets = data?.data ?? [];
+  const allTickets = useMemo(() => data?.data ?? [], [data?.data]);
   const dosenOptions = data?.dosenOptions ?? [];
 
   const statusCounts = useMemo(() => {
