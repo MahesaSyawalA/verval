@@ -1,6 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 import { AppError } from "@/lib/http";
-import { saveDokumentasiSchema } from "../schemas/dokumentasi.schema";
+import {
+  type DokumentasiPhotoEntryInput,
+  saveDokumentasiSchema,
+} from "../schemas/dokumentasi.schema";
 import {
   type DokumentasiRepositoryDeps,
   saveDokumentasiRapat,
@@ -19,14 +22,17 @@ function createMockDeps(
 ): DokumentasiRepositoryDeps {
   return {
     findContext: vi.fn().mockResolvedValue(BASE_CONTEXT),
-    insertPhotos: vi.fn().mockImplementation(async (rapatId, photos) =>
-      photos.map((p, idx) => ({
-        id: `doc-${idx + 1}`,
-        rapatId,
-        fileGambar: p.fileGambar,
-        caption: p.caption ?? null,
-      })),
-    ),
+    insertPhotos: vi
+      .fn()
+      .mockImplementation(
+        async (rapatId: string, photos: DokumentasiPhotoEntryInput[]) =>
+          photos.map((p: DokumentasiPhotoEntryInput, idx: number) => ({
+            id: `doc-${idx + 1}`,
+            rapatId,
+            fileGambar: p.fileGambar,
+            caption: p.caption ?? null,
+          })),
+      ),
     ...overrides,
   };
 }
