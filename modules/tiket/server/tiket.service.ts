@@ -1,5 +1,6 @@
 import type { UserRole } from "@/config/roles";
 import { AppError } from "@/lib/http";
+import { createEventNotifikasi } from "@/modules/notifikasi/server/notifikasi.service";
 import type {
   CreateTiketInput,
   SubmitBuktiInput,
@@ -56,6 +57,7 @@ export interface TiketRepositoryDeps {
   insert: typeof insertTicketRecord;
   updateStatus: typeof updateTicketStatusWithHistory;
   saveBukti: typeof saveTicketBuktiAndStatus;
+  notifyEvent?: typeof createEventNotifikasi;
 }
 
 const defaultDeps: TiketRepositoryDeps = {
@@ -66,6 +68,7 @@ const defaultDeps: TiketRepositoryDeps = {
   insert: insertTicketRecord,
   updateStatus: updateTicketStatusWithHistory,
   saveBukti: saveTicketBuktiAndStatus,
+  notifyEvent: createEventNotifikasi,
 };
 
 export async function listTicketsForUser(
@@ -115,7 +118,22 @@ export async function createTicketAssignment(
 ): Promise<TicketItem> {
   const currentCount = await deps.countTickets();
   const kodeTiket = generateTicketCode(currentCount + 22);
-  return deps.insert(input, kodeTiket, aktorId);
+  const created = await deps.insert(input, kodeTiket, aktorId);
+
+  if (deps.notifyEvent) {
+    try {
+      await deps.notifyEvent({
+        userId: created.dosenId,
+        tipeNotifikasi: "TIKET_BARU",
+        judulNotifikasi: "Penugasan target baru",
+        pesan: `Tiket ${created.kodeTiket} ${created.namaTarget} telah ditugaskan kepada Anda.`,
+      });
+    } catch {
+      // Non-fatal notification failure
+    }
+  }
+
+  return created;
 }
 
 export async function transitionTicketStatus(
@@ -233,11 +251,33 @@ export async function verifyTicketByKaprodi(
   const nextStatus: StatusTiketType =
     input.decision === "approve" ? "Tercapai" : "Ditolak";
 
-  return transitionTicketStatus(
+  const updated = await transitionTicketStatus(
     ticketId,
     nextStatus,
     actor,
     input.catatanKaprodi,
     deps,
   );
+
+  if (deps.notifyEvent) {
+    try {
+      await deps.notifyEvent({
+        userId: updated.dosenId,
+        tipeNotifikasi:
+          nextStatus === "Tercapai" ? "TIKET_DISETUJUI" : "TIKET_DITOLAK",
+        judulNotifikasi:
+          nextStatus === "Tercapai"
+            ? "Bukti kinerja disetujui"
+            : "Revisi bukti diperlukan",
+        pesan:
+          nextStatus === "Tercapai"
+            ? `Tiket ${updated.kodeTiket} ${updated.namaTarget} telah disetujui Kaprodi.`
+            : `Tiket ${updated.kodeTiket} ${updated.namaTarget} ditolak Kaprodi.`,
+      });
+    } catch {
+      // Non-fatal notification failure
+    }
+  }
+
+  return updated;
 }
