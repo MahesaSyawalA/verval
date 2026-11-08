@@ -7,6 +7,7 @@ import { BrandLogo } from "@/components/layout";
 import { Button, Card, Input, StatusChip } from "@/components/ui";
 import { APP_NAME, INSTITUTION_NAME } from "@/lib/constants";
 import { AppError, formatZodError } from "@/lib/http";
+import { getSafeRedirectPath } from "@/lib/safe-redirect";
 import { useLogin } from "../hooks/use-auth";
 import { loginSchema } from "../schemas/auth.schema";
 import type { DemoAccountInfo } from "../types";
@@ -60,9 +61,7 @@ export function LoginForm() {
 
     try {
       const response = await loginMutation.mutateAsync(parsed.data);
-      const target =
-        nextUrl && nextUrl.startsWith("/") ? nextUrl : response.redirectTo;
-      router.push(target);
+      router.push(getSafeRedirectPath(nextUrl, response.redirectTo));
       router.refresh();
     } catch (err) {
       if (err instanceof AppError) {

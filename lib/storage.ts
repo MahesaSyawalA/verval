@@ -24,10 +24,11 @@ export async function saveStorageFile(
 
 export async function readStorageFile(relativePath: string): Promise<Buffer> {
   const root = getStorageRoot();
-  const normalized = path.normalize(relativePath).replace(/^(\.\.(\/|\\|$))+/, "");
-  const fullPath = path.resolve(root, normalized);
+  const fullPath = path.resolve(root, relativePath);
 
-  if (!fullPath.startsWith(root)) {
+  // Wajib berada di dalam root; tambahkan separator agar folder bersaudara
+  // seperti "storage-lain" tidak lolos pengecekan awalan.
+  if (!fullPath.startsWith(root + path.sep)) {
     throw new Error("Akses path di luar direktori storage ditolak.");
   }
 

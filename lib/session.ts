@@ -12,11 +12,28 @@ export interface SessionPayload {
   role: UserRole;
 }
 
-function getSecretKey(): Uint8Array {
-  const secret =
-    process.env.SESSION_SECRET ||
-    "nodecraft-rpl-upi-cibiru-session-secret-key-2026";
-  return Uint8Array.from(new TextEncoder().encode(secret));
+const MIN_SECRET_LENGTH = 32;
+const DEV_ONLY_SECRET = "dev-only-insecure-secret-never-use-in-production-0000";
+
+/**
+ * Di produksi SESSION_SECRET wajib diisi (minimal 32 karakter); bila tidak,
+ * aplikasi menolak menandatangani/memverifikasi token. Fallback hanya untuk
+ * development dan test agar token tidak dapat dipalsukan di server nyata.
+ */
+export function getSecretKey(): Uint8Array {
+  const configured = process.env.SESSION_SECRET;
+
+  if (configured && configured.length >= MIN_SECRET_LENGTH) {
+    return Uint8Array.from(new TextEncoder().encode(configured));
+  }
+
+  if (process.env.NODE_ENV === "production") {
+    throw new Error(
+      `SESSION_SECRET wajib diisi dengan minimal ${MIN_SECRET_LENGTH} karakter di lingkungan production.`,
+    );
+  }
+
+  return Uint8Array.from(new TextEncoder().encode(DEV_ONLY_SECRET));
 }
 
 export async function signSessionToken(
@@ -33,8 +50,11 @@ export async function verifySessionToken(
   token: string | undefined | null,
 ): Promise<SessionPayload | null> {
   if (!token) return null;
+  // Dipanggil di luar try agar konfigurasi secret yang salah tidak diam-diam
+  // dianggap "token tidak valid".
+  const secretKey = getSecretKey();
   try {
-    const { payload } = await jwtVerify(token, getSecretKey(), {
+    const { payload } = await jwtVerify(token, secretKey, {
       algorithms: ["HS256"],
     });
 
