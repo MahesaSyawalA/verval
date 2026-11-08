@@ -24,10 +24,7 @@ export async function GET(request: NextRequest) {
       | undefined;
 
     const [data, userOptions] = await Promise.all([
-      listRapatForUser(
-        { id: session.userId, role: session.role },
-        { status, search, completeness },
-      ),
+      listRapatForUser(session, { status, search, completeness }),
       listRapatUserOptions(),
     ]);
 
@@ -52,10 +49,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const data = await createAgendaRapat(parsed.data, {
-      id: session.userId,
-      role: session.role,
-    });
+    const data = await createAgendaRapat(parsed.data, session);
 
     return NextResponse.json({ data }, { status: 201 });
   } catch (error) {

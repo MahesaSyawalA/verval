@@ -22,6 +22,7 @@ import {
   UangBadge,
 } from "@/components/ui";
 import { cn } from "@/lib/utils";
+import { IsiPresensiModal } from "@/modules/presensi";
 import { useRapatList } from "../hooks/use-rapat";
 import { CreateAgendaModal } from "./create-agenda-modal";
 
@@ -48,6 +49,7 @@ export function RapatOverviewView({
 }: RapatOverviewViewProps) {
   const { data, isLoading, isError, error, refetch } = useRapatList();
   const [createAgendaOpen, setCreateAgendaOpen] = useState(false);
+  const [presensiRapatId, setPresensiRapatId] = useState<string | null>(null);
 
   const rapatList = useMemo(() => data?.data ?? [], [data?.data]);
   const userOptions = useMemo(
@@ -62,6 +64,17 @@ export function RapatOverviewView({
       rapatList.find((r) => r.statusRapat === "Berlangsung") ?? rapatList[0],
     [rapatList],
   );
+
+  const selectedPresensiRapat = useMemo(
+    () =>
+      rapatList.find((r) => r.id === presensiRapatId) ?? activeRapat ?? null,
+    [rapatList, presensiRapatId, activeRapat],
+  );
+
+  function handleOpenPresensi(rapatId: string) {
+    onOpenPresensiModal?.(rapatId);
+    setPresensiRapatId(rapatId);
+  }
 
   const stats = useMemo(() => {
     const totalCount = rapatList.length;
@@ -246,7 +259,7 @@ export function RapatOverviewView({
                       {isOngoing ? (
                         <button
                           type="button"
-                          onClick={() => onOpenPresensiModal?.(rapat.id)}
+                          onClick={() => handleOpenPresensi(rapat.id)}
                           className="rounded-full bg-accent px-4 py-1 text-body-sm font-bold text-ink hover:bg-accent-500 cursor-pointer"
                         >
                           {isKaprodiOrAdmin ? "Berlangsung" : "Isi Presensi"}
@@ -380,7 +393,7 @@ export function RapatOverviewView({
                 type="button"
                 onClick={() => {
                   if (activeRapat) {
-                    onOpenPresensiModal?.(activeRapat.id);
+                    handleOpenPresensi(activeRapat.id);
                   }
                 }}
                 className="flex w-full items-center gap-3.5 rounded-2xl bg-primary p-4 text-left text-white hover:bg-primary-700 transition-colors cursor-pointer"
@@ -499,6 +512,13 @@ export function RapatOverviewView({
         isOpen={createAgendaOpen}
         onClose={() => setCreateAgendaOpen(false)}
         userOptions={userOptions}
+      />
+
+      <IsiPresensiModal
+        key={presensiRapatId ?? "closed"}
+        isOpen={Boolean(presensiRapatId)}
+        onClose={() => setPresensiRapatId(null)}
+        rapat={selectedPresensiRapat}
       />
     </div>
   );

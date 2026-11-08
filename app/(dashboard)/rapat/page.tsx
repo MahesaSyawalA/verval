@@ -11,7 +11,7 @@ async function RapatContent() {
   }
 
   return (
-    <RapatOverviewView userId={session.userId} userRole={session.role} />
+    <RapatOverviewView userId={session.id} userRole={session.role} />
   );
 }
 
