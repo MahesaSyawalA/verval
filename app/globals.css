@@ -1,26 +1,106 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F2F7FF;
+  --foreground: #092C4C;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Primary: Vibrant Blue (#0101B7) + scale 50-900 */
+  --color-primary: #0101B7;
+  --color-primary-50: #ECECFF;
+  --color-primary-100: #D8D8FE;
+  --color-primary-200: #B3B3FC;
+  --color-primary-300: #8080F8;
+  --color-primary-400: #4D4DF0;
+  --color-primary-500: #1A1AE0;
+  --color-primary-600: #0101B7;
+  --color-primary-700: #010193;
+  --color-primary-800: #01016E;
+  --color-primary-900: #00004A;
+
+  /* Secondary: Dreamy (#8DCCF1) + scale 50-900 */
+  --color-secondary: #8DCCF1;
+  --color-secondary-50: #F2F9FD;
+  --color-secondary-100: #E1F2FB;
+  --color-secondary-200: #C3E5F7;
+  --color-secondary-300: #A8D8F4;
+  --color-secondary-400: #8DCCF1;
+  --color-secondary-500: #5BB3E8;
+  --color-secondary-600: #3196D3;
+  --color-secondary-700: #2276AA;
+  --color-secondary-800: #1A5B84;
+  --color-secondary-900: #13415F;
+
+  /* Accent: WarmY (#FFD166) + scale 50-900 */
+  --color-accent: #FFD166;
+  --color-accent-50: #FFFBEF;
+  --color-accent-100: #FFF3D6;
+  --color-accent-200: #FFE6AD;
+  --color-accent-300: #FFD985;
+  --color-accent-400: #FFD166;
+  --color-accent-500: #F5B82E;
+  --color-accent-600: #D4960C;
+  --color-accent-700: #A67305;
+  --color-accent-800: #8A6100;
+  --color-accent-900: #5C4000;
+
+  /* Neutral & Ink */
+  --color-surface: #F2F7FF;
+  --color-ink: #092C4C;
+  --color-ink-muted: #667A8F;
+  --color-ink-subtle: #8594A5;
+  --color-border-soft: #E3E8F2;
+
+  /* Semantic Status Colors (derived from mockups) */
+  --color-success: #1FA85A;
+  --color-success-bg: #DDF5E6;
+  --color-success-ink: #14733C;
+
+  --color-warning: #FFD166;
+  --color-warning-bg: #FFF3D6;
+  --color-warning-ink: #8A6100;
+
+  --color-danger: #B3261E;
+  --color-danger-bg: #FDE1E1;
+  --color-danger-ink: #B3261E;
+
+  /* Font Families */
+  --font-heading: var(--font-lexend), "Lexend", sans-serif;
+  --font-sans: var(--font-plus-jakarta), "Plus Jakarta Sans", sans-serif;
+
+  /* Typography Scale (Lexend Headings + Plus Jakarta Sans Body) */
+  --text-h1: 3.5rem;
+  --text-h1--line-height: 3.85rem;
+  --text-h2: 3rem;
+  --text-h2--line-height: 3.3rem;
+  --text-h3: 2.5rem;
+  --text-h3--line-height: 2.75rem;
+  --text-h4: 2rem;
+  --text-h4--line-height: 2.2rem;
+  --text-h5: 1.5rem;
+  --text-h5--line-height: 1.65rem;
+  --text-h6: 1.25rem;
+  --text-h6--line-height: 1.375rem;
+
+  --text-body-lg: 1.5rem;
+  --text-body-lg--line-height: 2.1rem;
+  --text-body-md: 1rem;
+  --text-body-md--line-height: 1.5rem;
+  --text-body-sm: 0.8125rem;
+  --text-body-sm--line-height: 1.21875rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-ink);
 }
