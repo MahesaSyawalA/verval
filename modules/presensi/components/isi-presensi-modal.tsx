@@ -66,7 +66,7 @@ export function IsiPresensiModal({
     const parsed = submitPresensiSchema.safeParse({
       statusKehadiran,
       metodePresensi: effectiveMetode,
-      kodePresensi: effectiveMetode === "Kode" ? kodePresensi : undefined,
+      kodePresensi: statusKehadiran === "Hadir" ? kodePresensi : undefined,
       keteranganAbsen: keteranganAbsen.trim() || undefined,
     });
 
@@ -231,39 +231,29 @@ export function IsiPresensiModal({
               </button>
             </div>
 
-            {metodePresensi === "Kode" ? (
-              <div className="space-y-2">
-                <span className="block text-body-sm font-semibold text-ink">
-                  Masukkan 6 digit kode presensi
-                </span>
-                <div className="grid grid-cols-6 gap-2.5">
-                  {digits.map((digit, idx) => (
-                    <input
-                      key={`digit-${idx}`}
-                      aria-label={`Digit kode presensi ${idx + 1}`}
-                      type="text"
-                      maxLength={1}
-                      value={digit}
-                      onChange={(e) => handleDigitChange(idx, e.target.value)}
-                      className="h-14 w-full rounded-2xl border-2 border-primary/50 bg-primary-50/60 text-center font-heading text-h5 font-bold text-primary focus:border-primary focus:bg-white focus:outline-none"
-                    />
-                  ))}
-                </div>
-                <p className="text-[12px] text-ink-muted">
-                  Kode ditampilkan notulis di ruang rapat dan berlaku 10 menit.
-                </p>
+            <div className="space-y-2">
+              <span className="block text-body-sm font-semibold text-ink">
+                Masukkan 6 digit kode presensi
+              </span>
+              <div className="grid grid-cols-6 gap-2.5">
+                {digits.map((digit, idx) => (
+                  <input
+                    key={`digit-${idx}`}
+                    aria-label={`Digit kode presensi ${idx + 1}`}
+                    type="text"
+                    maxLength={1}
+                    value={digit}
+                    onChange={(e) => handleDigitChange(idx, e.target.value)}
+                    className="h-14 w-full rounded-2xl border-2 border-primary/50 bg-primary-50/60 text-center font-heading text-h5 font-bold text-primary focus:border-primary focus:bg-white focus:outline-none"
+                  />
+                ))}
               </div>
-            ) : (
-              <div className="rounded-2xl border border-dashed border-primary/40 bg-surface p-5 text-center space-y-1.5">
-                <p className="font-heading text-body-sm font-bold text-ink">
-                  Pemindaian QR Rapat Siap
-                </p>
-                <p className="text-[12px] text-ink-muted">
-                  Klik &ldquo;Konfirmasi Kehadiran&rdquo; untuk mencatat
-                  kehadiran dengan metode Scan QR.
-                </p>
-              </div>
-            )}
+              <p className="text-[12px] text-ink-muted">
+                {metodePresensi === "Scan_QR"
+                  ? "Pemindai kamera belum tersedia. Masukkan kode yang tertera pada QR rapat."
+                  : "Kode ditampilkan notulis di ruang rapat dan berlaku 10 menit."}
+              </p>
+            </div>
           </div>
         )}
 

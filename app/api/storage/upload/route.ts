@@ -3,10 +3,15 @@ import { MAX_UPLOAD_SIZE_BYTES } from "@/lib/constants";
 import { apiError, handleRouteError } from "@/lib/http";
 import { requireServerSession } from "@/lib/session";
 import { saveStorageFile } from "@/lib/storage";
+import {
+  canUploadToFolder,
+  isAllowedUpload,
+  isUploadFolder,
+} from "@/lib/storage-access";
 
 export async function POST(request: NextRequest) {
   try {
-    await requireServerSession();
+    const session = await requireServerSession();
     const formData = await request.formData().catch(() => null);
     const file = formData?.get("file");
 
@@ -27,11 +32,23 @@ export async function POST(request: NextRequest) {
     }
 
     const folderParam = formData?.get("folder");
-    const subFolder =
-      typeof folderParam === "string" &&
-      ["bukti", "undangan", "dokumentasi", "lampiran"].includes(folderParam)
-        ? folderParam
-        : "bukti";
+    const subFolder = isUploadFolder(folderParam) ? folderParam : "bukti";
+
+    if (!canUploadToFolder(subFolder, session.role)) {
+      return apiError(
+        "FORBIDDEN",
+        "Anda tidak memiliki hak untuk mengunggah berkas ke kategori ini.",
+        403,
+      );
+    }
+
+    if (!isAllowedUpload(subFolder, file.name)) {
+      return apiError(
+        "BAD_REQUEST",
+        "Tipe berkas tidak diizinkan untuk kategori ini.",
+        400,
+      );
+    }
 
     const arrayBuffer = await file.arrayBuffer();
     const savedPath = await saveStorageFile(
