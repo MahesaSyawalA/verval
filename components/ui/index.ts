@@ -11,5 +11,6 @@ export * from "./stat-card";
 export * from "./status-chip";
 export * from "./uang-badge";
 export * from "./data-table";
+export * from "./pagination";
 export * from "./modal-form";
 export * from "./states";

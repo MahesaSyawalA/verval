@@ -339,3 +339,91 @@ h1, h2, h3, h4, h5, h6 {
   width: 0.875rem;
   height: 0.875rem;
 }
+
+/* HeroUI Pagination Component Styles */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.pagination__content {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pagination__item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.pagination__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  font-size: var(--text-body-sm);
+  font-weight: 500;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: 1px solid var(--color-border-soft);
+  background-color: #ffffff;
+  color: var(--color-ink);
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 0.5rem;
+  user-select: none;
+}
+
+.pagination__link:hover:not(:disabled):not([aria-disabled="true"]):not([data-active="true"]) {
+  background-color: var(--color-primary-50);
+  color: var(--color-primary);
+  border-color: var(--color-primary-200);
+}
+
+.pagination__link[data-active="true"] {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+  font-weight: 600;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.pagination__link:disabled,
+.pagination__link[aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.pagination__link--nav {
+  width: auto;
+  gap: 0.375rem;
+  padding: 0 0.75rem;
+}
+
+.pagination__link--nav [data-slot="pagination-previous-icon"],
+.pagination__link--nav [data-slot="pagination-next-icon"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.pagination__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2rem;
+  font-size: var(--text-body-sm);
+  color: var(--color-ink-muted);
+  user-select: none;
+}
