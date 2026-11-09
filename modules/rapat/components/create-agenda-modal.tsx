@@ -2,7 +2,7 @@
 
 import { Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
-import { Button, Input, ModalForm, TextArea } from "@/components/ui";
+import { Alert, alertToast, Button, Input, ModalForm, TextArea } from "@/components/ui";
 import { cn, getInitials } from "@/lib/utils";
 import { uploadUndanganFileApi } from "../api";
 import { useCreateAgendaRapat } from "../hooks/use-rapat";
@@ -123,6 +123,7 @@ export function CreateAgendaModal({
 
     try {
       await createMutation.mutateAsync(parsed.data);
+      alertToast.success("Agenda rapat berhasil dijadwalkan dan undangan dikirim.");
       setPreviewOpen(false);
       onClose();
     } catch (err) {
@@ -414,11 +415,7 @@ export function CreateAgendaModal({
             />
           </div>
 
-          {errorMessage && (
-            <p role="alert" className="text-body-sm font-medium text-danger">
-              {errorMessage}
-            </p>
-          )}
+          {errorMessage && <Alert status="error">{errorMessage}</Alert>}
         </div>
       </ModalForm>
 

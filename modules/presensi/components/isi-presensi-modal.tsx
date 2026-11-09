@@ -3,6 +3,7 @@
 import { Calendar, Check } from "lucide-react";
 import { useState } from "react";
 import {
+  Alert,
   BareInput,
   Button,
   Input,
@@ -298,11 +299,7 @@ export function IsiPresensiModal({
           placeholder="Tambahkan catatan kehadiran..."
         />
 
-        {errorMessage && (
-          <p role="alert" className="text-body-sm font-medium text-danger">
-            {errorMessage}
-          </p>
-        )}
+        {errorMessage && <Alert status="error">{errorMessage}</Alert>}
       </div>
     </ModalForm>
   );

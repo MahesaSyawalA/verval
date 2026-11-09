@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import {
+  Alert,
   Button,
   Card,
   ErrorState,
@@ -258,21 +259,17 @@ function NotulensiEditorForm({
           </div>
 
           {!isNotulis && (
-            <p className="text-body-sm text-ink-muted">
+            <Alert status="info" role="status">
               Hanya notulis yang ditunjuk ({rapat.notulisNama}) yang dapat
               mengubah isi notulensi ini.
-            </p>
+            </Alert>
           )}
 
-          {errorMessage && (
-            <p role="alert" className="text-body-sm font-medium text-danger">
-              {errorMessage}
-            </p>
-          )}
+          {errorMessage && <Alert status="error">{errorMessage}</Alert>}
           {feedbackMessage && (
-            <p className="text-body-sm font-medium text-success">
+            <Alert status="success" role="status">
               {feedbackMessage}
-            </p>
+            </Alert>
           )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

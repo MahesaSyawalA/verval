@@ -2,7 +2,7 @@
 
 import { Check, Image as ImageIcon, Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
-import { BareInput, Button, ModalForm } from "@/components/ui";
+import { Alert, alertToast, BareInput, Button, ModalForm } from "@/components/ui";
 import { cn } from "@/lib/utils";
 import type { RapatItem } from "@/modules/rapat";
 import { uploadDokumentasiPhotoFileApi } from "../api";
@@ -124,6 +124,7 @@ export function UploadDokumentasiModal({
 
     try {
       await saveMutation.mutateAsync(parsed.data);
+      alertToast.success("Foto dokumentasi berhasil disimpan ke arsip rapat.");
       onClose();
     } catch (err) {
       setErrorMessage(
@@ -273,11 +274,7 @@ export function UploadDokumentasiModal({
           </div>
         </div>
 
-        {errorMessage && (
-          <p role="alert" className="text-body-sm font-medium text-danger">
-            {errorMessage}
-          </p>
-        )}
+        {errorMessage && <Alert status="error">{errorMessage}</Alert>}
       </div>
     </ModalForm>
   );
