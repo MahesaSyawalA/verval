@@ -40,11 +40,9 @@ describe("Pusher Channels Realtime Notification", () => {
       broadcastNotifikasi([
         {
           userId: "usr-test",
-          id: "notif-1",
           tipeNotifikasi: "TIKET_BARU",
           judulNotifikasi: "Tiket Baru",
           pesan: "Pesan tiket baru",
-          createdAt: new Date(),
         },
       ])
     ).resolves.not.toThrow();
