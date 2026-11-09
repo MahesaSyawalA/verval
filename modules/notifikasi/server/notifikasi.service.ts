@@ -4,6 +4,7 @@ import {
   type MarkNotifikasiReadInput,
 } from "../schemas/notifikasi.schema";
 import type { NotifikasiItem, NotifikasiListResponse } from "../types";
+import { broadcastNotifikasi } from "./notifikasi.realtime";
 import {
   countUnreadNotifikasiByUserId,
   findNotifikasiByUserId,
@@ -71,6 +72,7 @@ export async function createEventNotifikasi(
 ): Promise<NotifikasiItem> {
   const validated = createNotifikasiSchema.parse(input);
   const created = await insertNotifikasiRecord(validated);
+  await broadcastNotifikasi([validated]);
   return mapNotifikasiRow(created);
 }
 
@@ -78,5 +80,7 @@ export async function createBulkEventNotifikasi(
   inputs: CreateNotifikasiInput[],
 ): Promise<{ count: number }> {
   const validated = inputs.map((item) => createNotifikasiSchema.parse(item));
-  return insertManyNotifikasiRecords(validated);
+  const result = await insertManyNotifikasiRecords(validated);
+  await broadcastNotifikasi(validated);
+  return result;
 }
