@@ -1,18 +1,23 @@
 "use client";
 
-import { Lock, LogIn, ShieldCheck, User } from "lucide-react";
+import { Eye, EyeOff, ShieldCheck } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
-import { BrandLogo } from "@/components/layout";
-import { Button, Card, Input, StatusChip } from "@/components/ui";
-import { APP_NAME, INSTITUTION_NAME } from "@/lib/constants";
+import { Button, Input } from "@/components/ui";
+import { INSTITUTION_NAME } from "@/lib/constants";
 import { AppError, formatZodError } from "@/lib/http";
 import { getSafeRedirectPath } from "@/lib/safe-redirect";
 import { useLogin } from "../hooks/use-auth";
 import { loginSchema } from "../schemas/auth.schema";
 import type { DemoAccountInfo } from "../types";
 
-export const DEMO_ACCOUNTS: readonly DemoAccountInfo[] = [
+const BRAND_NAME = "SACIBIRU";
+
+// Akun demo hanya tampil saat development; di production cabang ini dibuang
+// bundler sehingga email dan password demo tidak ikut terkirim ke browser.
+const SHOW_DEMO_ACCOUNTS = process.env.NODE_ENV !== "production";
+const DEMO_PASSWORD = "RplCibiru2026!";
+const DEMO_ACCOUNTS: readonly DemoAccountInfo[] = [
   {
     role: "Kaprodi",
     name: "Dr. Iqbal Al-Farisi, M.Kom.",
@@ -36,6 +41,27 @@ export const DEMO_ACCOUNTS: readonly DemoAccountInfo[] = [
   },
 ];
 
+function LoginBackdrop() {
+  return (
+    <svg
+      aria-hidden
+      className="pointer-events-none absolute inset-0 h-full w-full"
+      viewBox="0 0 1440 900"
+      preserveAspectRatio="xMidYMid slice"
+      fill="none"
+    >
+      <path
+        d="M0 560C260 400 520 300 840 330C1100 355 1260 250 1440 110V0H0Z"
+        className="fill-primary-700/35"
+      />
+      <path
+        d="M0 900V650C300 780 650 650 990 560C1190 508 1330 410 1440 320V900Z"
+        className="fill-primary-900/40"
+      />
+    </svg>
+  );
+}
+
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -43,6 +69,7 @@ export function LoginForm() {
 
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
 
@@ -77,32 +104,49 @@ export function LoginForm() {
 
   function handleSelectDemo(account: DemoAccountInfo) {
     setIdentifier(account.email);
-    setPassword("RplCibiru2026!");
+    setPassword(DEMO_PASSWORD);
     setFieldErrors({});
     setFormError(null);
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-surface px-4 py-10">
-      <div className="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        <Card className="lg:col-span-7 p-8 flex flex-col justify-between space-y-6">
-          <div className="space-y-6">
-            <div className="flex items-center gap-4">
-              <BrandLogo />
-              <div>
-                <h1 className="font-heading text-h5 font-bold text-ink">
-                  Masuk ke Sistem
-                </h1>
-                <p className="text-body-sm text-ink-muted">
-                  {APP_NAME} · {INSTITUTION_NAME}
-                </p>
-              </div>
+    <div className="relative min-h-screen overflow-hidden bg-primary-800 text-white">
+      <LoginBackdrop />
+
+      <div className="relative mx-auto flex min-h-screen w-full max-w-[1100px] flex-col px-6">
+        <main className="flex flex-1 flex-col items-center justify-center gap-10 py-10 lg:flex-row lg:justify-between lg:gap-16">
+          <section className="w-full max-w-md space-y-5 text-center lg:text-left">
+            <h1 className="font-heading font-bold leading-tight tracking-tight">
+              <span className="block text-h4 text-accent sm:text-h3 lg:text-h2">
+                Satu akun RPL.
+              </span>
+              <span className="block text-h4 text-white sm:text-h3 lg:text-h2">
+                Untuk rapat dan kinerja prodi.
+              </span>
+            </h1>
+            <p className="text-body-md text-white/85">
+              {BRAND_NAME} membantu dosen, Ketua Program Studi, dan admin
+              Program Studi Rekayasa Perangkat Lunak UPI Kampus Cibiru
+              mengelola notulensi rapat serta memantau penugasan dan kinerja
+              dalam satu akun.
+            </p>
+          </section>
+
+          <div className="w-full max-w-[490px] rounded-[32px] bg-white p-8 text-ink shadow-2xl shadow-black/30 sm:p-10">
+            <div
+              role="img"
+              aria-label={BRAND_NAME}
+              className="mx-auto mb-8 flex h-24 w-full max-w-[300px] items-center justify-center rounded-bl-none rounded-br-[44px] rounded-tl-[44px] rounded-tr-none bg-primary shadow-lg shadow-primary/30"
+            >
+              <span className="font-heading text-h3 font-bold tracking-tight text-white">
+                {BRAND_NAME}
+              </span>
             </div>
 
             {formError && (
               <div
                 role="alert"
-                className="rounded-2xl border border-danger/30 bg-danger-bg px-4 py-3 text-body-sm font-medium text-danger-ink"
+                className="mb-4 rounded-2xl border border-danger/30 bg-danger-bg px-4 py-3 text-body-sm font-medium text-danger-ink"
               >
                 {formError}
               </div>
@@ -112,24 +156,41 @@ export function LoginForm() {
               <Input
                 name="identifier"
                 label="Email UPI atau NIP"
-                placeholder="Contoh: iqbal@upi.edu atau 198204152008121002"
+                placeholder="Email UPI atau NIP Anda"
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
                 error={fieldErrors.identifier}
-                leftIcon={<User className="h-4 w-4" />}
                 autoComplete="username"
               />
 
               <Input
                 name="password"
-                type="password"
-                label="Kata Sandi"
-                placeholder="Masukkan kata sandi akun Anda"
+                type={showPassword ? "text" : "password"}
+                label="Kata sandi"
+                placeholder="Masukkan kata sandi Anda"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 error={fieldErrors.password}
-                leftIcon={<Lock className="h-4 w-4" />}
                 autoComplete="current-password"
+                rightElement={
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((visible) => !visible)}
+                    aria-label={
+                      showPassword
+                        ? "Sembunyikan kata sandi"
+                        : "Tampilkan kata sandi"
+                    }
+                    aria-pressed={showPassword}
+                    className="flex h-7 w-7 items-center justify-center rounded-full text-ink-muted transition-colors hover:text-primary cursor-pointer"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                }
               />
 
               <div className="pt-2">
@@ -139,75 +200,52 @@ export function LoginForm() {
                   size="lg"
                   fullWidth
                   isLoading={loginMutation.isPending}
-                  leftIcon={<LogIn className="h-4 w-4" />}
                 >
-                  Masuk Sekarang
+                  Masuk
                 </Button>
               </div>
             </form>
-          </div>
 
-          <p className="text-body-sm text-ink-subtle pt-4 border-t border-border-soft">
-            Modul 2 (Notulensi Rapat UANG) &amp; Modul 8 (Dashboard Kinerja dan
-            Penugasan Dosen)
-          </p>
-        </Card>
+            <div className="mt-6 space-y-4 border-t border-border-soft pt-5">
+              <p className="text-center text-body-sm text-ink-muted">
+                Tidak bisa masuk atau lupa kata sandi? Hubungi Admin Prodi RPL.
+              </p>
 
-        <Card
-          variant="primary"
-          className="lg:col-span-5 p-7 flex flex-col justify-between space-y-6"
-        >
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-body-sm font-semibold text-white">
-                <ShieldCheck className="h-4 w-4 text-accent" />
-                Akun Demo Seed
-              </span>
-              <StatusChip status="Berlangsung" tone="accent" />
-            </div>
+              <div className="flex items-center gap-3 rounded-2xl bg-surface px-4 py-3 text-body-sm text-ink-muted">
+                <ShieldCheck className="h-4 w-4 shrink-0 text-primary" />
+                <span>Jangan bagikan kata sandi Anda kepada siapa pun.</span>
+              </div>
 
-            <h2 className="font-heading text-h5 font-bold text-white">
-              Pilih Role untuk Uji Coba Cepat
-            </h2>
-            <p className="text-body-sm text-white/80">
-              Klik salah satu akun di bawah untuk mengisi kredensial otomatis
-              sesuai role pada spesifikasi desain:
-            </p>
-
-            <div className="space-y-3 pt-1">
-              {DEMO_ACCOUNTS.map((acc) => (
-                <button
-                  key={acc.role}
-                  type="button"
-                  onClick={() => handleSelectDemo(acc)}
-                  className="w-full text-left rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 p-3.5 transition-colors cursor-pointer"
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="font-heading text-body-md font-bold text-white">
-                      {acc.name}
-                    </span>
-                    <span className="rounded-full bg-accent px-2.5 py-0.5 text-body-sm font-bold text-ink">
-                      {acc.role}
-                    </span>
+              {SHOW_DEMO_ACCOUNTS && (
+                <details className="rounded-2xl border border-dashed border-border-soft px-4 py-3 text-body-sm">
+                  <summary className="cursor-pointer font-medium text-ink-muted">
+                    Akun demo (hanya development)
+                  </summary>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {DEMO_ACCOUNTS.map((acc) => (
+                      <button
+                        key={acc.role}
+                        type="button"
+                        onClick={() => handleSelectDemo(acc)}
+                        title={`${acc.name} · ${acc.description}`}
+                        className="rounded-full bg-primary-50 px-3 py-1 font-semibold text-primary transition-colors hover:bg-primary-100 cursor-pointer"
+                      >
+                        {acc.role}
+                      </button>
+                    ))}
                   </div>
-                  <p className="mt-1 text-body-sm text-white/85 font-mono">
-                    {acc.email} · NIP {acc.nip}
-                  </p>
-                  <p className="mt-1 text-body-sm text-white/70">
-                    {acc.description}
-                  </p>
-                </button>
-              ))}
+                </details>
+              )}
             </div>
           </div>
+        </main>
 
-          <div className="rounded-2xl bg-white/10 p-3.5 text-body-sm text-white/85">
-            Password default seed:{" "}
-            <code className="font-mono font-bold text-accent">
-              RplCibiru2026!
-            </code>
-          </div>
-        </Card>
+        <footer className="border-t border-white/20 py-6 text-center text-body-sm text-white/80">
+          <p className="font-medium text-white">
+            © 2026 Universitas Pendidikan Indonesia
+          </p>
+          <p>{INSTITUTION_NAME} · Dikembangkan oleh NodeCraft.ID</p>
+        </footer>
       </div>
     </div>
   );
