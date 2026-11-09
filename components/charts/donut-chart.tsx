@@ -21,6 +21,12 @@ export function DonutChart({
   centerLabel,
   size = 170,
 }: DonutChartProps) {
+  // Tanpa data, tampilkan cincin netral agar grafik tidak kosong.
+  const hasData = data.some((slice) => slice.value > 0);
+  const slices = hasData
+    ? data
+    : [{ label: "Belum ada data", value: 1, color: "#E3E8F2" }];
+
   return (
     <div
       className="relative mx-auto flex items-center justify-center"
@@ -29,7 +35,7 @@ export function DonutChart({
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
-            data={data}
+            data={slices}
             dataKey="value"
             nameKey="label"
             innerRadius="68%"
@@ -37,7 +43,7 @@ export function DonutChart({
             paddingAngle={2}
             stroke="none"
           >
-            {data.map((entry) => (
+            {slices.map((entry) => (
               <Cell key={entry.label} fill={entry.color} />
             ))}
           </Pie>

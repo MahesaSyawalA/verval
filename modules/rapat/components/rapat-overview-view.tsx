@@ -24,12 +24,27 @@ import {
 import { cn } from "@/lib/utils";
 import { IsiPresensiModal } from "@/modules/presensi";
 import { useRapatList } from "../hooks/use-rapat";
+import {
+  buildOverviewStats,
+  dayBadge,
+  formatDayLabel,
+  formatMonthLabel,
+  formatWeekLabel,
+} from "../overview-stats";
 import { CreateAgendaModal } from "./create-agenda-modal";
 
 export interface RapatOverviewViewProps {
   userId: string;
   userRole: UserRole;
   onOpenPresensiModal?: (rapatId: string) => void;
+}
+
+function attendanceLabel(status: string | undefined): string {
+  if (!status) return "Bukan peserta";
+  if (status === "Hadir") return "Anda hadir";
+  if (status === "Izin") return "Anda izin";
+  if (status === "Sakit") return "Anda sakit";
+  return "Anda belum hadir";
 }
 
 function formatShortDate(isoDate: string): string {
@@ -76,24 +91,12 @@ export function RapatOverviewView({
     setPresensiRapatId(rapatId);
   }
 
-  const stats = useMemo(() => {
-    const totalCount = rapatList.length;
-    const completedUangCount = rapatList.filter(
-      (r) => r.uangStatus.isComplete,
-    ).length;
-
-    const totalInvited = rapatList.reduce((acc, r) => acc + r.totalPeserta, 0);
-    const totalPresent = rapatList.reduce((acc, r) => acc + r.hadirCount, 0);
-    const attendanceRate =
-      totalInvited > 0 ? Math.round((totalPresent / totalInvited) * 100) : 92;
-
-    return {
-      todayCount: Math.min(3, totalCount || 3),
-      attendanceRate,
-      totalCount: totalCount || 12,
-      completedUangCount,
-    };
-  }, [rapatList]);
+  const now = useMemo(() => new Date(), []);
+  const stats = useMemo(
+    () => buildOverviewStats(rapatList, userId, now),
+    [rapatList, userId, now],
+  );
+  const agendaList = isKaprodiOrAdmin ? stats.todayRapat : stats.weekRapat;
 
   if (isLoading) {
     return (
@@ -122,10 +125,14 @@ export function RapatOverviewView({
     );
   }
 
-  const ringCount = activeRapat?.hadirCount ?? 8;
-  const ringTotal = activeRapat?.totalPeserta ?? 12;
+  const ringCount = isKaprodiOrAdmin
+    ? (activeRapat?.hadirCount ?? 0)
+    : stats.myMonthAttendance.hadir;
+  const ringTotal = isKaprodiOrAdmin
+    ? (activeRapat?.totalPeserta ?? 0)
+    : stats.myMonthAttendance.total;
   const ringPercent =
-    ringTotal > 0 ? Math.round((ringCount / ringTotal) * 100) : 67;
+    ringTotal > 0 ? Math.round((ringCount / ringTotal) * 100) : 0;
   const circumference = 2 * Math.PI * 52;
   const strokeDashoffset = circumference * (1 - ringPercent / 100);
 
@@ -135,20 +142,25 @@ export function RapatOverviewView({
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         <StatCard
           title={isKaprodiOrAdmin ? "Rapat Hari Ini" : "Rapat Minggu Ini"}
-          value={stats.todayCount}
-          delta="+1"
+          value={agendaList.length}
           icon={<Calendar className="h-5 w-5" />}
         />
         <StatCard
           title={isKaprodiOrAdmin ? "Presensi Hadir" : "Pengingat Aktif"}
-          value={isKaprodiOrAdmin ? `${stats.attendanceRate}%` : 2}
-          delta={isKaprodiOrAdmin ? "+4%" : "Baru"}
+          value={
+            isKaprodiOrAdmin
+              ? `${stats.attendanceRate}%`
+              : stats.upcomingReminderCount
+          }
           icon={<Users className="h-5 w-5" />}
         />
         <StatCard
           title={isKaprodiOrAdmin ? "Notulensi Bulan Ini" : "Kehadiran Saya"}
-          value={isKaprodiOrAdmin ? stats.totalCount : `${stats.attendanceRate}%`}
-          delta={isKaprodiOrAdmin ? "+3" : "+4%"}
+          value={
+            isKaprodiOrAdmin
+              ? stats.notulensiBulanIniCount
+              : `${stats.myAttendanceRate}%`
+          }
           icon={<FileText className="h-5 w-5" />}
         />
         <StatCard
@@ -158,7 +170,6 @@ export function RapatOverviewView({
               ? `${stats.completedUangCount}/${rapatList.length}`
               : rapatList.length
           }
-          delta={isKaprodiOrAdmin ? "+2" : "+1"}
           highlighted
           icon={<CheckSquare className="h-5 w-5" />}
         />
@@ -176,14 +187,19 @@ export function RapatOverviewView({
                   : "Jadwal Rapat Minggu Ini"}
               </h3>
               <span className="text-body-sm font-semibold text-primary">
-                {isKaprodiOrAdmin
-                  ? "Rabu, 21 Okt 2026"
-                  : "Pekan 21–27 Okt 2026"}
+                {isKaprodiOrAdmin ? formatDayLabel(now) : formatWeekLabel(now)}
               </span>
             </div>
 
             <div className="space-y-3">
-              {rapatList.slice(0, 3).map((rapat) => {
+              {agendaList.length === 0 && (
+                <p className="rounded-2xl bg-surface p-4 text-body-sm text-ink-muted">
+                  {isKaprodiOrAdmin
+                    ? "Tidak ada rapat terjadwal hari ini."
+                    : "Tidak ada rapat terjadwal pekan ini."}
+                </p>
+              )}
+              {agendaList.slice(0, 3).map((rapat) => {
                 const isOngoing = rapat.statusRapat === "Berlangsung";
                 const myAttendance = rapat.peserta.find(
                   (p) => p.dosenId === userId,
@@ -275,7 +291,11 @@ export function RapatOverviewView({
                         />
                       ) : (
                         <StatusChip
-                          status={isKaprodiOrAdmin ? "Menunggu" : "H-1"}
+                          status={
+                            isKaprodiOrAdmin
+                              ? "Menunggu"
+                              : dayBadge(rapat.tanggal, now)
+                          }
                           tone="warning"
                         />
                       )}
@@ -331,7 +351,10 @@ export function RapatOverviewView({
                           {formatShortDate(rapat.tanggal)} &middot;{" "}
                           {isKaprodiOrAdmin
                             ? `${rapat.hadirCount} hadir`
-                            : "Anda hadir"}
+                            : attendanceLabel(
+                                rapat.peserta.find((p) => p.dosenId === userId)
+                                  ?.statusKehadiran,
+                              )}
                         </p>
                       </div>
                     </div>
@@ -455,8 +478,8 @@ export function RapatOverviewView({
 
             <p className="text-center text-body-sm text-ink-muted">
               {isKaprodiOrAdmin
-                ? (activeRapat?.judulRapat ?? "Evaluasi Kinerja Dosen")
-                : "Rapat Okt 2026"}
+                ? (activeRapat?.judulRapat ?? "Belum ada rapat")
+                : `Rapat ${formatMonthLabel(now)}`}
             </p>
 
             {/* Ring Chart */}
@@ -489,7 +512,7 @@ export function RapatOverviewView({
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                   <span className="font-heading text-h5 font-bold text-ink">
-                    {isKaprodiOrAdmin ? `${ringCount}/${ringTotal}` : "11/12"}
+                    {ringCount}/{ringTotal}
                   </span>
                   <span className="text-[12px] text-ink-muted">hadir</span>
                 </div>

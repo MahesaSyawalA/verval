@@ -9,6 +9,23 @@ export interface StatCardProps {
   icon?: ReactNode;
   highlighted?: boolean;
   className?: string;
+  /** Deret nilai nyata untuk grafik mini; tanpa ini grafik tidak ditampilkan. */
+  sparkline?: readonly number[];
+}
+
+/** Ubah deret nilai menjadi path SVG 96x28 (skala min–max; datar jadi garis tengah). */
+function toSparklinePath(values: readonly number[]): string | null {
+  if (values.length < 2) return null;
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const step = 92 / (values.length - 1);
+
+  return values
+    .map((v, i) => {
+      const y = max === min ? 14 : 25 - ((v - min) / (max - min)) * 22;
+      return `${i === 0 ? "M" : "L"}${(2 + i * step).toFixed(1)} ${y.toFixed(1)}`;
+    })
+    .join("");
 }
 
 export function StatCard({
@@ -18,7 +35,10 @@ export function StatCard({
   icon,
   highlighted = false,
   className,
+  sparkline,
 }: StatCardProps) {
+  const sparklinePath = sparkline ? toSparklinePath(sparkline) : null;
+
   return (
     <Card
       variant={highlighted ? "primary" : "default"}
@@ -72,25 +92,24 @@ export function StatCard({
           {value}
         </span>
 
-        <svg
-          width="96"
-          height="28"
-          viewBox="0 0 96 28"
-          fill="none"
-          aria-hidden="true"
-          className="shrink-0"
-        >
-          <path
-            d={
-              highlighted
-                ? "M2 18C18 14 26 22 42 16C58 10 74 22 94 18"
-                : "M2 24C18 22 28 16 44 19C60 22 72 10 94 6"
-            }
-            stroke={highlighted ? "#FFD166" : "#0101B7"}
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
-        </svg>
+        {sparklinePath && (
+          <svg
+            width="96"
+            height="28"
+            viewBox="0 0 96 28"
+            fill="none"
+            aria-hidden="true"
+            className="shrink-0"
+          >
+            <path
+              d={sparklinePath}
+              stroke={highlighted ? "#FFD166" : "#0101B7"}
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        )}
       </div>
     </Card>
   );

@@ -13,6 +13,26 @@ describe("Phase 13 - Dashboard Kinerja Kaprodi", () => {
     expect(summary.peringkatDosen.palingProduktif.length).toBeGreaterThan(0);
     expect(summary.peringkatDosen.perluDipantau.length).toBeGreaterThan(0);
     expect(summary.tiketTerbaru.length).toBeGreaterThan(0);
-    expect(summary.capaianProdi.targetPersen).toBe(78);
+  });
+
+  it("memakai data nyata: titik tren terakhir dan target diturunkan dari tiket", async () => {
+    const summary = await getKaprodiDashboardSummary();
+    const last = summary.trend.points[summary.trend.points.length - 1];
+
+    expect(last.capaian).toBe(summary.stats.capaianVsTargetPersen);
+    expect(summary.capaianProdi.realisasiPersen).toBe(
+      summary.stats.capaianVsTargetPersen,
+    );
+    expect(summary.capaianProdi.targetPersen).toBe(summary.trend.targetPersen);
+    expect(summary.trend.targetPersen).toBe(last.target);
+    expect(summary.trend.tahunTarget).toBe(new Date().getFullYear());
+    expect(summary.stats.capaianDelta).toMatch(/^[+-]?\d+%$/);
+    expect(summary.stats.dosenAktifLabel).toMatch(/^\d+\/\d+$/);
+
+    const sliceTotal = summary.statusDistribution.slices.reduce(
+      (acc, slice) => acc + slice.value,
+      0,
+    );
+    expect(sliceTotal).toBe(summary.statusDistribution.totalTarget);
   });
 });
