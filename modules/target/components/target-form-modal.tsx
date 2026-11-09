@@ -2,7 +2,15 @@
 
 import { Plus, X } from "lucide-react";
 import { useState, type FormEvent } from "react";
-import { Alert, alertToast, BareInput, Button, Input, ModalForm } from "@/components/ui";
+import {
+  Alert,
+  alertToast,
+  BareInput,
+  Button,
+  Input,
+  ModalForm,
+  Select,
+} from "@/components/ui";
 import { AppError, formatZodError } from "@/lib/http";
 import {
   useCreateTarget,
@@ -186,23 +194,16 @@ export function TargetFormModal({
             error={fieldErrors.kodeTarget}
           />
 
-          <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="target-level"
-              className="text-body-sm font-medium text-ink"
-            >
-              Level
-            </label>
-            <select
-              id="target-level"
-              value={level}
-              onChange={(e) => setLevel(e.target.value)}
-              className="h-11 w-full rounded-2xl border border-border-soft bg-white px-4 text-body-md text-ink focus:border-primary focus:outline-none"
-            >
-              <option value="Prodi">Prodi</option>
-              <option value="Dosen">Dosen</option>
-            </select>
-          </div>
+          <Select
+            id="target-level"
+            label="Level"
+            value={level}
+            onChange={(e) => setLevel(e.target.value)}
+            options={[
+              { value: "Prodi", label: "Prodi" },
+              { value: "Dosen", label: "Dosen" },
+            ]}
+          />
         </div>
 
         <Input
@@ -225,48 +226,29 @@ export function TargetFormModal({
             error={fieldErrors.kuantitasTotal}
           />
 
-          <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="target-satuan"
-              className="text-body-sm font-medium text-ink"
-            >
-              Satuan
-            </label>
-            <select
-              id="target-satuan"
-              value={satuan}
-              onChange={(e) => setSatuan(e.target.value)}
-              className="h-11 w-full rounded-2xl border border-border-soft bg-white px-4 text-body-md text-ink focus:border-primary focus:outline-none"
-            >
-              {SATUAN_OPTIONS.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt}
-                </option>
-              ))}
-            </select>
-            {fieldErrors.satuan && (
-              <p className="text-body-sm text-danger">{fieldErrors.satuan}</p>
-            )}
-          </div>
+          <Select
+            id="target-satuan"
+            label="Satuan"
+            value={satuan}
+            onChange={(e) => setSatuan(e.target.value)}
+            error={fieldErrors.satuan}
+            options={SATUAN_OPTIONS.map((opt) => ({
+              value: opt,
+              label: opt,
+            }))}
+          />
 
-          <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="target-tahun"
-              className="text-body-sm font-medium text-ink"
-            >
-              Tahun
-            </label>
-            <select
-              id="target-tahun"
-              value={tahun}
-              onChange={(e) => setTahun(e.target.value)}
-              className="h-11 w-full rounded-2xl border border-border-soft bg-white px-4 text-body-md text-ink focus:border-primary focus:outline-none"
-            >
-              <option value="2025">2025</option>
-              <option value="2026">2026</option>
-              <option value="2027">2027</option>
-            </select>
-          </div>
+          <Select
+            id="target-tahun"
+            label="Tahun"
+            value={tahun}
+            onChange={(e) => setTahun(e.target.value)}
+            options={[
+              { value: "2025", label: "2025" },
+              { value: "2026", label: "2026" },
+              { value: "2027", label: "2027" },
+            ]}
+          />
         </div>
 
         <div className="space-y-3 pt-1">
@@ -296,7 +278,7 @@ export function TargetFormModal({
                 </div>
 
                 <div className="sm:col-span-3">
-                  <select
+                  <Select
                     aria-label={`Tipe data isian ${idx + 1}`}
                     value={field.tipeData}
                     onChange={(e) =>
@@ -305,18 +287,16 @@ export function TargetFormModal({
                           .value as FormatBuktiInput["tipeData"],
                       })
                     }
-                    className="h-11 w-full rounded-2xl border border-border-soft bg-white px-3 text-body-md text-ink focus:border-primary focus:outline-none"
-                  >
-                    {TIPE_DATA_BUKTI_VALUES.map((t) => (
-                      <option key={t} value={t}>
-                        {t}
-                      </option>
-                    ))}
-                  </select>
+                    triggerClassName="px-3"
+                    options={TIPE_DATA_BUKTI_VALUES.map((t) => ({
+                      value: t,
+                      label: t,
+                    }))}
+                  />
                 </div>
 
                 <div className="sm:col-span-2">
-                  <select
+                  <Select
                     aria-label={`Status wajib isian ${idx + 1}`}
                     value={field.statusIsian}
                     onChange={(e) =>
@@ -325,14 +305,12 @@ export function TargetFormModal({
                           .value as FormatBuktiInput["statusIsian"],
                       })
                     }
-                    className="h-11 w-full rounded-2xl border border-border-soft bg-white px-3 text-body-md text-ink focus:border-primary focus:outline-none"
-                  >
-                    {STATUS_ISIAN_BUKTI_VALUES.map((s) => (
-                      <option key={s} value={s}>
-                        {s}
-                      </option>
-                    ))}
-                  </select>
+                    triggerClassName="px-3"
+                    options={STATUS_ISIAN_BUKTI_VALUES.map((s) => ({
+                      value: s,
+                      label: s,
+                    }))}
+                  />
                 </div>
 
                 <div className="sm:col-span-1 flex justify-end">
@@ -358,10 +336,10 @@ export function TargetFormModal({
             Tambah Isian
           </button>
 
-          <Alert status="info" role="status">
+          <div className="rounded-2xl bg-info-bg px-4 py-3 text-body-sm font-medium text-info-ink">
             Tipe: Teks, Angka, Tanggal, Tautan, File. Form upload bukti dosen
             dibuat otomatis dari daftar ini.
-          </Alert>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4">

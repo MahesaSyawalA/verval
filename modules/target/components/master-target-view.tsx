@@ -9,6 +9,7 @@ import {
   Card,
   DataTable,
   ErrorState,
+  Select,
   type DataTableColumn,
 } from "@/components/ui";
 import { getInitials } from "@/lib/utils";
@@ -139,44 +140,34 @@ export function MasterTargetView({ userFullName }: MasterTargetViewProps) {
       <Card className="p-6 space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-3 flex-1">
-            <div className="flex flex-col rounded-2xl border border-border-soft bg-white px-3.5 py-1.5 min-w-[130px]">
-              <label
-                htmlFor="filter-tahun"
-                className="text-[11px] text-ink-muted"
-              >
-                Tahun
-              </label>
-              <select
-                id="filter-tahun"
-                value={tahunFilter}
-                onChange={(e) => setTahunFilter(e.target.value)}
-                className="bg-transparent text-body-sm font-semibold text-ink focus:outline-none"
-              >
-                <option value="2026">2026</option>
-                <option value="2025">2025</option>
-                <option value="2027">2027</option>
-                <option value="Semua">Semua</option>
-              </select>
-            </div>
+            <Select
+              id="filter-tahun"
+              label="Tahun"
+              size="filter"
+              value={tahunFilter}
+              onChange={(e) => setTahunFilter(e.target.value)}
+              className="min-w-[130px]"
+              options={[
+                { value: "2026", label: "2026" },
+                { value: "2025", label: "2025" },
+                { value: "2027", label: "2027" },
+                { value: "Semua", label: "Semua" },
+              ]}
+            />
 
-            <div className="flex flex-col rounded-2xl border border-border-soft bg-white px-3.5 py-1.5 min-w-[130px]">
-              <label
-                htmlFor="filter-level"
-                className="text-[11px] text-ink-muted"
-              >
-                Level
-              </label>
-              <select
-                id="filter-level"
-                value={levelFilter}
-                onChange={(e) => setLevelFilter(e.target.value)}
-                className="bg-transparent text-body-sm font-semibold text-ink focus:outline-none"
-              >
-                <option value="Semua">Semua</option>
-                <option value="Prodi">Prodi</option>
-                <option value="Dosen">Dosen</option>
-              </select>
-            </div>
+            <Select
+              id="filter-level"
+              label="Level"
+              size="filter"
+              value={levelFilter}
+              onChange={(e) => setLevelFilter(e.target.value)}
+              className="min-w-[130px]"
+              options={[
+                { value: "Semua", label: "Semua" },
+                { value: "Prodi", label: "Prodi" },
+                { value: "Dosen", label: "Dosen" },
+              ]}
+            />
 
             <div className="flex flex-col rounded-2xl border border-border-soft bg-white px-4 py-1.5 min-w-[240px] flex-1 max-w-sm">
               <label
