@@ -91,4 +91,22 @@ describe("HeroUI Toast Alert (placement='top end')", () => {
       /Tiket berhasil disetujui/i,
     );
   });
+
+  it("auto-dismisses Alert toast after timeout", async () => {
+    render(
+      <AlertToastProvider placement="top end">
+        <Alert status="info" timeout={80}>
+          Notifikasi otomatis tertutup
+        </Alert>
+      </AlertToastProvider>,
+    );
+
+    expect(await screen.findByRole("alertdialog")).toBeInTheDocument();
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 450));
+    });
+
+    expect(screen.queryByRole("alertdialog")).toBeNull();
+  });
 });
