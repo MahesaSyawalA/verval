@@ -1,4 +1,5 @@
 import { apiFetch } from "@/lib/http";
+import { uploadStoredFile } from "@/lib/upload-client";
 import type {
   CreateTiketInput,
   SubmitBuktiInput,
@@ -65,20 +66,5 @@ export async function verifyTicketApi(
 export async function uploadBuktiFileApi(
   file: File,
 ): Promise<{ path: string; fileName: string; size: number }> {
-  const formData = new FormData();
-  formData.append("file", file);
-
-  const response = await fetch("/api/storage/upload", {
-    method: "POST",
-    body: formData,
-  });
-
-  const payload = await response.json().catch(() => null);
-  if (!response.ok) {
-    throw new Error(
-      payload?.error?.message ?? "Gagal mengunggah berkas bukti.",
-    );
-  }
-
-  return payload.data;
+  return uploadStoredFile(file, "bukti", "Gagal mengunggah berkas bukti.");
 }

@@ -1,4 +1,5 @@
 import { apiFetch } from "@/lib/http";
+import { uploadStoredFile } from "@/lib/upload-client";
 import type { CreateAgendaRapatInput } from "./schemas/rapat.schema";
 import type {
   RapatFilterParams,
@@ -54,21 +55,9 @@ export async function updateRapatStatusApi(
 export async function uploadUndanganFileApi(
   file: File,
 ): Promise<{ path: string; fileName: string; size: number }> {
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("folder", "undangan");
-
-  const response = await fetch("/api/storage/upload", {
-    method: "POST",
-    body: formData,
-  });
-
-  const payload = await response.json().catch(() => null);
-  if (!response.ok) {
-    throw new Error(
-      payload?.error?.message ?? "Gagal mengunggah berkas surat undangan.",
-    );
-  }
-
-  return payload.data;
+  return uploadStoredFile(
+    file,
+    "undangan",
+    "Gagal mengunggah berkas surat undangan.",
+  );
 }
