@@ -4,6 +4,8 @@ export * from "./button";
 export * from "./input";
 export * from "./textarea";
 export * from "./bare-input";
+export * from "./select";
+export * from "./date-picker";
 export * from "./card";
 export * from "./stat-card";
 export * from "./status-chip";

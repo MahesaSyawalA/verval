@@ -320,3 +320,22 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--color-danger-bg);
   color: var(--color-danger-ink);
 }
+
+/* HeroUI Select & ListBox Indicator Styles */
+[data-slot="select-value"] [data-slot="list-box-item-indicator"] {
+  display: none;
+}
+
+[data-slot="list-box-item-indicator"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+[data-slot="list-box-item-indicator--checkmark"] {
+  width: 0.875rem;
+  height: 0.875rem;
+}
