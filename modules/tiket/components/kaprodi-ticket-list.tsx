@@ -11,6 +11,8 @@ import {
   ErrorState,
   Select,
   Skeleton,
+  TablePagination,
+  usePagination,
 } from "@/components/ui";
 import { cn, getInitials } from "@/lib/utils";
 import { useTargets } from "@/modules/target";
@@ -77,6 +79,8 @@ export function KaprodiTicketList({ userFullName }: KaprodiTicketListProps) {
       return true;
     });
   }, [allTickets, activeTab, dosenFilter, search]);
+
+  const pagination = usePagination(filteredTickets);
 
   return (
     <div className="space-y-5">
@@ -220,7 +224,7 @@ export function KaprodiTicketList({ userFullName }: KaprodiTicketListProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border-soft/80">
-                {filteredTickets.map((t) => {
+                {pagination.pageItems.map((t) => {
                   const isWaitingVerify = t.status === "Menunggu_Verifikasi";
                   const isComplete = t.status === "Tercapai";
 
@@ -306,9 +310,15 @@ export function KaprodiTicketList({ userFullName }: KaprodiTicketListProps) {
           </div>
         )}
 
-        <div className="pt-2 text-body-sm text-ink-muted">
-          1 - {filteredTickets.length} dari {allTickets.length} data
-        </div>
+        {!isLoading && !isError && (
+          <TablePagination
+            page={pagination.page}
+            pageSize={pagination.pageSize}
+            totalItems={pagination.totalItems}
+            onPageChange={pagination.setPage}
+            onPageSizeChange={pagination.setPageSize}
+          />
+        )}
       </Card>
 
       <CreateTicketModal

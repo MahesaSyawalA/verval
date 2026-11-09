@@ -10,6 +10,8 @@ import {
   ErrorState,
   Select,
   Skeleton,
+  TablePagination,
+  usePagination,
 } from "@/components/ui";
 import { cn, getInitials } from "@/lib/utils";
 import { useTickets } from "../hooks/use-tickets";
@@ -86,6 +88,8 @@ export function DosenTicketList({ userFullName }: DosenTicketListProps) {
       return true;
     });
   }, [allTickets, activeTab, search]);
+
+  const pagination = usePagination(filteredTickets);
 
   return (
     <div className="space-y-5">
@@ -208,7 +212,7 @@ export function DosenTicketList({ userFullName }: DosenTicketListProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border-soft/80">
-                {filteredTickets.map((t) => {
+                {pagination.pageItems.map((t) => {
                   const isRejected = t.status === "Ditolak";
                   const canUploadDirect =
                     t.status === "Ditugaskan" || t.status === "Dikerjakan";
@@ -301,9 +305,15 @@ export function DosenTicketList({ userFullName }: DosenTicketListProps) {
           </div>
         )}
 
-        <div className="pt-2 text-body-sm text-ink-muted">
-          1 - {filteredTickets.length} dari {allTickets.length} data
-        </div>
+        {!isLoading && !isError && (
+          <TablePagination
+            page={pagination.page}
+            pageSize={pagination.pageSize}
+            totalItems={pagination.totalItems}
+            onPageChange={pagination.setPage}
+            onPageSizeChange={pagination.setPageSize}
+          />
+        )}
       </Card>
 
       {uploadingTicket && (
