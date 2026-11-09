@@ -30,6 +30,7 @@ export function DashboardShell({
           fullName={user.namaLengkap}
           role={user.role}
           subtitle={subtitle}
+          userId={user.id}
         />
 
         <div className="flex gap-6 items-start">

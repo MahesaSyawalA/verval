@@ -11,9 +11,10 @@ export interface TopbarProps {
   fullName: string;
   role: UserRole;
   subtitle?: string;
+  userId?: string;
 }
 
-export function Topbar({ fullName, role, subtitle }: TopbarProps) {
+export function Topbar({ fullName, role, subtitle, userId }: TopbarProps) {
   const greetingName = getGreetingName(fullName);
   const resolvedSubtitle = subtitle ?? ROLE_METADATA[role]?.subtitle ?? "";
 
@@ -55,7 +56,7 @@ export function Topbar({ fullName, role, subtitle }: TopbarProps) {
           <span className="absolute top-3 right-3 h-2 w-2 rounded-full bg-accent" />
         </button>
 
-        <NotificationDropdown />
+        <NotificationDropdown userId={userId} />
       </div>
     </header>
   );

@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import {
   useMarkNotifikasiRead,
   useNotifikasi,
+  useNotifikasiRealtime,
 } from "../hooks/use-notifikasi";
 import type { NotifikasiItem, TipeNotifikasi } from "../types";
 
@@ -64,12 +65,16 @@ function formatNotifikasiTime(iso: string): string {
 export interface NotificationDropdownProps {
   initialItems?: NotifikasiItem[];
   initialUnreadCount?: number;
+  /** ID pengguna untuk berlangganan notifikasi realtime (Pusher). */
+  userId?: string;
 }
 
 export function NotificationDropdown({
   initialItems,
+  userId,
   initialUnreadCount,
 }: NotificationDropdownProps) {
+  useNotifikasiRealtime(userId);
   const [isOpen, setIsOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
