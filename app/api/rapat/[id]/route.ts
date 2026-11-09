@@ -4,7 +4,7 @@ import { requireServerSession } from "@/lib/session";
 import { updateStatusRapatSchema } from "@/modules/rapat/schemas/rapat.schema";
 import {
   changeRapatStatus,
-  getRapatDetail,
+  getRapatDetailForUser,
 } from "@/modules/rapat/server/rapat.service";
 
 interface RouteContext {
@@ -13,9 +13,9 @@ interface RouteContext {
 
 export async function GET(_request: NextRequest, context: RouteContext) {
   try {
-    await requireServerSession();
+    const session = await requireServerSession();
     const { id } = await context.params;
-    const data = await getRapatDetail(id);
+    const data = await getRapatDetailForUser(id, session);
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
     return handleRouteError(error);

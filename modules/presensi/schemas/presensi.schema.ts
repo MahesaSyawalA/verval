@@ -12,11 +12,19 @@ export const submitPresensiSchema = z
     keteranganAbsen: z.string().trim().optional(),
   })
   .superRefine((val, ctx) => {
-    if (
-      val.statusKehadiran === "Hadir" &&
-      val.metodePresensi === "Kode" &&
-      (!val.kodePresensi || val.kodePresensi.trim().length !== 6)
-    ) {
+    if (val.statusKehadiran !== "Hadir") return;
+
+    // Hadir selalu butuh kode rapat (QR hanya membawa kode yang sama); metode
+    // Manual dicadangkan untuk Izin/Sakit agar kehadiran tidak bisa diklaim bebas.
+    if (val.metodePresensi === "Manual") {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["metodePresensi"],
+        message: "Kehadiran harus dicatat dengan Kode Presensi atau Scan QR.",
+      });
+    }
+
+    if (!val.kodePresensi || val.kodePresensi.trim().length !== 6) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["kodePresensi"],

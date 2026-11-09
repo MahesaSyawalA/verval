@@ -358,12 +358,14 @@ export function DaftarHadirView({ rapatId }: DaftarHadirViewProps) {
                 {rapat.totalPeserta} dosen
               </dd>
             </div>
-            <div className="flex items-center justify-between">
-              <dt className="text-ink-muted">Kode Presensi</dt>
-              <dd className="font-heading font-bold text-primary">
-                {rapat.kodePresensi}
-              </dd>
-            </div>
+            {rapat.kodePresensi && (
+              <div className="flex items-center justify-between">
+                <dt className="text-ink-muted">Kode Presensi</dt>
+                <dd className="font-heading font-bold text-primary">
+                  {rapat.kodePresensi}
+                </dd>
+              </div>
+            )}
           </dl>
         </Card>
 

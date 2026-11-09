@@ -48,7 +48,15 @@ export async function submitPresensiRapat(
   }
 
   const existing = ctx.peserta.find((p) => p.dosenId === actor.id);
-  if (existing && existing.statusKehadiran !== "Belum_Hadir") {
+  if (!existing) {
+    throw new AppError(
+      "FORBIDDEN",
+      "Anda tidak terdaftar sebagai peserta rapat ini.",
+      403,
+    );
+  }
+
+  if (existing.statusKehadiran !== "Belum_Hadir") {
     throw new AppError(
       "CONFLICT",
       "Anda sudah mengisi presensi pada rapat ini.",
@@ -56,7 +64,15 @@ export async function submitPresensiRapat(
     );
   }
 
-  if (input.statusKehadiran === "Hadir" && input.metodePresensi === "Kode") {
+  if (input.statusKehadiran === "Hadir") {
+    if (input.metodePresensi === "Manual") {
+      throw new AppError(
+        "BAD_REQUEST",
+        "Kehadiran harus dicatat dengan Kode Presensi atau Scan QR.",
+        400,
+      );
+    }
+
     const submittedCode = (input.kodePresensi ?? "").trim().toUpperCase();
     const expectedCode = ctx.kodePresensi.trim().toUpperCase();
     if (submittedCode !== expectedCode) {

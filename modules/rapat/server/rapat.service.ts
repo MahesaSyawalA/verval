@@ -1,3 +1,4 @@
+import { randomInt } from "node:crypto";
 import type { UserRole } from "@/config/roles";
 import { AppError } from "@/lib/http";
 import type { CreateAgendaRapatInput } from "../schemas/rapat.schema";
@@ -22,8 +23,22 @@ export function generateKodePresensi(seedNumber?: number): string {
   if (typeof seedNumber === "number" && Number.isFinite(seedNumber)) {
     return String((Math.abs(Math.trunc(seedNumber)) % 900000) + 100000);
   }
-  const randomSixDigits = Math.floor(100000 + Math.random() * 900000);
-  return String(randomSixDigits);
+  return String(randomInt(100000, 1000000));
+}
+
+/**
+ * Kode presensi hanya boleh dilihat Kaprodi, Admin, dan notulis rapat itu
+ * (yang menampilkannya di ruang rapat). Peserta lain harus memperolehnya di ruang rapat.
+ */
+export function redactKodePresensi(
+  rapat: RapatItem,
+  actor: { id: string; role: UserRole },
+): RapatItem {
+  const canSeeCode =
+    actor.role === "Kaprodi" ||
+    actor.role === "Admin" ||
+    rapat.notulisId === actor.id;
+  return canSeeCode ? rapat : { ...rapat, kodePresensi: "" };
 }
 
 export interface RapatRepositoryDeps {
@@ -43,11 +58,12 @@ const defaultDeps: RapatRepositoryDeps = {
 };
 
 export async function listRapatForUser(
-  _actor: { id: string; role: UserRole },
+  actor: { id: string; role: UserRole },
   filter?: RapatFilterParams,
   deps: RapatRepositoryDeps = defaultDeps,
 ): Promise<RapatItem[]> {
-  return deps.findAll(filter);
+  const items = await deps.findAll(filter);
+  return items.map((item) => redactKodePresensi(item, actor));
 }
 
 export async function listRapatUserOptions(
@@ -65,6 +81,14 @@ export async function getRapatDetail(
     throw new AppError("NOT_FOUND", "Agenda rapat tidak ditemukan.", 404);
   }
   return rapat;
+}
+
+export async function getRapatDetailForUser(
+  rapatId: string,
+  actor: { id: string; role: UserRole },
+  deps: RapatRepositoryDeps = defaultDeps,
+): Promise<RapatItem> {
+  return redactKodePresensi(await getRapatDetail(rapatId, deps), actor);
 }
 
 export async function createAgendaRapat(
