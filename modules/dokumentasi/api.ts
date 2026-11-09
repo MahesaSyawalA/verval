@@ -1,4 +1,5 @@
 import { apiFetch } from "@/lib/http";
+import { uploadStoredFile } from "@/lib/upload-client";
 import type { SaveDokumentasiInput } from "./schemas/dokumentasi.schema";
 import type { DokumentasiPhotoItem } from "./types";
 
@@ -18,21 +19,9 @@ export async function saveDokumentasiRapatApi(
 export async function uploadDokumentasiPhotoFileApi(
   file: File,
 ): Promise<{ path: string; fileName: string; size: number }> {
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("folder", "dokumentasi");
-
-  const response = await fetch("/api/storage/upload", {
-    method: "POST",
-    body: formData,
-  });
-
-  const payload = await response.json().catch(() => null);
-  if (!response.ok) {
-    throw new Error(
-      payload?.error?.message ?? "Gagal mengunggah berkas foto dokumentasi.",
-    );
-  }
-
-  return payload.data;
+  return uploadStoredFile(
+    file,
+    "dokumentasi",
+    "Gagal mengunggah berkas foto dokumentasi.",
+  );
 }

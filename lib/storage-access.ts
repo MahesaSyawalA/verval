@@ -1,43 +1,15 @@
 import type { UserRole } from "@/config/roles";
 import prisma from "@/lib/db";
 
-export const UPLOAD_FOLDERS = [
-  "bukti",
-  "undangan",
-  "dokumentasi",
-  "lampiran",
-] as const;
-
-export type UploadFolder = (typeof UPLOAD_FOLDERS)[number];
-
-const ALLOWED_EXTENSIONS: Record<UploadFolder, readonly string[]> = {
-  bukti: ["pdf", "png", "jpg", "jpeg", "doc", "docx"],
-  undangan: ["pdf", "doc", "docx"],
-  dokumentasi: ["png", "jpg", "jpeg", "webp"],
-  lampiran: ["pdf", "ppt", "pptx", "doc", "docx"],
-};
-
-/** Hanya Kaprodi/Admin yang menyiapkan surat undangan; folder lain terbuka untuk semua. */
-const UPLOAD_ROLES: Partial<Record<UploadFolder, readonly UserRole[]>> = {
-  undangan: ["Kaprodi", "Admin"],
-};
-
-export function isUploadFolder(value: unknown): value is UploadFolder {
-  return (
-    typeof value === "string" &&
-    (UPLOAD_FOLDERS as readonly string[]).includes(value)
-  );
-}
-
-export function isAllowedUpload(folder: UploadFolder, fileName: string): boolean {
-  const ext = fileName.split(".").pop()?.toLowerCase() ?? "";
-  return fileName.includes(".") && ALLOWED_EXTENSIONS[folder].includes(ext);
-}
-
-export function canUploadToFolder(folder: UploadFolder, role: UserRole): boolean {
-  const allowed = UPLOAD_ROLES[folder];
-  return !allowed || allowed.includes(role);
-}
+// Aturan unggahan dipindah ke upload-rules (murni, bisa dipakai browser);
+// diekspor ulang agar impor lama tetap berfungsi.
+export {
+  UPLOAD_FOLDERS,
+  canUploadToFolder,
+  isAllowedUpload,
+  isUploadFolder,
+  type UploadFolder,
+} from "./upload-rules";
 
 type StorageDb = Pick<
   typeof prisma,
