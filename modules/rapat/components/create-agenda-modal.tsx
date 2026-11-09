@@ -46,9 +46,8 @@ export function CreateAgendaModal({
   const [waktuSelesai, setWaktuSelesai] = useState("14:30");
   const [format, setFormat] = useState<FormatRapatType>("Luring");
   const [lokasi, setLokasi] = useState("Ruang Sidang B");
-  const [pesertaIds, setPesertaIds] = useState<string[]>(() =>
-    userOptions.slice(0, 4).map((u) => u.id),
-  );
+  const [pesertaIds, setPesertaIds] = useState<string[]>([]);
+  const [pesertaSelectValue, setPesertaSelectValue] = useState<string>("");
   const [notulisId, setNotulisId] = useState<string>(
     () => userOptions[1]?.id ?? userOptions[0]?.id ?? "",
   );
@@ -65,18 +64,18 @@ export function CreateAgendaModal({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const selectedPeserta = userOptions.filter((u) => pesertaIds.includes(u.id));
-  const unselectedPeserta = userOptions.filter(
-    (u) => !pesertaIds.includes(u.id),
-  );
 
-  function handleAddNextPeserta() {
-    if (unselectedPeserta.length > 0) {
-      setPesertaIds((prev) => [...prev, unselectedPeserta[0].id]);
+  function handleAddPeserta(id: string) {
+    if (!id) return;
+    if (id === "ALL") {
+      setPesertaIds(userOptions.map((u) => u.id));
+    } else {
+      setPesertaIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
     }
+    setPesertaSelectValue("");
   }
 
   function handleRemovePeserta(id: string) {
-    if (pesertaIds.length <= 1) return;
     setPesertaIds((prev) => prev.filter((item) => item !== id));
   }
 
@@ -102,10 +101,6 @@ export function CreateAgendaModal({
 
   async function handleSubmit() {
     setErrorMessage(null);
-    const effectivePesertaIds =
-      pesertaIds.length > 0
-        ? pesertaIds
-        : userOptions.slice(0, 3).map((u) => u.id);
     const effectiveNotulisId = notulisId || userOptions[0]?.id || "";
 
     const parsed = createAgendaRapatSchema.safeParse({
@@ -115,7 +110,7 @@ export function CreateAgendaModal({
       waktuSelesai,
       format,
       lokasi,
-      pesertaIds: effectivePesertaIds,
+      pesertaIds,
       notulisId: effectiveNotulisId,
       deskripsiAgenda,
       metodeUndangan,
@@ -238,15 +233,63 @@ export function CreateAgendaModal({
           />
 
           {/* Peserta */}
-          <div className="space-y-1.5">
-            <span className="block text-body-sm font-semibold text-ink">
-              Peserta
-            </span>
-            <div className="flex flex-wrap items-center gap-2">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label
+                htmlFor="select-target-peserta"
+                className="text-body-sm font-semibold text-ink"
+              >
+                Peserta Rapat ({selectedPeserta.length} dipilih)
+              </label>
+              <div className="flex items-center gap-2">
+                {selectedPeserta.length < userOptions.length && (
+                  <button
+                    type="button"
+                    onClick={() => setPesertaIds(userOptions.map((u) => u.id))}
+                    className="text-body-sm font-medium text-primary hover:underline cursor-pointer"
+                  >
+                    Pilih Semua ({userOptions.length})
+                  </button>
+                )}
+                {selectedPeserta.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setPesertaIds([])}
+                    className="text-body-sm font-medium text-danger hover:underline cursor-pointer"
+                  >
+                    Kosongkan
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <Select
+              id="select-target-peserta"
+              placeholder="Pilih dosen / target peserta untuk ditambahkan..."
+              value={pesertaSelectValue}
+              onChange={(e) => handleAddPeserta(e.target.value)}
+              options={[
+                {
+                  value: "ALL",
+                  label: `👥 Semua Dosen (${userOptions.length} orang)`,
+                  disabled: selectedPeserta.length === userOptions.length,
+                },
+                ...userOptions.map((u) => ({
+                  value: u.id,
+                  label: pesertaIds.includes(u.id)
+                    ? `✓ ${u.namaLengkap} (Sudah dipilih)`
+                    : u.namaLengkap,
+                })),
+              ]}
+              aria-label="Pilih peserta rapat"
+            />
+
+            {/* Chips Peserta */}
+            <div className="flex flex-wrap items-center gap-2 pt-1">
               {selectedPeserta.map((p, idx) => (
                 <span
                   key={p.id}
-                  className="inline-flex items-center gap-2 rounded-full bg-surface px-3 py-1.5 text-body-sm font-medium text-ink"
+                  className="inline-flex items-center gap-2 rounded-full border border-border-soft bg-surface px-3 py-1.5 text-body-sm font-medium text-ink shadow-xs"
                 >
                   <span
                     className={cn(
@@ -257,26 +300,21 @@ export function CreateAgendaModal({
                     {getInitials(p.namaLengkap).slice(0, 1)}
                   </span>
                   <span>{p.namaLengkap.split(",")[0]}</span>
-                  {selectedPeserta.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => handleRemovePeserta(p.id)}
-                      className="text-ink-muted hover:text-danger cursor-pointer"
-                      aria-label={`Hapus ${p.namaLengkap}`}
-                    >
-                      <X className="h-3.5 w-3.5" />
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    onClick={() => handleRemovePeserta(p.id)}
+                    className="text-ink-muted hover:text-danger cursor-pointer transition-colors"
+                    aria-label={`Hapus ${p.namaLengkap}`}
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
                 </span>
               ))}
-              {unselectedPeserta.length > 0 && (
-                <button
-                  type="button"
-                  onClick={handleAddNextPeserta}
-                  className="inline-flex items-center gap-1 rounded-full bg-accent-100 px-3.5 py-1.5 text-body-sm font-semibold text-ink hover:bg-accent cursor-pointer"
-                >
-                  + Tambah
-                </button>
+
+              {selectedPeserta.length === 0 && (
+                <p className="text-body-sm text-ink-muted italic py-1">
+                  Belum ada peserta yang dipilih. Silakan pilih peserta melalui pilihan di atas.
+                </p>
               )}
             </div>
           </div>
