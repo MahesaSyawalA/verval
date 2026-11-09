@@ -4,6 +4,7 @@ import { MessageSquare, Search } from "lucide-react";
 import { ROLE_METADATA, type UserRole } from "@/config/roles";
 import { getGreetingName } from "@/lib/utils";
 import { NotificationDropdown } from "@/modules/notifikasi";
+import { BareInput } from "@/components/ui";
 import { BrandLogo } from "./logo";
 
 export interface TopbarProps {
@@ -30,7 +31,7 @@ export function Topbar({ fullName, role, subtitle }: TopbarProps) {
 
       <div className="flex items-center gap-3">
         <div className="relative flex items-center w-72 sm:w-96 rounded-full bg-white pl-5 pr-1.5 py-1.5 shadow-xs border border-border-soft/70">
-          <input
+          <BareInput
             type="search"
             placeholder="Cari tugas, rapat, dokumen..."
             aria-label="Cari tugas, rapat, dokumen"

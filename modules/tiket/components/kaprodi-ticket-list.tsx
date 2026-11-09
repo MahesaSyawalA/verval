@@ -4,7 +4,13 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { PageHeader } from "@/components/layout";
-import { Button, Card, ErrorState, Skeleton } from "@/components/ui";
+import {
+  BareInput,
+  Button,
+  Card,
+  ErrorState,
+  Skeleton,
+} from "@/components/ui";
 import { cn, getInitials } from "@/lib/utils";
 import { useTargets } from "@/modules/target";
 import { useTickets } from "../hooks/use-tickets";
@@ -176,7 +182,7 @@ export function KaprodiTicketList({ userFullName }: KaprodiTicketListProps) {
               >
                 Pencarian
               </label>
-              <input
+              <BareInput
                 id="kaprodi-search-input"
                 type="search"
                 placeholder="Kode tiket, target, dosen..."

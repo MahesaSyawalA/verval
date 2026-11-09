@@ -2,7 +2,13 @@
 
 import { Calendar, Check } from "lucide-react";
 import { useState } from "react";
-import { Button, Input, ModalForm, StatusChip } from "@/components/ui";
+import {
+  BareInput,
+  Button,
+  Input,
+  ModalForm,
+  StatusChip,
+} from "@/components/ui";
 import { cn } from "@/lib/utils";
 import type { RapatItem } from "@/modules/rapat";
 import { useSubmitPresensi } from "../hooks/use-presensi";
@@ -237,7 +243,7 @@ export function IsiPresensiModal({
               </span>
               <div className="grid grid-cols-6 gap-2.5">
                 {digits.map((digit, idx) => (
-                  <input
+                  <BareInput
                     key={`digit-${idx}`}
                     aria-label={`Digit kode presensi ${idx + 1}`}
                     type="text"

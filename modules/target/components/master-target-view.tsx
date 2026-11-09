@@ -4,6 +4,7 @@ import { Plus } from "lucide-react";
 import { useMemo, useState } from "react";
 import { PageHeader } from "@/components/layout";
 import {
+  BareInput,
   Button,
   Card,
   DataTable,
@@ -184,7 +185,7 @@ export function MasterTargetView({ userFullName }: MasterTargetViewProps) {
               >
                 Pencarian
               </label>
-              <input
+              <BareInput
                 id="filter-search-target"
                 type="search"
                 placeholder="Nama atau kode target..."
