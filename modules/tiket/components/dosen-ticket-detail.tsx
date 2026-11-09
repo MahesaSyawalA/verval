@@ -366,7 +366,7 @@ export function DosenTicketDetail({
       </div>
 
       <UploadBuktiModal
-        key={uploadModalOpen ? `upload-${ticket.id}` : "closed"}
+        key={uploadModalOpen ? `upload-${ticket.id}` : "upload-closed"}
         isOpen={uploadModalOpen}
         onClose={() => setUploadModalOpen(false)}
         ticket={ticket}

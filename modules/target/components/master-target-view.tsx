@@ -227,7 +227,7 @@ export function MasterTargetView({ userFullName }: MasterTargetViewProps) {
       </Card>
 
       <TargetFormModal
-        key={editingTarget?.id ?? (modalOpen ? nextSuggestedCode : "closed")}
+        key={editingTarget?.id ?? (modalOpen ? nextSuggestedCode : "target-closed")}
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         editingTarget={editingTarget}

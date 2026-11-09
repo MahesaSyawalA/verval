@@ -451,7 +451,7 @@ export function NotulensiEditorView({
         }}
       />
       <UploadDokumentasiModal
-        key={uploadPhotoOpen ? `doc-${rapat.id}` : "closed"}
+        key={uploadPhotoOpen ? `doc-${rapat.id}` : "doc-closed"}
         isOpen={uploadPhotoOpen}
         onClose={() => setUploadPhotoOpen(false)}
         rapat={rapat}

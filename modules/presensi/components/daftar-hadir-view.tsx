@@ -397,7 +397,7 @@ export function DaftarHadirView({ rapatId }: DaftarHadirViewProps) {
       </div>
 
       <IsiPresensiModal
-        key={presensiOpen ? `presensi-${rapat.id}` : "closed"}
+        key={presensiOpen ? `presensi-${rapat.id}` : "presensi-closed"}
         isOpen={presensiOpen}
         onClose={() => setPresensiOpen(false)}
         rapat={rapat}

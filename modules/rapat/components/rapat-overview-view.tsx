@@ -531,14 +531,14 @@ export function RapatOverviewView({
       </div>
 
       <CreateAgendaModal
-        key={createAgendaOpen ? `agenda-${rapatList.length}` : "closed"}
+        key={createAgendaOpen ? `agenda-${rapatList.length}` : "agenda-closed"}
         isOpen={createAgendaOpen}
         onClose={() => setCreateAgendaOpen(false)}
         userOptions={userOptions}
       />
 
       <IsiPresensiModal
-        key={presensiRapatId ?? "closed"}
+        key={presensiRapatId ? `presensi-${presensiRapatId}` : "presensi-closed"}
         isOpen={Boolean(presensiRapatId)}
         onClose={() => setPresensiRapatId(null)}
         rapat={selectedPresensiRapat}

@@ -312,7 +312,7 @@ export function KaprodiTicketList({ userFullName }: KaprodiTicketListProps) {
       </Card>
 
       <CreateTicketModal
-        key={createOpen ? `open-${allTickets.length}` : "closed"}
+        key={createOpen ? `open-${allTickets.length}` : "create-ticket-closed"}
         isOpen={createOpen}
         onClose={() => setCreateOpen(false)}
         targets={targets}

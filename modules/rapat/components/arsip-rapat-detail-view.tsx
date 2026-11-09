@@ -444,7 +444,7 @@ export function ArsipRapatDetailView({ rapatId }: ArsipRapatDetailViewProps) {
       />
 
       <UploadDokumentasiModal
-        key={uploadPhotoOpen ? `arsip-doc-${rapat.id}` : "closed"}
+        key={uploadPhotoOpen ? `arsip-doc-${rapat.id}` : "arsip-doc-closed"}
         isOpen={uploadPhotoOpen}
         onClose={() => setUploadPhotoOpen(false)}
         rapat={rapat}
