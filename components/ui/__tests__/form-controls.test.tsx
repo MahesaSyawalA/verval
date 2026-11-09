@@ -2,7 +2,9 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { createRef, useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { BareInput } from "../bare-input";
+import { DatePicker } from "../date-picker";
 import { Input } from "../input";
+import { Select } from "../select";
 import { TextArea } from "../textarea";
 
 function ControlledInput({ onValue }: { onValue?: (v: string) => void }) {
@@ -127,5 +129,67 @@ describe("BareInput (HeroUI)", () => {
     expect(input).toHaveAttribute("type", "search");
     fireEvent.change(input, { target: { value: "kurikulum" } });
     expect(onChange).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("Select (HeroUI)", () => {
+  const options = [
+    { value: "AKADEMIK", label: "Akademik" },
+    { value: "PENELITIAN", label: "Penelitian" },
+  ];
+
+  it("merender trigger dengan label dan nilai terpilih serta menyembunyikan indikator item di dalam trigger", () => {
+    const { container } = render(
+      <Select
+        label="Kategori Target"
+        value="AKADEMIK"
+        options={options}
+      />,
+    );
+
+    expect(screen.getByText("Kategori Target")).toBeInTheDocument();
+    expect(screen.getByRole("button")).toHaveTextContent("Akademik");
+    const selectValue = container.querySelector('[data-slot="select-value"]');
+    expect(selectValue?.className).toContain("[&_[data-slot=list-box-item-indicator]]:hidden");
+  });
+
+  it("menampilkan error sebagai alert bila ada error", () => {
+    render(
+      <Select
+        label="Kategori Target"
+        value=""
+        options={options}
+        error="Kategori wajib dipilih"
+      />,
+    );
+
+    expect(screen.getByRole("alert")).toHaveTextContent("Kategori wajib dipilih");
+  });
+});
+
+describe("DatePicker (HeroUI)", () => {
+  it("merender segmen tanggal dari string ISO YYYY-MM-DD dan tombol kalender", () => {
+    render(
+      <DatePicker
+        label="Tenggat Waktu"
+        value="2026-11-15"
+      />,
+    );
+
+    expect(screen.getByText("Tenggat Waktu")).toBeInTheDocument();
+    expect(screen.getByRole("group")).toBeInTheDocument();
+    expect(screen.getByRole("button")).toBeInTheDocument();
+  });
+
+  it("menampilkan pesan error sebagai alert", () => {
+    render(
+      <DatePicker
+        label="Tanggal Rapat"
+        value=""
+        error="Tanggal wajib diisi"
+      />,
+    );
+
+    expect(screen.getByRole("alert")).toHaveTextContent("Tanggal wajib diisi");
   });
 });

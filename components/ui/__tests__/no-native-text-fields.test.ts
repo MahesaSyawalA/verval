@@ -39,7 +39,7 @@ function openingTags(source: string, tag: string): string[] {
   return tags;
 }
 
-describe("field teks memakai komponen HeroUI lewat components/ui", () => {
+describe("field teks, select, dan date picker memakai komponen HeroUI lewat components/ui", () => {
   const files = SCAN_DIRS.flatMap((d) => listSourceFiles(path.join(ROOT, d)));
 
   it("tidak ada <textarea> native di luar components/ui", () => {
@@ -49,7 +49,23 @@ describe("field teks memakai komponen HeroUI lewat components/ui", () => {
     expect(offenders.map((f) => path.relative(ROOT, f))).toEqual([]);
   });
 
-  it("tidak ada <input> teks/pencarian native di luar components/ui", () => {
+  it("tidak ada <select> native di luar components/ui", () => {
+    const offenders = files.filter((f) =>
+      openingTags(fs.readFileSync(f, "utf8"), "select").length > 0,
+    );
+    expect(offenders.map((f) => path.relative(ROOT, f))).toEqual([]);
+  });
+
+  it("tidak ada <Input type=\"date\"> di luar components/ui (gunakan DatePicker HeroUI)", () => {
+    const offenders = files.filter((f) =>
+      openingTags(fs.readFileSync(f, "utf8"), "Input").some((tag) =>
+        /type\s*=\s*["'{][^>]*date/.test(tag),
+      ),
+    );
+    expect(offenders.map((f) => path.relative(ROOT, f))).toEqual([]);
+  });
+
+  it("tidak ada <input> teks/pencarian/tanggal native di luar components/ui", () => {
     const offenders: string[] = [];
     for (const file of files) {
       for (const tag of openingTags(fs.readFileSync(file, "utf8"), "input")) {
