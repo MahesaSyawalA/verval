@@ -9,6 +9,8 @@ import {
   ErrorState,
   Skeleton,
   StatusChip,
+  TablePagination,
+  usePagination,
 } from "@/components/ui";
 import { cn, getInitials } from "@/lib/utils";
 import {
@@ -63,6 +65,8 @@ export function DaftarHadirView({ rapatId }: DaftarHadirViewProps) {
     if (activeTab === "ALL") return all;
     return all.filter((p) => p.statusKehadiran === activeTab);
   }, [rapat?.peserta, activeTab]);
+
+  const pagination = usePagination(filteredPeserta);
 
   if (isLoading) {
     return (
@@ -184,7 +188,8 @@ export function DaftarHadirView({ rapatId }: DaftarHadirViewProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border-soft">
-                {filteredPeserta.map((p, idx) => {
+                {pagination.pageItems.map((p, pageIdx) => {
+                  const idx = pagination.offset + pageIdx;
                   const isNotulis = p.dosenId === rapat.notulisId;
                   const isKaprodi = p.dosenRole === "Kaprodi";
 
@@ -248,6 +253,13 @@ export function DaftarHadirView({ rapatId }: DaftarHadirViewProps) {
           </div>
 
           {/* T-03 Integration Banner */}
+          <TablePagination
+            page={pagination.page}
+            pageSize={pagination.pageSize}
+            totalItems={pagination.totalItems}
+            onPageChange={pagination.setPage}
+            onPageSizeChange={pagination.setPageSize}
+          />
           <div className="flex items-center gap-3 rounded-2xl bg-primary-50 px-4 py-3 text-body-sm">
             <span className="rounded-full bg-primary px-3 py-0.5 text-[12px] font-bold text-white">
               T-03
