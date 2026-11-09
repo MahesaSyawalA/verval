@@ -2,7 +2,15 @@
 
 import { Plus, UploadCloud } from "lucide-react";
 import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
-import { Alert, alertToast, Button, Input, ModalForm, StatusChip } from "@/components/ui";
+import {
+  Alert,
+  alertToast,
+  Button,
+  DatePicker,
+  Input,
+  ModalForm,
+  StatusChip,
+} from "@/components/ui";
 import { AppError } from "@/lib/http";
 import { uploadBuktiFileApi } from "../api";
 import { useSubmitBukti } from "../hooks/use-tickets";
@@ -205,27 +213,37 @@ export function UploadBuktiModal({
 
         {/* Dynamic Fields from format_bukti */}
         <div className="space-y-3 pt-1">
-          {ticket.formatBukti.map((fb) => (
-            <Input
-              key={`${activeUrutan}-${fb.id}`}
-              name={`bukti-${fb.id}`}
-              type={
-                fb.tipeData === "Angka"
-                  ? "number"
-                  : fb.tipeData === "Tanggal"
-                    ? "date"
-                    : "text"
-              }
-              label={`${fb.namaField}${fb.statusIsian === "Wajib" ? " *" : ""}`}
-              placeholder={
-                fb.tipeData === "Tautan"
-                  ? "https://doi.org/..."
-                  : `Tuliskan ${fb.namaField.toLowerCase()}...`
-              }
-              value={getValue(activeUrutan, fb.id)}
-              onChange={(e) => setValue(activeUrutan, fb.id, e.target.value)}
-            />
-          ))}
+          {ticket.formatBukti.map((fb) => {
+            const labelText = `${fb.namaField}${fb.statusIsian === "Wajib" ? " *" : ""}`;
+            if (fb.tipeData === "Tanggal") {
+              return (
+                <DatePicker
+                  key={`${activeUrutan}-${fb.id}`}
+                  name={`bukti-${fb.id}`}
+                  label={labelText}
+                  value={getValue(activeUrutan, fb.id)}
+                  onChange={(e) =>
+                    setValue(activeUrutan, fb.id, e.target.value)
+                  }
+                />
+              );
+            }
+            return (
+              <Input
+                key={`${activeUrutan}-${fb.id}`}
+                name={`bukti-${fb.id}`}
+                type={fb.tipeData === "Angka" ? "number" : "text"}
+                label={labelText}
+                placeholder={
+                  fb.tipeData === "Tautan"
+                    ? "https://doi.org/..."
+                    : `Tuliskan ${fb.namaField.toLowerCase()}...`
+                }
+                value={getValue(activeUrutan, fb.id)}
+                onChange={(e) => setValue(activeUrutan, fb.id, e.target.value)}
+              />
+            );
+          })}
         </div>
 
         {/* Multi-submission item pills */}

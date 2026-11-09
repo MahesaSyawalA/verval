@@ -1,7 +1,16 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { Alert, alertToast, Button, Input, ModalForm, TextArea } from "@/components/ui";
+import {
+  Alert,
+  alertToast,
+  Button,
+  DatePicker,
+  Input,
+  ModalForm,
+  Select,
+  TextArea,
+} from "@/components/ui";
 import { AppError, formatZodError } from "@/lib/http";
 import type { MasterTargetItem } from "@/modules/target";
 import { useCreateTicket } from "../hooks/use-tickets";
@@ -71,7 +80,9 @@ export function CreateTicketModal({
 
     try {
       await createMutation.mutateAsync(parsed.data);
-      alertToast.success("Tiket penugasan berhasil dibuat dan dikirim ke dosen.");
+      alertToast.success(
+        "Tiket penugasan berhasil dibuat dan dikirim ke dosen.",
+      );
       onClose();
     } catch (err) {
       if (err instanceof AppError) {
@@ -94,85 +105,47 @@ export function CreateTicketModal({
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
         {formError && <Alert status="error">{formError}</Alert>}
 
-        <div className="flex flex-col gap-1.5">
-          <label
-            htmlFor="penugasan-target"
-            className="text-body-sm font-medium text-ink"
-          >
-            Target (master target 2026)
-          </label>
-          <select
-            id="penugasan-target"
-            value={targetId}
-            onChange={(e) => {
-              const nextId = e.target.value;
-              setTargetId(nextId);
-              const found = targets.find((t) => t.id === nextId);
-              if (found) setJudulKegiatan(found.namaTarget);
-            }}
-            className="h-11 w-full rounded-2xl border border-border-soft bg-white px-4 text-body-md text-ink focus:border-primary focus:outline-none"
-          >
-            {targets.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.kodeTarget} · {t.namaTarget}
-              </option>
-            ))}
-          </select>
-          {fieldErrors.targetId && (
-            <p className="text-body-sm text-danger">{fieldErrors.targetId}</p>
-          )}
-        </div>
+        <Select
+          id="penugasan-target"
+          label="Target (master target 2026)"
+          value={targetId}
+          onChange={(e) => {
+            const nextId = e.target.value;
+            setTargetId(nextId);
+            const found = targets.find((t) => t.id === nextId);
+            if (found) setJudulKegiatan(found.namaTarget);
+          }}
+          error={fieldErrors.targetId}
+          options={targets.map((t) => ({
+            value: t.id,
+            label: `${t.kodeTarget} · ${t.namaTarget}`,
+          }))}
+        />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="penugasan-dosen"
-              className="text-body-sm font-medium text-ink"
-            >
-              Dosen
-            </label>
-            <select
-              id="penugasan-dosen"
-              value={dosenId}
-              onChange={(e) => setDosenId(e.target.value)}
-              className="h-11 w-full rounded-2xl border border-border-soft bg-white px-4 text-body-md text-ink focus:border-primary focus:outline-none"
-            >
-              {dosenOptions.map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.namaLengkap}
-                </option>
-              ))}
-            </select>
-            {fieldErrors.dosenId && (
-              <p className="text-body-sm text-danger">{fieldErrors.dosenId}</p>
-            )}
-          </div>
+          <Select
+            id="penugasan-dosen"
+            label="Dosen"
+            value={dosenId}
+            onChange={(e) => setDosenId(e.target.value)}
+            error={fieldErrors.dosenId}
+            options={dosenOptions.map((d) => ({
+              value: d.id,
+              label: d.namaLengkap,
+            }))}
+          />
 
-          <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="penugasan-kuantitas"
-              className="text-body-sm font-medium text-ink"
-            >
-              Kuantitas dibebankan
-            </label>
-            <select
-              id="penugasan-kuantitas"
-              value={kuantitasDitugaskan}
-              onChange={(e) => setKuantitasDitugaskan(e.target.value)}
-              className="h-11 w-full rounded-2xl border border-border-soft bg-white px-4 text-body-md text-ink focus:border-primary focus:outline-none"
-            >
-              {[1, 2, 3, 4, 5, 8, 10, 12, 20].map((num) => (
-                <option key={num} value={String(num)}>
-                  {num} {satuanLabel}
-                </option>
-              ))}
-            </select>
-            {fieldErrors.kuantitasDitugaskan && (
-              <p className="text-body-sm text-danger">
-                {fieldErrors.kuantitasDitugaskan}
-              </p>
-            )}
-          </div>
+          <Select
+            id="penugasan-kuantitas"
+            label="Kuantitas dibebankan"
+            value={kuantitasDitugaskan}
+            onChange={(e) => setKuantitasDitugaskan(e.target.value)}
+            error={fieldErrors.kuantitasDitugaskan}
+            options={[1, 2, 3, 4, 5, 8, 10, 12, 20].map((num) => ({
+              value: String(num),
+              label: `${num} ${satuanLabel}`,
+            }))}
+          />
         </div>
 
         <Input
@@ -184,37 +157,26 @@ export function CreateTicketModal({
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input
+          <DatePicker
             name="tenggatWaktu"
-            type="date"
             label="Tenggat"
             value={tenggatWaktu}
             onChange={(e) => setTenggatWaktu(e.target.value)}
             error={fieldErrors.tenggatWaktu}
           />
 
-          <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="penugasan-prioritas"
-              className="text-body-sm font-medium text-ink"
-            >
-              Prioritas
-            </label>
-            <select
-              id="penugasan-prioritas"
-              value={prioritas}
-              onChange={(e) =>
-                setPrioritas(e.target.value as PrioritasTiketType)
-              }
-              className="h-11 w-full rounded-2xl border border-border-soft bg-white px-4 text-body-md text-ink focus:border-primary focus:outline-none"
-            >
-              {PRIORITAS_TIKET_VALUES.map((p) => (
-                <option key={p} value={p}>
-                  {p}
-                </option>
-              ))}
-            </select>
-          </div>
+          <Select
+            id="penugasan-prioritas"
+            label="Prioritas"
+            value={prioritas}
+            onChange={(e) =>
+              setPrioritas(e.target.value as PrioritasTiketType)
+            }
+            options={PRIORITAS_TIKET_VALUES.map((p) => ({
+              value: p,
+              label: p,
+            }))}
+          />
         </div>
 
         <div className="flex flex-col gap-1.5">

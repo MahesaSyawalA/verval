@@ -9,6 +9,7 @@ import {
   Button,
   Card,
   ErrorState,
+  Select,
   Skeleton,
 } from "@/components/ui";
 import { cn, getInitials } from "@/lib/utils";
@@ -130,50 +131,36 @@ export function KaprodiTicketList({ userFullName }: KaprodiTicketListProps) {
         {/* Filters + Create Button */}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-3 flex-1">
-            <div className="flex flex-col rounded-2xl border border-border-soft bg-white px-3.5 py-1.5 min-w-[160px]">
-              <label
-                htmlFor="kaprodi-status-select"
-                className="text-[11px] text-ink-muted"
-              >
-                Status
-              </label>
-              <select
-                id="kaprodi-status-select"
-                value={activeTab}
-                onChange={(e) =>
-                  setActiveTab(e.target.value as "ALL" | StatusTiketType)
-                }
-                className="bg-transparent text-body-sm font-semibold text-ink focus:outline-none"
-              >
-                {STATUS_TABS.map((tab) => (
-                  <option key={tab.key} value={tab.key}>
-                    {tab.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <Select
+              id="kaprodi-status-select"
+              label="Status"
+              size="filter"
+              value={activeTab}
+              onChange={(e) =>
+                setActiveTab(e.target.value as "ALL" | StatusTiketType)
+              }
+              className="min-w-[160px]"
+              options={STATUS_TABS.map((tab) => ({
+                value: tab.key,
+                label: tab.label,
+              }))}
+            />
 
-            <div className="flex flex-col rounded-2xl border border-border-soft bg-white px-3.5 py-1.5 min-w-[190px]">
-              <label
-                htmlFor="kaprodi-dosen-select"
-                className="text-[11px] text-ink-muted"
-              >
-                Dosen
-              </label>
-              <select
-                id="kaprodi-dosen-select"
-                value={dosenFilter}
-                onChange={(e) => setDosenFilter(e.target.value)}
-                className="bg-transparent text-body-sm font-semibold text-ink focus:outline-none"
-              >
-                <option value="ALL">Semua dosen</option>
-                {dosenOptions.map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {d.namaLengkap}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <Select
+              id="kaprodi-dosen-select"
+              label="Dosen"
+              size="filter"
+              value={dosenFilter}
+              onChange={(e) => setDosenFilter(e.target.value)}
+              className="min-w-[190px]"
+              options={[
+                { value: "ALL", label: "Semua dosen" },
+                ...dosenOptions.map((d) => ({
+                  value: d.id,
+                  label: d.namaLengkap,
+                })),
+              ]}
+            />
 
             <div className="flex flex-col rounded-2xl border border-border-soft bg-white px-4 py-1.5 min-w-[240px] flex-1 max-w-sm">
               <label

@@ -3,7 +3,14 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { PageHeader } from "@/components/layout";
-import { Alert, BareInput, Card, ErrorState, Skeleton } from "@/components/ui";
+import {
+  Alert,
+  BareInput,
+  Card,
+  ErrorState,
+  Select,
+  Skeleton,
+} from "@/components/ui";
 import { cn, getInitials } from "@/lib/utils";
 import { useTickets } from "../hooks/use-tickets";
 import {
@@ -139,28 +146,20 @@ export function DosenTicketList({ userFullName }: DosenTicketListProps) {
 
         {/* Filter Controls */}
         <div className="flex flex-wrap items-center gap-3">
-          <div className="flex flex-col rounded-2xl border border-border-soft bg-white px-3.5 py-1.5 min-w-[160px]">
-            <label
-              htmlFor="dosen-status-select"
-              className="text-[11px] text-ink-muted"
-            >
-              Status
-            </label>
-            <select
-              id="dosen-status-select"
-              value={activeTab}
-              onChange={(e) =>
-                setActiveTab(e.target.value as "ALL" | StatusTiketType)
-              }
-              className="bg-transparent text-body-sm font-semibold text-ink focus:outline-none"
-            >
-              {STATUS_TABS.map((tab) => (
-                <option key={tab.key} value={tab.key}>
-                  {tab.label}
-                </option>
-              ))}
-            </select>
-          </div>
+          <Select
+            id="dosen-status-select"
+            label="Status"
+            size="filter"
+            value={activeTab}
+            onChange={(e) =>
+              setActiveTab(e.target.value as "ALL" | StatusTiketType)
+            }
+            className="min-w-[160px]"
+            options={STATUS_TABS.map((tab) => ({
+              value: tab.key,
+              label: tab.label,
+            }))}
+          />
 
           <div className="flex flex-col rounded-2xl border border-border-soft bg-white px-4 py-1.5 min-w-[260px] flex-1 max-w-sm">
             <label
