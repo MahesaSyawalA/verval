@@ -7,6 +7,7 @@ import {
   ErrorState,
   Skeleton,
   StatusChip,
+  TextArea,
 } from "@/components/ui";
 import { cn, getInitials } from "@/lib/utils";
 import { UploadDokumentasiModal } from "@/modules/dokumentasi";
@@ -201,73 +202,49 @@ function NotulensiEditorForm({
 
             {/* 2x2 Grid Textareas */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <label
-                  htmlFor="notulensi-agenda"
-                  className="block text-body-sm font-semibold text-ink"
-                >
-                  Agenda
-                </label>
-                <textarea
-                  id="notulensi-agenda"
-                  rows={5}
-                  disabled={!canEdit || saveMutation.isPending}
-                  value={agendaPembahasan}
-                  onChange={(e) => setAgendaPembahasan(e.target.value)}
-                  className="w-full rounded-2xl border border-border-default bg-white p-3.5 text-body-sm text-ink focus:border-primary focus:outline-none disabled:bg-surface"
-                />
-              </div>
+              <TextArea
+                id="notulensi-agenda"
+                label="Agenda"
+                labelClassName="font-semibold"
+                size="sm"
+                rows={5}
+                disabled={!canEdit || saveMutation.isPending}
+                value={agendaPembahasan}
+                onChange={(e) => setAgendaPembahasan(e.target.value)}
+              />
 
-              <div className="space-y-1.5">
-                <label
-                  htmlFor="notulensi-hal-dibahas"
-                  className="block text-body-sm font-semibold text-ink"
-                >
-                  Hal yang dibahas
-                </label>
-                <textarea
-                  id="notulensi-hal-dibahas"
-                  rows={5}
-                  disabled={!canEdit || saveMutation.isPending}
-                  value={halDibahas}
-                  onChange={(e) => setHalDibahas(e.target.value)}
-                  className="w-full rounded-2xl border border-border-default bg-white p-3.5 text-body-sm text-ink focus:border-primary focus:outline-none disabled:bg-surface"
-                />
-              </div>
+              <TextArea
+                id="notulensi-hal-dibahas"
+                label="Hal yang dibahas"
+                labelClassName="font-semibold"
+                size="sm"
+                rows={5}
+                disabled={!canEdit || saveMutation.isPending}
+                value={halDibahas}
+                onChange={(e) => setHalDibahas(e.target.value)}
+              />
 
-              <div className="space-y-1.5">
-                <label
-                  htmlFor="notulensi-keputusan"
-                  className="block text-body-sm font-semibold text-ink"
-                >
-                  Keputusan
-                </label>
-                <textarea
-                  id="notulensi-keputusan"
-                  rows={5}
-                  disabled={!canEdit || saveMutation.isPending}
-                  value={keputusan}
-                  onChange={(e) => setKeputusan(e.target.value)}
-                  className="w-full rounded-2xl border border-border-default bg-white p-3.5 text-body-sm text-ink focus:border-primary focus:outline-none disabled:bg-surface"
-                />
-              </div>
+              <TextArea
+                id="notulensi-keputusan"
+                label="Keputusan"
+                labelClassName="font-semibold"
+                size="sm"
+                rows={5}
+                disabled={!canEdit || saveMutation.isPending}
+                value={keputusan}
+                onChange={(e) => setKeputusan(e.target.value)}
+              />
 
-              <div className="space-y-1.5">
-                <label
-                  htmlFor="notulensi-tindak-lanjut"
-                  className="block text-body-sm font-semibold text-ink"
-                >
-                  Tindak lanjut
-                </label>
-                <textarea
-                  id="notulensi-tindak-lanjut"
-                  rows={5}
-                  disabled={!canEdit || saveMutation.isPending}
-                  value={tindakLanjut}
-                  onChange={(e) => setTindakLanjut(e.target.value)}
-                  className="w-full rounded-2xl border border-border-default bg-white p-3.5 text-body-sm text-ink focus:border-primary focus:outline-none disabled:bg-surface"
-                />
-              </div>
+              <TextArea
+                id="notulensi-tindak-lanjut"
+                label="Tindak lanjut"
+                labelClassName="font-semibold"
+                size="sm"
+                rows={5}
+                disabled={!canEdit || saveMutation.isPending}
+                value={tindakLanjut}
+                onChange={(e) => setTindakLanjut(e.target.value)}
+              />
             </div>
 
             <div className="flex justify-end text-body-sm text-ink-muted">

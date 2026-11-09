@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { Button, Input, ModalForm } from "@/components/ui";
+import { Button, Input, ModalForm, TextArea } from "@/components/ui";
 import { AppError, formatZodError } from "@/lib/http";
 import type { MasterTargetItem } from "@/modules/target";
 import { useCreateTicket } from "../hooks/use-tickets";
@@ -224,19 +224,13 @@ export function CreateTicketModal({
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label
-            htmlFor="penugasan-catatan"
-            className="text-body-sm font-medium text-ink"
-          >
-            Catatan untuk dosen
-          </label>
-          <textarea
+          <TextArea
             id="penugasan-catatan"
+            label="Catatan untuk dosen"
             rows={3}
             placeholder="Tuliskan catatan atau instruksi tambahan..."
             value={catatanKaprodi}
             onChange={(e) => setCatatanKaprodi(e.target.value)}
-            className="w-full rounded-2xl border border-border-soft bg-white p-4 text-body-md text-ink placeholder:text-ink-subtle focus:border-primary focus:outline-none"
           />
         </div>
 

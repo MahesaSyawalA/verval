@@ -2,7 +2,7 @@
 
 import { Check, Image as ImageIcon, Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
-import { Button, ModalForm } from "@/components/ui";
+import { BareInput, Button, ModalForm } from "@/components/ui";
 import { cn } from "@/lib/utils";
 import type { RapatItem } from "@/modules/rapat";
 import { uploadDokumentasiPhotoFileApi } from "../api";
@@ -257,8 +257,9 @@ export function UploadDokumentasiModal({
                     </button>
                   </div>
 
-                  <input
+                  <BareInput
                     type="text"
+                    aria-label="Keterangan foto"
                     value={photo.caption}
                     onChange={(e) =>
                       handleUpdateCaption(photo.id, e.target.value)

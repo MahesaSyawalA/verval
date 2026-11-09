@@ -2,7 +2,7 @@
 
 import { Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
-import { Button, Input, ModalForm } from "@/components/ui";
+import { Button, Input, ModalForm, TextArea } from "@/components/ui";
 import { cn, getInitials } from "@/lib/utils";
 import { uploadUndanganFileApi } from "../api";
 import { useCreateAgendaRapat } from "../hooks/use-rapat";
@@ -297,19 +297,15 @@ export function CreateAgendaModal({
 
           {/* Agenda / Deskripsi */}
           <div className="space-y-1.5">
-            <label
-              htmlFor="textarea-agenda-deskripsi"
-              className="block text-body-sm font-semibold text-ink"
-            >
-              Agenda / Deskripsi
-            </label>
-            <textarea
+            <TextArea
               id="textarea-agenda-deskripsi"
+              label="Agenda / Deskripsi"
+              labelClassName="font-semibold"
+              size="sm"
               rows={3}
               value={deskripsiAgenda}
               onChange={(e) => setDeskripsiAgenda(e.target.value)}
               placeholder="Tuliskan pokok bahasan rapat..."
-              className="w-full rounded-2xl border border-border-default bg-white px-4 py-2.5 text-body-sm text-ink placeholder:text-ink-subtle focus:border-primary focus:outline-none"
             />
           </div>
 

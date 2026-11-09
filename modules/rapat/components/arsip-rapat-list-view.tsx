@@ -4,6 +4,7 @@ import { Calendar, ChevronRight, Search } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
+  BareInput,
   Card,
   ErrorState,
   Skeleton,
@@ -119,8 +120,9 @@ export function ArsipRapatListView() {
         <div className="flex flex-wrap items-center gap-3 flex-1">
           <div className="relative flex-1 min-w-[240px]">
             <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-ink-muted" />
-            <input
+            <BareInput
               type="search"
+              aria-label="Cari judul rapat atau notulis"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Cari judul rapat atau notulis..."

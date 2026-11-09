@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Button, Card, ErrorState, Skeleton, StatusChip } from "@/components/ui";
+import {
+  Button,
+  Card,
+  ErrorState,
+  Skeleton,
+  StatusChip,
+  TextArea,
+} from "@/components/ui";
 import { cn, getInitials } from "@/lib/utils";
 import { useTicketDetail, useVerifyTicket } from "../hooks/use-tickets";
 import { verifyTiketSchema } from "../schemas/tiket.schema";
@@ -297,20 +304,16 @@ export function KaprodiTicketDetail({
 
             {/* Catatan Textarea */}
             <div className="space-y-1.5 pt-1">
-              <label
-                htmlFor="catatan-verifikasi-kaprodi"
-                className="sr-only"
-              >
-                Catatan untuk dosen
-              </label>
-              <textarea
+              <TextArea
                 id="catatan-verifikasi-kaprodi"
+                label="Catatan untuk dosen"
+                labelClassName="sr-only"
+                size="sm"
                 rows={3}
                 placeholder="Catatan untuk dosen (wajib jika ditolak)..."
                 value={catatanKaprodi}
                 onChange={(e) => setCatatanKaprodi(e.target.value)}
                 disabled={!canVerify || verifyMutation.isPending}
-                className="w-full rounded-2xl border border-border-soft bg-surface px-4 py-3 text-body-sm text-ink placeholder:text-ink-subtle focus:border-primary focus:bg-white focus:outline-none disabled:opacity-60"
               />
               {validationError && (
                 <p role="alert" className="text-body-sm font-medium text-danger">

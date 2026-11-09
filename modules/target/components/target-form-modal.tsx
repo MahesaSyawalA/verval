@@ -2,7 +2,7 @@
 
 import { Plus, X } from "lucide-react";
 import { useState, type FormEvent } from "react";
-import { Button, Input, ModalForm } from "@/components/ui";
+import { BareInput, Button, Input, ModalForm } from "@/components/ui";
 import { AppError, formatZodError } from "@/lib/http";
 import {
   useCreateTarget,
@@ -285,8 +285,9 @@ export function TargetFormModal({
                 className="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-center"
               >
                 <div className="sm:col-span-6">
-                  <input
+                  <BareInput
                     type="text"
+                    aria-label={`Nama isian bukti ${idx + 1}`}
                     placeholder="Nama isian (contoh: Judul buku)"
                     value={field.namaField}
                     onChange={(e) =>
