@@ -95,12 +95,29 @@ export interface AlertProps {
   children?: ReactNode;
   /** Ikon opsional; secara default memakai ikon bawaan HeroUI `ToastIndicator`. */
   icon?: ReactNode;
-  /** Durasi tampil dalam milidetik (`0` = tetap tampil selama komponen terpasang). */
+  /** Durasi tampil dalam milidetik sebelum menutup otomatis (default HeroUI v3: `4000` ms; `0` = tetap tampil). */
   timeout?: number;
   /** Class tambahan untuk `ToastProvider` fallback bila dirender tanpa provider global. */
   className?: string;
   /** Role aksesibilitas (kompatibilitas prop). */
   role?: string;
+}
+
+function getNodeKey(node: ReactNode): string {
+  if (node === null || node === undefined || typeof node === "boolean") {
+    return "";
+  }
+  if (typeof node === "string" || typeof node === "number") {
+    return String(node);
+  }
+  if (Array.isArray(node)) {
+    return node.map(getNodeKey).join("");
+  }
+  if (typeof node === "object" && "props" in node) {
+    const props = (node as { props?: { children?: ReactNode } }).props;
+    return getNodeKey(props?.children);
+  }
+  return "";
 }
 
 function closeToastImmediately(key: string) {
@@ -128,13 +145,15 @@ export function Alert({
   description,
   children,
   icon,
-  timeout = 0,
+  timeout = 4000,
   className,
 }: AlertProps) {
   const hasGlobalProvider = useContext(AlertToastProviderContext);
   const headingContent = title ?? children;
   const bodyContent =
     description ?? (title !== undefined ? children : undefined);
+  const headingKey = getNodeKey(headingContent);
+  const bodyKey = getNodeKey(bodyContent);
 
   useLayoutEffect(() => {
     if (
@@ -172,7 +191,8 @@ export function Alert({
     return () => {
       closeToastImmediately(key);
     };
-  }, [status, headingContent, bodyContent, icon, timeout]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, headingKey, bodyKey, timeout]);
 
   if (hasGlobalProvider) {
     return null;
