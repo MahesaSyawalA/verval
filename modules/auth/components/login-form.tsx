@@ -1,9 +1,9 @@
 "use client";
 
-import { Eye, EyeOff, ShieldCheck } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
-import { Button, Input } from "@/components/ui";
+import { Alert, Button, Input } from "@/components/ui";
 import { INSTITUTION_NAME } from "@/lib/constants";
 import { AppError, formatZodError } from "@/lib/http";
 import { getSafeRedirectPath } from "@/lib/safe-redirect";
@@ -144,12 +144,9 @@ export function LoginForm() {
             </div>
 
             {formError && (
-              <div
-                role="alert"
-                className="mb-4 rounded-2xl border border-danger/30 bg-danger-bg px-4 py-3 text-body-sm font-medium text-danger-ink"
-              >
+              <Alert status="error" className="mb-4">
                 {formError}
-              </div>
+              </Alert>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4" noValidate>
@@ -211,9 +208,8 @@ export function LoginForm() {
                 Tidak bisa masuk atau lupa kata sandi? Hubungi Admin Prodi RPL.
               </p>
 
-              <div className="flex items-center gap-3 rounded-2xl bg-surface px-4 py-3 text-body-sm text-ink-muted">
-                <ShieldCheck className="h-4 w-4 shrink-0 text-primary" />
-                <span>Jangan bagikan kata sandi Anda kepada siapa pun.</span>
+              <div className="rounded-2xl bg-primary-50/70 px-4 py-3 text-center text-body-sm font-medium text-primary">
+                Jangan bagikan kata sandi Anda kepada siapa pun.
               </div>
 
               {SHOW_DEMO_ACCOUNTS && (

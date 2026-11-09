@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import {
+  Alert,
   Button,
   Card,
   ErrorState,
@@ -303,7 +304,7 @@ export function KaprodiTicketDetail({
             </ul>
 
             {/* Catatan Textarea */}
-            <div className="space-y-1.5 pt-1">
+            <div className="space-y-2 pt-1">
               <TextArea
                 id="catatan-verifikasi-kaprodi"
                 label="Catatan untuk dosen"
@@ -316,14 +317,12 @@ export function KaprodiTicketDetail({
                 disabled={!canVerify || verifyMutation.isPending}
               />
               {validationError && (
-                <p role="alert" className="text-body-sm font-medium text-danger">
-                  {validationError}
-                </p>
+                <Alert status="error">{validationError}</Alert>
               )}
               {feedbackMessage && (
-                <p className="text-body-sm font-medium text-success">
+                <Alert status="success" role="status">
                   {feedbackMessage}
-                </p>
+                </Alert>
               )}
             </div>
 

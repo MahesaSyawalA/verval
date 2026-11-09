@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { Button, Input, ModalForm, TextArea } from "@/components/ui";
+import { Alert, alertToast, Button, Input, ModalForm, TextArea } from "@/components/ui";
 import { AppError, formatZodError } from "@/lib/http";
 import type { MasterTargetItem } from "@/modules/target";
 import { useCreateTicket } from "../hooks/use-tickets";
@@ -71,6 +71,7 @@ export function CreateTicketModal({
 
     try {
       await createMutation.mutateAsync(parsed.data);
+      alertToast.success("Tiket penugasan berhasil dibuat dan dikirim ke dosen.");
       onClose();
     } catch (err) {
       if (err instanceof AppError) {
@@ -91,14 +92,7 @@ export function CreateTicketModal({
       size="lg"
     >
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-        {formError && (
-          <div
-            role="alert"
-            className="rounded-2xl border border-danger/30 bg-danger-bg px-4 py-3 text-body-sm font-medium text-danger-ink"
-          >
-            {formError}
-          </div>
-        )}
+        {formError && <Alert status="error">{formError}</Alert>}
 
         <div className="flex flex-col gap-1.5">
           <label
@@ -260,7 +254,7 @@ export function CreateTicketModal({
           </button>
         </div>
 
-        <div className="rounded-2xl bg-warning-bg px-4 py-3 text-body-sm font-semibold text-warning-ink">
+        <div className="rounded-2xl bg-warning-bg px-4 py-3 text-body-sm font-medium text-ink">
           Tiket otomatis: {previewCode} · Status awal: Ditugaskan
         </div>
 

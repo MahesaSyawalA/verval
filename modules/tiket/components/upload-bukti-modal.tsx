@@ -2,7 +2,7 @@
 
 import { Plus, UploadCloud } from "lucide-react";
 import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
-import { Button, Input, ModalForm, StatusChip } from "@/components/ui";
+import { Alert, alertToast, Button, Input, ModalForm, StatusChip } from "@/components/ui";
 import { AppError } from "@/lib/http";
 import { uploadBuktiFileApi } from "../api";
 import { useSubmitBukti } from "../hooks/use-tickets";
@@ -128,6 +128,11 @@ export function UploadBuktiModal({
         action,
         submissions,
       });
+      alertToast.success(
+        action === "submit"
+          ? "Bukti kegiatan berhasil dikirim untuk verifikasi Kaprodi."
+          : "Draf bukti kegiatan berhasil disimpan.",
+      );
       onClose();
     } catch (err) {
       if (err instanceof AppError) {
@@ -152,14 +157,7 @@ export function UploadBuktiModal({
       size="lg"
     >
       <form onSubmit={handleFormSubmit} className="space-y-4" noValidate>
-        {formError && (
-          <div
-            role="alert"
-            className="rounded-2xl border border-danger/30 bg-danger-bg px-4 py-3 text-body-sm font-medium text-danger-ink"
-          >
-            {formError}
-          </div>
-        )}
+        {formError && <Alert status="error">{formError}</Alert>}
 
         <div className="space-y-2.5">
           <span className="block text-body-sm font-semibold text-ink">

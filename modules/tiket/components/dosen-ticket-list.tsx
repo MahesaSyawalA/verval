@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { PageHeader } from "@/components/layout";
-import { BareInput, Card, ErrorState, Skeleton } from "@/components/ui";
+import { Alert, BareInput, Card, ErrorState, Skeleton } from "@/components/ui";
 import { cn, getInitials } from "@/lib/utils";
 import { useTickets } from "../hooks/use-tickets";
 import {
@@ -99,13 +99,10 @@ export function DosenTicketList({ userFullName }: DosenTicketListProps) {
 
       <Card className="p-6 space-y-5">
         {actionRequiredCount > 0 && (
-          <div className="flex items-center gap-3 rounded-2xl bg-warning-bg px-4 py-3 text-body-sm font-semibold text-warning-ink">
-            <span className="h-2.5 w-2.5 rounded-full bg-accent-600 shrink-0" />
-            <span>
-              {actionRequiredCount} tiket perlu tindakanmu: unggah bukti
-              penugasan aktif dan perbaiki bukti tiket yang ditolak.
-            </span>
-          </div>
+          <Alert status="warning" role="status">
+            {actionRequiredCount} tiket perlu tindakanmu: unggah bukti
+            penugasan aktif dan perbaiki bukti tiket yang ditolak.
+          </Alert>
         )}
 
         {/* Status Filter Pills */}

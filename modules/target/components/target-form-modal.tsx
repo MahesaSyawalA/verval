@@ -2,7 +2,7 @@
 
 import { Plus, X } from "lucide-react";
 import { useState, type FormEvent } from "react";
-import { BareInput, Button, Input, ModalForm } from "@/components/ui";
+import { Alert, alertToast, BareInput, Button, Input, ModalForm } from "@/components/ui";
 import { AppError, formatZodError } from "@/lib/http";
 import {
   useCreateTarget,
@@ -128,8 +128,10 @@ export function TargetFormModal({
           id: editingTarget.id,
           input: parsed.data,
         });
+        alertToast.success("Master target berhasil diperbarui.");
       } else {
         await createMutation.mutateAsync(parsed.data);
+        alertToast.success("Master target berhasil ditambahkan.");
       }
       onClose();
     } catch (err) {
@@ -147,6 +149,7 @@ export function TargetFormModal({
     setFormError(null);
     try {
       await deleteMutation.mutateAsync(editingTarget.id);
+      alertToast.info("Master target telah dihapus.");
       onClose();
     } catch (err) {
       if (err instanceof AppError) {
@@ -171,14 +174,7 @@ export function TargetFormModal({
       size="lg"
     >
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-        {formError && (
-          <div
-            role="alert"
-            className="rounded-2xl border border-danger/30 bg-danger-bg px-4 py-3 text-body-sm font-medium text-danger-ink"
-          >
-            {formError}
-          </div>
-        )}
+        {formError && <Alert status="error">{formError}</Alert>}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Input
@@ -362,10 +358,10 @@ export function TargetFormModal({
             Tambah Isian
           </button>
 
-          <div className="rounded-2xl bg-surface px-4 py-3 text-body-sm text-ink-muted">
+          <Alert status="info" role="status">
             Tipe: Teks, Angka, Tanggal, Tautan, File. Form upload bukti dosen
             dibuat otomatis dari daftar ini.
-          </div>
+          </Alert>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4">
