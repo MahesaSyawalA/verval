@@ -6,7 +6,7 @@ import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
 
 export interface DashboardShellProps {
-  user: {
+  user?: {
     id: string;
     namaLengkap: string;
     email: string;
@@ -23,20 +23,24 @@ export function DashboardShell({
   onLogout,
   children,
 }: DashboardShellProps) {
+  const fullName = user?.namaLengkap || "Pengguna";
+  const role = user?.role || ("Dosen" as UserRole);
+  const userId = user?.id || "";
+
   return (
     <div className="min-h-screen bg-surface px-4 py-5 sm:px-7 sm:py-6">
       <div className="mx-auto max-w-[1440px]">
         <Topbar
-          fullName={user.namaLengkap}
-          role={user.role}
+          fullName={fullName}
+          role={role}
           subtitle={subtitle}
-          userId={user.id}
+          userId={userId}
         />
 
         <div className="flex gap-6 items-start">
           <Sidebar
-            role={user.role}
-            fullName={user.namaLengkap}
+            role={role}
+            fullName={fullName}
             onLogout={onLogout}
           />
           <main className="flex-1 min-w-0 space-y-6">{children}</main>

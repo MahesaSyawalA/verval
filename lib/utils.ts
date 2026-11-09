@@ -21,7 +21,8 @@ const ACADEMIC_PREFIXES = new Set([
 /**
  * Mengambil nama sapaan pertama tanpa gelar akademik di depan/belakang.
  */
-export function getGreetingName(fullName: string): string {
+export function getGreetingName(fullName?: string): string {
+  if (!fullName) return "Pengguna";
   const withoutSuffix = fullName.split(",")[0]?.trim() ?? fullName;
   const parts = withoutSuffix
     .split(/\s+/)
@@ -36,7 +37,8 @@ export function getGreetingName(fullName: string): string {
 /**
  * Menghasilkan 2 huruf inisial nama (contoh: "Iqbal" -> "IA" atau 2 kata pertama).
  */
-export function getInitials(fullName: string): string {
+export function getInitials(fullName?: string): string {
+  if (!fullName) return "US";
   const withoutSuffix = fullName.split(",")[0]?.trim() ?? fullName;
   const words = withoutSuffix
     .split(/\s+/)
