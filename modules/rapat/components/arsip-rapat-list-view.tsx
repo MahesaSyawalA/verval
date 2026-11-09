@@ -7,6 +7,7 @@ import {
   BareInput,
   Card,
   ErrorState,
+  Select,
   Skeleton,
   StatusChip,
   UangBadge,
@@ -130,19 +131,19 @@ export function ArsipRapatListView() {
             />
           </div>
 
-          <div className="flex items-center gap-2 rounded-2xl border border-border-default bg-white px-3.5 h-11">
-            <Calendar className="h-4 w-4 text-ink-muted shrink-0" />
-            <select
-              aria-label="Filter bulan arsip rapat"
-              value={monthFilter}
-              onChange={(e) => setMonthFilter(e.target.value)}
-              className="bg-transparent text-body-sm font-medium text-ink focus:outline-none"
-            >
-              <option value="ALL">Semua bulan</option>
-              <option value="2026-10">Oktober 2026</option>
-              <option value="2026-09">September 2026</option>
-            </select>
-          </div>
+          <Select
+            aria-label="Filter bulan arsip rapat"
+            size="sm"
+            value={monthFilter}
+            onChange={(e) => setMonthFilter(e.target.value)}
+            leftIcon={<Calendar className="h-4 w-4" />}
+            className="w-auto min-w-[175px]"
+            options={[
+              { value: "ALL", label: "Semua bulan" },
+              { value: "2026-10", label: "Oktober 2026" },
+              { value: "2026-09", label: "September 2026" },
+            ]}
+          />
         </div>
 
         {/* Segmented Completeness Tabs */}

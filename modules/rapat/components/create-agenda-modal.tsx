@@ -2,7 +2,16 @@
 
 import { Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
-import { Alert, alertToast, Button, Input, ModalForm, TextArea } from "@/components/ui";
+import {
+  Alert,
+  alertToast,
+  Button,
+  DatePicker,
+  Input,
+  ModalForm,
+  Select,
+  TextArea,
+} from "@/components/ui";
 import { cn, getInitials } from "@/lib/utils";
 import { uploadUndanganFileApi } from "../api";
 import { useCreateAgendaRapat } from "../hooks/use-rapat";
@@ -123,7 +132,9 @@ export function CreateAgendaModal({
 
     try {
       await createMutation.mutateAsync(parsed.data);
-      alertToast.success("Agenda rapat berhasil dijadwalkan dan undangan dikirim.");
+      alertToast.success(
+        "Agenda rapat berhasil dijadwalkan dan undangan dikirim.",
+      );
       setPreviewOpen(false);
       onClose();
     } catch (err) {
@@ -173,9 +184,8 @@ export function CreateAgendaModal({
           />
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <Input
+            <DatePicker
               label="Tanggal"
-              type="date"
               value={tanggal}
               onChange={(e) => setTanggal(e.target.value)}
             />
@@ -273,27 +283,18 @@ export function CreateAgendaModal({
 
           {/* Notulis */}
           <div className="space-y-1.5">
-            <label
-              htmlFor="select-notulis-rapat"
-              className="block text-body-sm font-semibold text-ink"
-            >
-              Notulis
-            </label>
-            <select
+            <Select
               id="select-notulis-rapat"
+              label="Notulis"
+              labelClassName="font-semibold"
               value={notulisId}
               onChange={(e) => setNotulisId(e.target.value)}
-              className="w-full rounded-2xl border border-border-default bg-white px-4 py-2.5 text-body-sm font-medium text-ink focus:border-primary focus:outline-none"
-            >
-              {userOptions.map((u) => (
-                <option key={u.id} value={u.id}>
-                  {u.namaLengkap}
-                </option>
-              ))}
-            </select>
-            <p className="text-[12px] text-ink-muted">
-              Dosen yang ditunjuk akan mengisi notulensi rapat ini.
-            </p>
+              helperText="Dosen yang ditunjuk akan mengisi notulensi rapat ini."
+              options={userOptions.map((u) => ({
+                value: u.id,
+                label: u.namaLengkap,
+              }))}
+            />
           </div>
 
           {/* Agenda / Deskripsi */}
