@@ -2,9 +2,12 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState, type ReactNode } from "react";
+import { AlertToastProvider } from "./alert";
 
 export function HeroUIProvider({ children }: { children: ReactNode }) {
-  return <>{children}</>;
+  return (
+    <AlertToastProvider placement="top end">{children}</AlertToastProvider>
+  );
 }
 
 export function Providers({ children }: { children: ReactNode }) {

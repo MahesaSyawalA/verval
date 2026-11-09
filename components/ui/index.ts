@@ -1,4 +1,5 @@
 export * from "./providers";
+export * from "./alert";
 export * from "./button";
 export * from "./input";
 export * from "./textarea";
