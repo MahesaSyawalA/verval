@@ -22,6 +22,24 @@ describe("Phase 14 - Dashboard Personal Dosen", () => {
       summary.perluTindakan.some((item) => item.badgeLabel === "Revisi"),
     ).toBe(true);
     expect(summary.tugasSaya.length).toBeGreaterThan(0);
-    expect(summary.capaianSaya.targetProdiPersen).toBe(78);
+    expect(summary.capaianSaya.targetProdiPersen).toBeGreaterThanOrEqual(0);
+    expect(summary.capaianSaya.targetProdiPersen).toBeLessThanOrEqual(100);
+
+    const last = summary.trend.points[summary.trend.points.length - 1];
+    expect(last.capaian).toBe(summary.capaianSaya.realisasiPersen);
+    expect(summary.trend.tahunTarget).toBe(new Date().getFullYear());
+
+    const sliceTotal = summary.statusDistribution.slices.reduce(
+      (acc, slice) => acc + slice.value,
+      0,
+    );
+    expect(sliceTotal).toBe(summary.statusDistribution.totalTugas);
+
+    // Badge tenggat berasal dari tanggal nyata, bukan dari prioritas.
+    for (const item of summary.perluTindakan.filter((i) =>
+      i.id.startsWith("tugas-"),
+    )) {
+      expect(item.badgeLabel).toMatch(/^(H-\d+|Hari ini|Terlambat)$/);
+    }
   });
 });

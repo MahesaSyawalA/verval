@@ -79,6 +79,7 @@ export function KaprodiDashboardView({
           value={`${data.stats.capaianVsTargetPersen}%`}
           delta={data.stats.capaianDelta}
           icon={<TrendingUp className="h-5 w-5" />}
+          sparkline={data.trend.points.map((p) => p.capaian)}
         />
         <StatCard
           title="Menunggu Verifikasi"
