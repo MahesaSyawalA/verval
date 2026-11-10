@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { apiError, formatZodError, handleRouteError } from "@/lib/http";
+import { protectPayload, sanitizeString } from "@/lib/security";
 import { requireServerSession } from "@/lib/session";
 import { createAgendaRapatSchema } from "@/modules/rapat/schemas/rapat.schema";
 import {
@@ -16,7 +17,8 @@ export async function GET(request: NextRequest) {
     const status = (searchParams.get("status") ?? undefined) as
       | StatusRapatType
       | undefined;
-    const search = searchParams.get("search") ?? undefined;
+    const rawSearch = searchParams.get("search");
+    const search = rawSearch ? sanitizeString(rawSearch) : undefined;
     const completeness = (searchParams.get("completeness") ?? undefined) as
       | "ALL"
       | "COMPLETE"
@@ -37,7 +39,8 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const session = await requireServerSession(["Kaprodi", "Admin"]);
-    const body = await request.json().catch(() => null);
+    const rawBody = await request.json().catch(() => null);
+    const body = protectPayload(rawBody);
     const parsed = createAgendaRapatSchema.safeParse(body);
 
     if (!parsed.success) {

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { apiError, formatZodError, handleRouteError } from "@/lib/http";
+import { protectPayload, sanitizeString } from "@/lib/security";
 import { requireServerSession } from "@/lib/session";
 import { createTiketSchema } from "@/modules/tiket/schemas/tiket.schema";
 import {
@@ -14,8 +15,11 @@ export async function GET(request: NextRequest) {
     const session = await requireServerSession();
     const { searchParams } = request.nextUrl;
     const status = (searchParams.get("status") as StatusTiketType) || undefined;
-    const dosenId = searchParams.get("dosenId") || undefined;
-    const search = searchParams.get("search") || undefined;
+    const dosenId = searchParams.get("dosenId")
+      ? sanitizeString(searchParams.get("dosenId"))
+      : undefined;
+    const rawSearch = searchParams.get("search");
+    const search = rawSearch ? sanitizeString(rawSearch) : undefined;
 
     const [data, dosenOptions] = await Promise.all([
       listTicketsForUser(session, { status, dosenId, search }),
@@ -31,7 +35,8 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const session = await requireServerSession(["Kaprodi", "Admin"]);
-    const body = await request.json().catch(() => null);
+    const rawBody = await request.json().catch(() => null);
+    const body = protectPayload(rawBody);
     const parsed = createTiketSchema.safeParse(body);
 
     if (!parsed.success) {

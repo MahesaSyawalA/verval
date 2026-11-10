@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { apiError, formatZodError, handleRouteError } from "@/lib/http";
+import { protectPayload } from "@/lib/security";
 import { requireServerSession } from "@/lib/session";
 import { saveNotulensiSchema } from "@/modules/notulensi/schemas/notulensi.schema";
 import { saveNotulensiRapat } from "@/modules/notulensi/server/notulensi.service";
@@ -12,7 +13,8 @@ export async function POST(request: NextRequest, context: RouteContext) {
   try {
     const session = await requireServerSession();
     const { id } = await context.params;
-    const body = await request.json().catch(() => null);
+    const rawBody = await request.json().catch(() => null);
+    const body = protectPayload(rawBody);
     const parsed = saveNotulensiSchema.safeParse(body);
 
     if (!parsed.success) {
