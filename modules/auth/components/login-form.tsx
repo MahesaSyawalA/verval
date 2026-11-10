@@ -7,6 +7,7 @@ import { Alert, Button, Input } from "@/components/ui";
 import { INSTITUTION_NAME } from "@/lib/constants";
 import { AppError, formatZodError } from "@/lib/http";
 import { getSafeRedirectPath } from "@/lib/safe-redirect";
+import { checkInputSecurity } from "@/lib/security-client";
 import { useLogin } from "../hooks/use-auth";
 import { loginSchema } from "../schemas/auth.schema";
 import type { DemoAccountInfo } from "../types";
@@ -79,6 +80,10 @@ export function LoginForm() {
     e.preventDefault();
     setFieldErrors({});
     setFormError(null);
+
+    if (!checkInputSecurity({ identifier, password })) {
+      return;
+    }
 
     const parsed = loginSchema.safeParse({ identifier, password });
     if (!parsed.success) {

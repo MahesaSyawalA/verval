@@ -14,6 +14,7 @@ import {
   StatusChip,
 } from "@/components/ui";
 import { AppError } from "@/lib/http";
+import { validateAndSanitizeForm } from "@/lib/security-client";
 import { uploadBuktiFileApi } from "../api";
 import { useSubmitBukti } from "../hooks/use-tickets";
 import type { TicketItem } from "../types";
@@ -133,10 +134,15 @@ export function UploadBuktiModal({
       });
     }
 
+    const safeSubmissions = validateAndSanitizeForm(submissions);
+    if (!safeSubmissions) {
+      return;
+    }
+
     try {
       await submitMutation.mutateAsync({
         action,
-        submissions,
+        submissions: safeSubmissions,
       });
       alertToast.success(
         action === "submit"

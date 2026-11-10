@@ -13,6 +13,7 @@ import {
   TextArea,
 } from "@/components/ui";
 import { cn, getInitials } from "@/lib/utils";
+import { validateAndSanitizeForm } from "@/lib/security-client";
 import { uploadUndanganFileApi } from "../api";
 import { useCreateAgendaRapat } from "../hooks/use-rapat";
 import { createAgendaRapatSchema } from "../schemas/rapat.schema";
@@ -111,7 +112,7 @@ export function CreateAgendaModal({
     setErrorMessage(null);
     const effectiveNotulisId = notulisId || userOptions[0]?.id || "";
 
-    const parsed = createAgendaRapatSchema.safeParse({
+    const sanitized = validateAndSanitizeForm({
       judulRapat,
       tanggal,
       waktuMulai,
@@ -125,6 +126,12 @@ export function CreateAgendaModal({
       fileUndangan: fileUndangan || undefined,
       isReminderActive,
     });
+
+    if (!sanitized) {
+      return;
+    }
+
+    const parsed = createAgendaRapatSchema.safeParse(sanitized);
 
     if (!parsed.success) {
       setErrorMessage(

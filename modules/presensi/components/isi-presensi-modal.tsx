@@ -11,6 +11,7 @@ import {
   StatusChip,
 } from "@/components/ui";
 import { cn } from "@/lib/utils";
+import { validateAndSanitizeForm } from "@/lib/security-client";
 import type { RapatItem } from "@/modules/rapat";
 import { useSubmitPresensi } from "../hooks/use-presensi";
 import { submitPresensiSchema } from "../schemas/presensi.schema";
@@ -70,12 +71,18 @@ export function IsiPresensiModal({
       statusKehadiran === "Hadir" ? metodePresensi : "Manual";
     const kodePresensi = digits.join("");
 
-    const parsed = submitPresensiSchema.safeParse({
+    const safeData = validateAndSanitizeForm({
       statusKehadiran,
       metodePresensi: effectiveMetode,
       kodePresensi: statusKehadiran === "Hadir" ? kodePresensi : undefined,
       keteranganAbsen: keteranganAbsen.trim() || undefined,
     });
+
+    if (!safeData) {
+      return;
+    }
+
+    const parsed = submitPresensiSchema.safeParse(safeData);
 
     if (!parsed.success) {
       setErrorMessage(

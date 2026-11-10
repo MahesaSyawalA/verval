@@ -3,6 +3,7 @@
 import { Check, Image as ImageIcon, Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { Alert, alertToast, BareInput, Button, ModalForm } from "@/components/ui";
+import { validateAndSanitizeForm } from "@/lib/security-client";
 import { cn } from "@/lib/utils";
 import type { RapatItem } from "@/modules/rapat";
 import { uploadDokumentasiPhotoFileApi } from "../api";
@@ -107,12 +108,19 @@ export function UploadDokumentasiModal({
 
   async function handleSave() {
     setErrorMessage(null);
-    const parsed = saveDokumentasiSchema.safeParse({
+
+    const safePayload = validateAndSanitizeForm({
       photos: photos.map((p) => ({
         fileGambar: p.fileGambar,
         caption: p.caption.trim() || undefined,
       })),
     });
+
+    if (!safePayload) {
+      return;
+    }
+
+    const parsed = saveDokumentasiSchema.safeParse(safePayload);
 
     if (!parsed.success) {
       setErrorMessage(

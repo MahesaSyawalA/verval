@@ -12,6 +12,7 @@ import {
   Select,
 } from "@/components/ui";
 import { AppError, formatZodError } from "@/lib/http";
+import { validateAndSanitizeForm } from "@/lib/security-client";
 import {
   useCreateTarget,
   useDeleteTarget,
@@ -118,7 +119,7 @@ export function TargetFormModal({
     setFieldErrors({});
     setFormError(null);
 
-    const parsed = masterTargetSchema.safeParse({
+    const sanitized = validateAndSanitizeForm({
       kodeTarget,
       namaTarget,
       kuantitasTotal: Number(kuantitasTotal),
@@ -126,6 +127,12 @@ export function TargetFormModal({
       tahun: Number(tahun),
       formatBukti,
     });
+
+    if (!sanitized) {
+      return;
+    }
+
+    const parsed = masterTargetSchema.safeParse(sanitized);
 
     if (!parsed.success) {
       setFieldErrors(formatZodError(parsed.error));

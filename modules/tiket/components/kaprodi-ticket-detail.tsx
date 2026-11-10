@@ -12,6 +12,7 @@ import {
   TextArea,
 } from "@/components/ui";
 import { cn, getInitials } from "@/lib/utils";
+import { validateAndSanitizeForm } from "@/lib/security-client";
 import { useTicketDetail, useVerifyTicket } from "../hooks/use-tickets";
 import { verifyTiketSchema } from "../schemas/tiket.schema";
 
@@ -73,10 +74,15 @@ export function KaprodiTicketDetail({
     setValidationError(null);
     setFeedbackMessage(null);
 
-    const parsed = verifyTiketSchema.safeParse({
+    const sanitized = validateAndSanitizeForm({
       decision,
       catatanKaprodi: catatanKaprodi.trim() || undefined,
     });
+    if (!sanitized) {
+      return;
+    }
+
+    const parsed = verifyTiketSchema.safeParse(sanitized);
 
     if (!parsed.success) {
       const firstIssue = parsed.error.issues[0];

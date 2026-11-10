@@ -12,6 +12,7 @@ import {
   TextArea,
 } from "@/components/ui";
 import { AppError, formatZodError } from "@/lib/http";
+import { validateAndSanitizeForm } from "@/lib/security-client";
 import type { MasterTargetItem } from "@/modules/target";
 import { useCreateTicket } from "../hooks/use-tickets";
 import { createTiketSchema } from "../schemas/tiket.schema";
@@ -80,7 +81,7 @@ export function CreateTicketModal({
     setFieldErrors({});
     setFormError(null);
 
-    const parsed = createTiketSchema.safeParse({
+    const sanitized = validateAndSanitizeForm({
       targetId,
       dosenId,
       kuantitasDitugaskan: Number(kuantitasDitugaskan),
@@ -89,6 +90,12 @@ export function CreateTicketModal({
       isReminderActive,
       catatanKaprodi: catatanKaprodi.trim() || undefined,
     });
+
+    if (!sanitized) {
+      return;
+    }
+
+    const parsed = createTiketSchema.safeParse(sanitized);
 
     if (!parsed.success) {
       setFieldErrors(formatZodError(parsed.error));

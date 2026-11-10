@@ -12,6 +12,7 @@ import {
   TextAreaSkeleton,
 } from "@/components/ui";
 import { cn, getInitials } from "@/lib/utils";
+import { validateAndSanitizeForm } from "@/lib/security-client";
 import { UploadDokumentasiModal } from "@/modules/dokumentasi";
 import { type RapatItem, useRapatDetail } from "@/modules/rapat";
 import { useSaveNotulensi } from "../hooks/use-notulensi";
@@ -79,13 +80,19 @@ function NotulensiEditorForm({
     setErrorMessage(null);
     setFeedbackMessage(null);
 
-    const parsed = saveNotulensiSchema.safeParse({
+    const sanitized = validateAndSanitizeForm({
       agendaPembahasan,
       halDibahas,
       keputusan,
       tindakLanjut,
       statusNotulensi,
     });
+
+    if (!sanitized) {
+      return;
+    }
+
+    const parsed = saveNotulensiSchema.safeParse(sanitized);
 
     if (!parsed.success) {
       setErrorMessage(
