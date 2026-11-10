@@ -32,6 +32,7 @@ export interface TargetFormModalProps {
   onClose: () => void;
   editingTarget?: MasterTargetItem | null;
   suggestedCode?: string;
+  isLoading?: boolean;
 }
 
 const DEFAULT_FORMAT_BUKTI: FormatBuktiInput[] = [
@@ -56,6 +57,7 @@ export function TargetFormModal({
   onClose,
   editingTarget,
   suggestedCode = "T-06",
+  isLoading = false,
 }: TargetFormModalProps) {
   const isEditing = Boolean(editingTarget);
   const createMutation = useCreateTarget();
@@ -188,6 +190,7 @@ export function TargetFormModal({
           <Input
             name="kodeTarget"
             label="Kode"
+            isLoading={isLoading}
             placeholder="T-06"
             value={kodeTarget}
             onChange={(e) => setKodeTarget(e.target.value)}
@@ -197,6 +200,7 @@ export function TargetFormModal({
           <Select
             id="target-level"
             label="Level"
+            isLoading={isLoading}
             value={level}
             onChange={(e) => setLevel(e.target.value)}
             options={[
@@ -209,6 +213,7 @@ export function TargetFormModal({
         <Input
           name="namaTarget"
           label="Nama target"
+          isLoading={isLoading}
           placeholder="Publikasi buku ajar atau monograf"
           value={namaTarget}
           onChange={(e) => setNamaTarget(e.target.value)}
@@ -221,6 +226,7 @@ export function TargetFormModal({
             type="number"
             min={1}
             label="Kuantitas target"
+            isLoading={isLoading}
             value={kuantitasTotal}
             onChange={(e) => setKuantitasTotal(e.target.value)}
             error={fieldErrors.kuantitasTotal}
@@ -229,6 +235,7 @@ export function TargetFormModal({
           <Select
             id="target-satuan"
             label="Satuan"
+            isLoading={isLoading}
             value={satuan}
             onChange={(e) => setSatuan(e.target.value)}
             error={fieldErrors.satuan}
@@ -241,6 +248,7 @@ export function TargetFormModal({
           <Select
             id="target-tahun"
             label="Tahun"
+            isLoading={isLoading}
             value={tahun}
             onChange={(e) => setTahun(e.target.value)}
             options={[

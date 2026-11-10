@@ -232,6 +232,7 @@ export function MasterTargetView({ userFullName }: MasterTargetViewProps) {
         onClose={() => setModalOpen(false)}
         editingTarget={editingTarget}
         suggestedCode={nextSuggestedCode}
+        isLoading={isLoading}
       />
     </div>
   );
