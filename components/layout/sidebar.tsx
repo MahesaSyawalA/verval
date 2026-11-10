@@ -41,7 +41,7 @@ export function Sidebar({ role, fullName, onLogout }: SidebarProps) {
   return (
     <aside
       aria-label="Navigasi Utama"
-      className="flex flex-col items-center justify-between w-18 rounded-[36px] bg-white py-4 px-2 shadow-xs border border-border-soft/70 shrink-0 min-h-[calc(100vh-7.5rem)]"
+      className="hidden lg:flex flex-col items-center justify-between w-18 rounded-[36px] bg-white py-4 px-2 shadow-xs border border-border-soft/70 shrink-0 min-h-[calc(100vh-7.5rem)] sticky top-6"
     >
       <nav className="flex flex-col items-center gap-3">
         {navItems.map((item) => {
