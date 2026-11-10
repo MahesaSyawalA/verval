@@ -1,7 +1,7 @@
 "use client";
 
 import { Upload, X } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Alert,
   alertToast,
@@ -28,12 +28,14 @@ export interface CreateAgendaModalProps {
   isOpen: boolean;
   onClose: () => void;
   userOptions: RapatUserOption[];
+  isLoadingUsers?: boolean;
 }
 
 export function CreateAgendaModal({
   isOpen,
   onClose,
   userOptions,
+  isLoadingUsers = false,
 }: CreateAgendaModalProps) {
   const createMutation = useCreateAgendaRapat();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -51,6 +53,12 @@ export function CreateAgendaModal({
   const [notulisId, setNotulisId] = useState<string>(
     () => userOptions[1]?.id ?? userOptions[0]?.id ?? "",
   );
+
+  useEffect(() => {
+    if (!notulisId && userOptions.length > 0) {
+      setNotulisId(userOptions[1]?.id ?? userOptions[0]?.id ?? "");
+    }
+  }, [userOptions, notulisId]);
   const [deskripsiAgenda, setDeskripsiAgenda] = useState(
     "Evaluasi capaian publikasi, pengabdian, dan bimbingan tugas akhir semester ganjil.",
   );
@@ -266,6 +274,7 @@ export function CreateAgendaModal({
             <Select
               id="select-target-peserta"
               placeholder="Pilih dosen / target peserta untuk ditambahkan..."
+              isLoading={isLoadingUsers || userOptions.length === 0}
               value={pesertaSelectValue}
               onChange={(e) => handleAddPeserta(e.target.value)}
               options={[
@@ -325,6 +334,7 @@ export function CreateAgendaModal({
               id="select-notulis-rapat"
               label="Notulis"
               labelClassName="font-semibold"
+              isLoading={isLoadingUsers || userOptions.length === 0}
               value={notulisId}
               onChange={(e) => setNotulisId(e.target.value)}
               helperText="Dosen yang ditunjuk akan mengisi notulensi rapat ini."

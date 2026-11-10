@@ -535,6 +535,7 @@ export function RapatOverviewView({
         isOpen={createAgendaOpen}
         onClose={() => setCreateAgendaOpen(false)}
         userOptions={userOptions}
+        isLoadingUsers={isLoading}
       />
 
       <IsiPresensiModal

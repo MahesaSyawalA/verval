@@ -9,6 +9,7 @@ import {
   Skeleton,
   StatusChip,
   TextArea,
+  TextAreaSkeleton,
 } from "@/components/ui";
 import { cn, getInitials } from "@/lib/utils";
 import { UploadDokumentasiModal } from "@/modules/dokumentasi";
@@ -408,6 +409,61 @@ function NotulensiEditorForm({
   );
 }
 
+function NotulensiEditorSkeleton() {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start" aria-hidden="true">
+      <div className="lg:col-span-8">
+        <Card className="p-6 space-y-5">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="space-y-2">
+              <Skeleton className="h-7 w-48 rounded-xl" />
+              <Skeleton className="h-4 w-72 rounded-lg" />
+            </div>
+            <Skeleton className="h-7 w-20 rounded-full" />
+          </div>
+
+          <Skeleton className="h-12 w-full rounded-2xl" />
+
+          <div className="rounded-2xl border border-border-soft bg-white p-6 space-y-5">
+            <div className="flex items-center justify-between border-b-2 border-primary/20 pb-4">
+              <div className="flex items-center gap-3">
+                <Skeleton className="h-11 w-11 rounded-full" />
+                <div className="space-y-1.5">
+                  <Skeleton className="h-4 w-44 rounded-md" />
+                  <Skeleton className="h-3 w-56 rounded-md" />
+                </div>
+              </div>
+              <Skeleton className="h-6 w-32 rounded-full" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <TextAreaSkeleton label="Agenda" rows={5} />
+              <TextAreaSkeleton label="Hal yang dibahas" rows={5} />
+              <TextAreaSkeleton label="Keputusan" rows={5} />
+              <TextAreaSkeleton label="Tindak lanjut" rows={5} />
+            </div>
+          </div>
+        </Card>
+      </div>
+
+      <div className="lg:col-span-4 space-y-5">
+        <Card className="p-6 space-y-4">
+          <Skeleton className="h-6 w-36 rounded-lg" />
+          <div className="space-y-3">
+            <Skeleton className="h-12 w-full rounded-2xl" />
+            <Skeleton className="h-12 w-full rounded-2xl" />
+            <Skeleton className="h-12 w-full rounded-2xl" />
+          </div>
+        </Card>
+        <Card className="p-6 space-y-4">
+          <Skeleton className="h-6 w-40 rounded-lg" />
+          <Skeleton className="h-36 w-full rounded-2xl" />
+        </Card>
+      </div>
+    </div>
+  );
+}
+
 export function NotulensiEditorView({
   rapatId,
   currentUserId,
@@ -418,12 +474,7 @@ export function NotulensiEditorView({
   const [uploadPhotoOpen, setUploadPhotoOpen] = useState(false);
 
   if (isLoading) {
-    return (
-      <div className="space-y-4">
-        <Skeleton className="h-24 w-full rounded-3xl" />
-        <Skeleton className="h-96 w-full rounded-3xl" />
-      </div>
-    );
+    return <NotulensiEditorSkeleton />;
   }
 
   if (isError || !rapat) {
