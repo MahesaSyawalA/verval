@@ -15,6 +15,7 @@ import {
 } from "@heroui/react";
 import type { ChangeEvent, Key, ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { SelectSkeleton } from "./form-skeleton";
 
 export interface SelectOption {
   value: string;
@@ -37,6 +38,7 @@ export interface SelectProps {
   helperText?: string;
   disabled?: boolean;
   required?: boolean;
+  isLoading?: boolean;
   size?: "sm" | "md" | "filter";
   leftIcon?: ReactNode;
   className?: string;
@@ -64,12 +66,23 @@ export function Select({
   helperText,
   disabled,
   required,
+  isLoading,
   size = "md",
   leftIcon,
   className,
   triggerClassName,
   "aria-label": ariaLabel,
 }: SelectProps) {
+  if (isLoading) {
+    return (
+      <SelectSkeleton
+        label={label}
+        labelClassName={labelClassName}
+        size={size}
+        className={className}
+      />
+    );
+  }
   function handleSelectionChange(nextKey: Key | null) {
     if (nextKey === null || nextKey === undefined) return;
     const nextValue = String(nextKey);

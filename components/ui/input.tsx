@@ -14,6 +14,7 @@ import {
   type ReactNode,
 } from "react";
 import { cn } from "@/lib/utils";
+import { InputSkeleton } from "./form-skeleton";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -21,6 +22,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   labelClassName?: string;
   error?: string;
   helperText?: string;
+  isLoading?: boolean;
   leftIcon?: ReactNode;
   rightElement?: ReactNode;
 }
@@ -37,6 +39,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       labelClassName,
       error,
       helperText,
+      isLoading,
       leftIcon,
       rightElement,
       className,
@@ -48,6 +51,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref,
   ) => {
+    if (isLoading) {
+      return (
+        <InputSkeleton
+          label={label}
+          labelClassName={labelClassName}
+          hasHelper={Boolean(helperText)}
+          className={className}
+        />
+      );
+    }
     return (
       <TextField
         fullWidth

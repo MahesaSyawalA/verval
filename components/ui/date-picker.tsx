@@ -15,6 +15,7 @@ import {
 import { parseDate, type CalendarDate } from "@internationalized/date";
 import type { ChangeEvent } from "react";
 import { cn } from "@/lib/utils";
+import { DatePickerSkeleton } from "./form-skeleton";
 
 export interface DatePickerProps {
   id?: string;
@@ -30,6 +31,7 @@ export interface DatePickerProps {
   helperText?: string;
   disabled?: boolean;
   required?: boolean;
+  isLoading?: boolean;
   minValue?: string;
   maxValue?: string;
   className?: string;
@@ -66,11 +68,21 @@ export function DatePicker({
   helperText,
   disabled,
   required,
+  isLoading,
   minValue,
   maxValue,
   className,
   "aria-label": ariaLabel,
 }: DatePickerProps) {
+  if (isLoading) {
+    return (
+      <DatePickerSkeleton
+        label={label}
+        labelClassName={labelClassName}
+        className={className}
+      />
+    );
+  }
   const parsedValue = value !== undefined ? (safeParseIsoDate(value) ?? null) : undefined;
   const parsedDefault = safeParseIsoDate(defaultValue);
   const parsedMin = safeParseIsoDate(minValue);

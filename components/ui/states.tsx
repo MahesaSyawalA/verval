@@ -1,20 +1,25 @@
-import type { ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
+import { Skeleton as HeroSkeleton } from "@heroui/react";
 import { AlertTriangle, Inbox } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./button";
 
-export interface SkeletonProps {
+export interface SkeletonProps extends ComponentProps<typeof HeroSkeleton> {
   className?: string;
 }
 
-export function Skeleton({ className }: SkeletonProps) {
+/**
+ * Komponen Skeleton reusable berbasis HeroUI v3.
+ * Menerima properti animasi dan styling standar HeroUI.
+ */
+export function Skeleton({ className, ...props }: SkeletonProps) {
   return (
-    <div
-      aria-hidden="true"
+    <HeroSkeleton
       className={cn(
-        "animate-pulse rounded-2xl bg-border-soft/70",
+        "rounded-2xl bg-border-soft/70",
         className,
       )}
+      {...props}
     />
   );
 }

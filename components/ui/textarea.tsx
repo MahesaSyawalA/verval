@@ -13,6 +13,7 @@ import {
   type TextareaHTMLAttributes,
 } from "react";
 import { cn } from "@/lib/utils";
+import { TextAreaSkeleton } from "./form-skeleton";
 
 export interface TextAreaProps
   extends TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -21,6 +22,7 @@ export interface TextAreaProps
   labelClassName?: string;
   error?: string;
   helperText?: string;
+  isLoading?: boolean;
   size?: "sm" | "md";
 }
 
@@ -35,15 +37,28 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       labelClassName,
       error,
       helperText,
+      isLoading,
       size = "md",
       className,
       name,
+      rows,
       disabled,
       required,
       ...props
     },
     ref,
   ) => {
+    if (isLoading) {
+      return (
+        <TextAreaSkeleton
+          label={label}
+          labelClassName={labelClassName}
+          rows={rows}
+          size={size}
+          className={className}
+        />
+      );
+    }
     return (
       <TextField
         fullWidth
@@ -62,6 +77,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
         )}
         <HeroTextArea
           ref={ref}
+          rows={rows}
           className={cn(
             "w-full resize-none rounded-2xl border bg-white px-4 py-3 text-ink placeholder:text-ink-subtle transition-colors focus:outline-none focus:ring-2 disabled:bg-surface disabled:opacity-70",
             size === "sm" ? "text-body-sm" : "text-body-md",

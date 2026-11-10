@@ -14,3 +14,4 @@ export * from "./data-table";
 export * from "./pagination";
 export * from "./modal-form";
 export * from "./states";
+export * from "./form-skeleton";
