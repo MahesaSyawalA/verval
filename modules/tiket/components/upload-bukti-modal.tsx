@@ -7,7 +7,9 @@ import {
   alertToast,
   Button,
   DatePicker,
+  DatePickerSkeleton,
   Input,
+  InputSkeleton,
   ModalForm,
   StatusChip,
 } from "@/components/ui";
@@ -213,7 +215,14 @@ export function UploadBuktiModal({
 
         {/* Dynamic Fields from format_bukti */}
         <div className="space-y-3 pt-1">
-          {ticket.formatBukti.map((fb) => {
+          {ticket.formatBukti.length === 0 ? (
+            <>
+              <InputSkeleton label="Judul kegiatan / bukti" />
+              <DatePickerSkeleton label="Tanggal pelaksanaan / terbit" />
+              <InputSkeleton label="Tautan / nomor dokumen" />
+            </>
+          ) : (
+            ticket.formatBukti.map((fb) => {
             const labelText = `${fb.namaField}${fb.statusIsian === "Wajib" ? " *" : ""}`;
             if (fb.tipeData === "Tanggal") {
               return (
@@ -243,7 +252,7 @@ export function UploadBuktiModal({
                 onChange={(e) => setValue(activeUrutan, fb.id, e.target.value)}
               />
             );
-          })}
+          }))}
         </div>
 
         {/* Multi-submission item pills */}

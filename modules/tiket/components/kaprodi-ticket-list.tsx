@@ -50,7 +50,7 @@ export function KaprodiTicketList({ userFullName }: KaprodiTicketListProps) {
   const [createOpen, setCreateOpen] = useState(false);
 
   const { data, isLoading, isError, error, refetch } = useTickets();
-  const { data: targets = [] } = useTargets();
+  const { data: targets = [], isLoading: isLoadingTargets } = useTargets();
 
   const allTickets = useMemo(() => data?.data ?? [], [data?.data]);
   const dosenOptions = data?.dosenOptions ?? [];
@@ -154,6 +154,7 @@ export function KaprodiTicketList({ userFullName }: KaprodiTicketListProps) {
               id="kaprodi-dosen-select"
               label="Dosen"
               size="filter"
+              isLoading={isLoading}
               value={dosenFilter}
               onChange={(e) => setDosenFilter(e.target.value)}
               className="min-w-[190px]"
@@ -328,6 +329,8 @@ export function KaprodiTicketList({ userFullName }: KaprodiTicketListProps) {
         targets={targets}
         dosenOptions={dosenOptions}
         nextTicketNumber={allTickets.length + 22}
+        isLoadingTargets={isLoadingTargets}
+        isLoadingDosen={isLoading}
       />
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import {
   Alert,
   alertToast,
@@ -27,6 +27,8 @@ export interface CreateTicketModalProps {
   targets: MasterTargetItem[];
   dosenOptions: DosenOption[];
   nextTicketNumber: number;
+  isLoadingTargets?: boolean;
+  isLoadingDosen?: boolean;
 }
 
 export function CreateTicketModal({
@@ -35,6 +37,8 @@ export function CreateTicketModal({
   targets,
   dosenOptions,
   nextTicketNumber,
+  isLoadingTargets = false,
+  isLoadingDosen = false,
 }: CreateTicketModalProps) {
   const createMutation = useCreateTicket();
 
@@ -52,6 +56,19 @@ export function CreateTicketModal({
 
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!targetId && targets.length > 0) {
+      setTargetId(targets[0].id);
+      setJudulKegiatan((prev) => prev || targets[0].namaTarget);
+    }
+  }, [targets, targetId]);
+
+  useEffect(() => {
+    if (!dosenId && dosenOptions.length > 0) {
+      setDosenId(dosenOptions[0].id);
+    }
+  }, [dosenOptions, dosenId]);
 
   const selectedTarget =
     targets.find((t) => t.id === targetId) ?? defaultTarget;
@@ -108,6 +125,7 @@ export function CreateTicketModal({
         <Select
           id="penugasan-target"
           label="Target (master target 2026)"
+          isLoading={isLoadingTargets || targets.length === 0}
           value={targetId}
           onChange={(e) => {
             const nextId = e.target.value;
@@ -126,6 +144,7 @@ export function CreateTicketModal({
           <Select
             id="penugasan-dosen"
             label="Dosen"
+            isLoading={isLoadingDosen || dosenOptions.length === 0}
             value={dosenId}
             onChange={(e) => setDosenId(e.target.value)}
             error={fieldErrors.dosenId}
