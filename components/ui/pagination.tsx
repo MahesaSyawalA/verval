@@ -103,35 +103,41 @@ export function TablePagination({
   return (
     <div
       className={cn(
-        "flex flex-col gap-3 pt-3 sm:flex-row sm:items-center sm:justify-between",
+        "flex flex-col items-center justify-center gap-3 pt-3 w-full sm:flex-row sm:items-center sm:justify-between",
         className,
       )}
     >
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="flex items-center gap-2">
-          <span className="text-body-sm text-ink-muted">Tampilkan</span>
-          <Select
-            aria-label="Jumlah data per halaman"
-            size="sm"
-            value={String(pageSize)}
-            onValueChange={(v) => onPageSizeChange(Number(v))}
-            className="w-24"
-            triggerClassName="h-9"
-            options={pageSizeOptions.map((n) => ({
-              value: String(n),
-              label: String(n),
-            }))}
-          />
-          <span className="text-body-sm text-ink-muted">per halaman</span>
+      <div className="flex flex-col items-center justify-center gap-2 w-full text-center sm:flex-row sm:w-auto sm:text-left sm:gap-3">
+        {/* Pilihan jumlah data per halaman */}
+        <div className="w-full flex items-center justify-center gap-2 text-body-sm text-ink-muted whitespace-nowrap sm:w-auto sm:justify-start">
+          <span className="whitespace-nowrap">Tampilkan</span>
+          <div className="w-20 shrink-0">
+            <Select
+              aria-label="Jumlah data per halaman"
+              size="sm"
+              value={String(pageSize)}
+              onValueChange={(v) => onPageSizeChange(Number(v))}
+              className="w-20"
+              triggerClassName="h-9 px-3 rounded-xl"
+              options={pageSizeOptions.map((n) => ({
+                value: String(n),
+                label: String(n),
+              }))}
+            />
+          </div>
+          <span className="whitespace-nowrap">per halaman</span>
         </div>
-        <span className="text-body-sm text-ink-muted">
+
+        {/* Keterangan jumlah data */}
+        <div className="w-full text-center text-body-sm text-ink-muted whitespace-nowrap sm:w-auto sm:text-left">
           Menampilkan {startItem}–{endItem} dari {totalItems} data
-        </span>
+        </div>
       </div>
 
       {totalPages > 1 && (
-        <Pagination size="sm" className="w-auto flex items-center">
-          <Pagination.Content className="flex flex-row items-center gap-1.5 list-none m-0 p-0">
+        <div className="w-full flex items-center justify-center pt-1 sm:w-auto sm:pt-0">
+          <Pagination size="sm" className="w-auto flex items-center">
+            <Pagination.Content className="flex flex-row items-center gap-1.5 list-none m-0 p-0">
             <Pagination.Item className="inline-flex">
               <Pagination.Previous
                 isDisabled={page === 1}
@@ -176,6 +182,7 @@ export function TablePagination({
             </Pagination.Item>
           </Pagination.Content>
         </Pagination>
+        </div>
       )}
     </div>
   );

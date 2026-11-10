@@ -156,11 +156,13 @@ export function Select({
     );
   }
 
+  const isCustomWidth = Boolean(className && /\bw-\S+/.test(className));
+
   return (
     <HeroSelect
       id={id}
       name={name}
-      fullWidth
+      fullWidth={!isCustomWidth}
       placeholder={placeholder}
       value={value}
       defaultValue={defaultValue}
@@ -170,7 +172,7 @@ export function Select({
       isRequired={required}
       disabledKeys={disabledKeys}
       aria-label={ariaLabel ?? (!label ? placeholder : undefined)}
-      className={cn("flex w-full flex-col gap-1.5", className)}
+      className={cn("flex flex-col gap-1.5", !isCustomWidth && "w-full", className)}
     >
       {label && (
         <Label
