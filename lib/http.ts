@@ -78,6 +78,36 @@ export function handleRouteError(error: unknown): NextResponse<ApiErrorShape> {
   if (error instanceof AppError) {
     return apiError(error.code, error.message, error.status, error.fields);
   }
+  // Tangani error Prisma Client yang umum (P2003 = foreign key, P2002 = unique constraint, P2025 = record not found)
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error &&
+    typeof (error as { code: unknown }).code === "string"
+  ) {
+    const prismaCode = (error as { code: string }).code;
+    if (prismaCode === "P2003") {
+      return apiError(
+        "BAD_REQUEST",
+        "Referensi data tidak valid atau sesi telah diperbarui di database. Silakan muat ulang halaman atau login ulang.",
+        400,
+      );
+    }
+    if (prismaCode === "P2002") {
+      return apiError(
+        "CONFLICT",
+        "Data dengan kode atau identitas yang sama sudah terdaftar di sistem.",
+        409,
+      );
+    }
+    if (prismaCode === "P2025") {
+      return apiError(
+        "NOT_FOUND",
+        "Data yang diminta tidak ditemukan di database.",
+        404,
+      );
+    }
+  }
   console.error("[API Error]", error);
   return apiError(
     "INTERNAL_ERROR",

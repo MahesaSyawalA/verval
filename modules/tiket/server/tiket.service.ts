@@ -18,6 +18,7 @@ import {
   findAllTickets,
   findDosenOptions,
   findTicketById,
+  generateNextTicketCode,
   insertTicketRecord,
   saveTicketBuktiAndStatus,
   updateTicketStatusWithHistory,
@@ -60,6 +61,7 @@ export interface TiketRepositoryDeps {
   saveBukti: typeof saveTicketBuktiAndStatus;
   appendAttendanceT03?: typeof appendAttendanceBuktiToTargetT03;
   notifyEvent?: typeof createEventNotifikasi;
+  generateCode?: typeof generateNextTicketCode;
 }
 
 const defaultDeps: TiketRepositoryDeps = {
@@ -72,6 +74,7 @@ const defaultDeps: TiketRepositoryDeps = {
   saveBukti: saveTicketBuktiAndStatus,
   appendAttendanceT03: appendAttendanceBuktiToTargetT03,
   notifyEvent: createEventNotifikasi,
+  generateCode: generateNextTicketCode,
 };
 
 export async function listTicketsForUser(
@@ -119,8 +122,9 @@ export async function createTicketAssignment(
   aktorId: string,
   deps: TiketRepositoryDeps = defaultDeps,
 ): Promise<TicketItem> {
-  const currentCount = await deps.countTickets();
-  const kodeTiket = generateTicketCode(currentCount + 22);
+  const kodeTiket = deps.generateCode
+    ? await deps.generateCode()
+    : generateTicketCode((await deps.countTickets()) + 22);
   const created = await deps.insert(input, kodeTiket, aktorId);
 
   if (deps.notifyEvent) {

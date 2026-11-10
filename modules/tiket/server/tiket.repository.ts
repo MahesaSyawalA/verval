@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { AppError } from "@/lib/http";
 import { calculateKPIScore } from "@/lib/utils";
 import type { CreateTiketInput } from "../schemas/tiket.schema";
 import type {
@@ -161,11 +162,76 @@ export async function countTotalTickets(): Promise<number> {
   return db.tiket_penugasan.count();
 }
 
+export async function generateNextTicketCode(): Promise<string> {
+  const latestTicket = await db.tiket_penugasan.findFirst({
+    orderBy: { tanggal_dibuat: "desc" },
+    select: { kode_tiket: true },
+  });
+  let maxSeq = 0;
+  if (latestTicket?.kode_tiket) {
+    const match = latestTicket.kode_tiket.match(/\d+/);
+    if (match) {
+      maxSeq = parseInt(match[0], 10);
+    }
+  }
+  const total = await db.tiket_penugasan.count();
+  let nextSeq = Math.max(maxSeq + 1, total + 1);
+
+  let candidate = `#TGT-${String(nextSeq).padStart(3, "0")}`;
+  while (await db.tiket_penugasan.findUnique({ where: { kode_tiket: candidate } })) {
+    nextSeq++;
+    candidate = `#TGT-${String(nextSeq).padStart(3, "0")}`;
+  }
+  return candidate;
+}
+
 export async function insertTicketRecord(
   input: CreateTiketInput,
   kodeTiket: string,
   aktorId: string,
 ): Promise<TicketItem> {
+  // Verifikasi foreign key sebelum melakukan insert ke database
+  const [target, dosen, aktor] = await Promise.all([
+    db.master_target.findUnique({
+      where: { id: input.targetId },
+      select: { id: true },
+    }),
+    db.users.findUnique({
+      where: { id: input.dosenId },
+      select: { id: true, role: true },
+    }),
+    db.users.findUnique({
+      where: { id: aktorId },
+      select: { id: true },
+    }),
+  ]);
+
+  if (!target) {
+    throw new AppError(
+      "NOT_FOUND",
+      "Master target yang dipilih tidak ditemukan di database. Silakan muat ulang halaman.",
+      404,
+      { targetId: "Master target tidak valid atau tidak ditemukan." },
+    );
+  }
+
+  if (!dosen) {
+    throw new AppError(
+      "NOT_FOUND",
+      "Dosen yang ditugaskan tidak ditemukan di sistem. Silakan muat ulang halaman.",
+      404,
+      { dosenId: "Dosen tidak valid atau tidak ditemukan." },
+    );
+  }
+
+  if (!aktor) {
+    throw new AppError(
+      "UNAUTHORIZED",
+      "Sesi login Anda tidak valid atau telah diperbarui di database. Silakan login kembali.",
+      401,
+    );
+  }
+
   const created = await db.tiket_penugasan.create({
     data: {
       kode_tiket: kodeTiket,
