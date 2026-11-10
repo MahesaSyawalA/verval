@@ -43,14 +43,11 @@ export function CreateTicketModal({
 }: CreateTicketModalProps) {
   const createMutation = useCreateTicket();
 
-  const defaultTarget = targets[0];
-  const [targetId, setTargetId] = useState(() => defaultTarget?.id ?? "");
-  const [dosenId, setDosenId] = useState(() => dosenOptions[0]?.id ?? "");
-  const [kuantitasDitugaskan, setKuantitasDitugaskan] = useState("3");
-  const [judulKegiatan, setJudulKegiatan] = useState(
-    () => defaultTarget?.namaTarget ?? "",
-  );
-  const [tenggatWaktu, setTenggatWaktu] = useState("2026-11-30");
+  const [targetId, setTargetId] = useState("");
+  const [dosenId, setDosenId] = useState("");
+  const [kuantitasDitugaskan, setKuantitasDitugaskan] = useState("");
+  const [judulKegiatan, setJudulKegiatan] = useState("");
+  const [tenggatWaktu, setTenggatWaktu] = useState("");
   const [prioritas, setPrioritas] = useState<PrioritasTiketType>("Normal");
   const [catatanKaprodi, setCatatanKaprodi] = useState("");
   const [isReminderActive, setIsReminderActive] = useState(true);
@@ -59,20 +56,21 @@ export function CreateTicketModal({
   const [formError, setFormError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!targetId && targets.length > 0) {
-      setTargetId(targets[0].id);
-      setJudulKegiatan((prev) => prev || targets[0].namaTarget);
+    if (isOpen) {
+      setTargetId("");
+      setDosenId("");
+      setKuantitasDitugaskan("");
+      setJudulKegiatan("");
+      setTenggatWaktu("");
+      setPrioritas("Normal");
+      setCatatanKaprodi("");
+      setIsReminderActive(true);
+      setFieldErrors({});
+      setFormError(null);
     }
-  }, [targets, targetId]);
+  }, [isOpen]);
 
-  useEffect(() => {
-    if (!dosenId && dosenOptions.length > 0) {
-      setDosenId(dosenOptions[0].id);
-    }
-  }, [dosenOptions, dosenId]);
-
-  const selectedTarget =
-    targets.find((t) => t.id === targetId) ?? defaultTarget;
+  const selectedTarget = targets.find((t) => t.id === targetId);
   const satuanLabel = selectedTarget?.satuan.toLowerCase() ?? "item";
   const previewCode = `#TGT-2026-${String(nextTicketNumber).padStart(3, "0")}`;
 
@@ -141,10 +139,13 @@ export function CreateTicketModal({
             if (found) setJudulKegiatan(found.namaTarget);
           }}
           error={fieldErrors.targetId}
-          options={targets.map((t) => ({
-            value: t.id,
-            label: `${t.kodeTarget} · ${t.namaTarget}`,
-          }))}
+          options={[
+            { value: "", label: "-- Pilih Master Target --" },
+            ...targets.map((t) => ({
+              value: t.id,
+              label: `${t.kodeTarget} · ${t.namaTarget}`,
+            })),
+          ]}
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -155,10 +156,13 @@ export function CreateTicketModal({
             value={dosenId}
             onChange={(e) => setDosenId(e.target.value)}
             error={fieldErrors.dosenId}
-            options={dosenOptions.map((d) => ({
-              value: d.id,
-              label: d.namaLengkap,
-            }))}
+            options={[
+              { value: "", label: "-- Pilih Dosen --" },
+              ...dosenOptions.map((d) => ({
+                value: d.id,
+                label: d.namaLengkap,
+              })),
+            ]}
           />
 
           <Select
@@ -167,10 +171,13 @@ export function CreateTicketModal({
             value={kuantitasDitugaskan}
             onChange={(e) => setKuantitasDitugaskan(e.target.value)}
             error={fieldErrors.kuantitasDitugaskan}
-            options={[1, 2, 3, 4, 5, 8, 10, 12, 20].map((num) => ({
-              value: String(num),
-              label: `${num} ${satuanLabel}`,
-            }))}
+            options={[
+              { value: "", label: "-- Pilih Kuantitas --" },
+              ...[1, 2, 3, 4, 5, 8, 10, 12, 20].map((num) => ({
+                value: String(num),
+                label: `${num} ${satuanLabel}`,
+              })),
+            ]}
           />
         </div>
 

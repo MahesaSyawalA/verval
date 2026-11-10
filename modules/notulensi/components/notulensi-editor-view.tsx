@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Alert,
   Button,
@@ -48,27 +48,30 @@ function NotulensiEditorForm({
   const saveMutation = useSaveNotulensi(rapat.id);
 
   const [agendaPembahasan, setAgendaPembahasan] = useState(
-    () =>
-      rapat.notulensi?.agendaPembahasan ??
-      "1. Evaluasi capaian kinerja dosen semester ganjil\n2. Kendala pengumpulan bukti kegiatan\n3. Rencana tindak lanjut",
+    () => rapat.notulensi?.agendaPembahasan ?? rapat.deskripsiAgenda ?? "",
   );
   const [halDibahas, setHalDibahas] = useState(
-    () =>
-      rapat.notulensi?.halDibahas ??
-      "Capaian publikasi baru 4 dari 5 artikel. Beberapa dosen belum mengunggah surat tugas pengabdian dan perlu waktu tambahan.",
+    () => rapat.notulensi?.halDibahas ?? "",
   );
   const [keputusan, setKeputusan] = useState(
-    () =>
-      rapat.notulensi?.keputusan ??
-      "Batas unggah bukti kegiatan diperpanjang sampai 30 Nov 2026.",
+    () => rapat.notulensi?.keputusan ?? "",
   );
   const [tindakLanjut, setTindakLanjut] = useState(
-    () =>
-      rapat.notulensi?.tindakLanjut ??
-      "Kaprodi mengirim pengingat ke dosen yang belum mengunggah bukti.",
+    () => rapat.notulensi?.tindakLanjut ?? "",
   );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    setAgendaPembahasan(
+      rapat.notulensi?.agendaPembahasan ?? rapat.deskripsiAgenda ?? "",
+    );
+    setHalDibahas(rapat.notulensi?.halDibahas ?? "");
+    setKeputusan(rapat.notulensi?.keputusan ?? "");
+    setTindakLanjut(rapat.notulensi?.tindakLanjut ?? "");
+    setErrorMessage(null);
+    setFeedbackMessage(null);
+  }, [rapat.id, rapat.notulensi, rapat.deskripsiAgenda]);
 
   const currentStatus: StatusNotulensiType =
     rapat.notulensi?.statusNotulensi ?? "Draf";

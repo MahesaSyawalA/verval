@@ -1,7 +1,7 @@
 "use client";
 
 import { Plus, X } from "lucide-react";
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import {
   Alert,
   alertToast,
@@ -36,11 +36,8 @@ export interface TargetFormModalProps {
   isLoading?: boolean;
 }
 
-const DEFAULT_FORMAT_BUKTI: FormatBuktiInput[] = [
-  { namaField: "Judul buku", tipeData: "Teks", statusIsian: "Wajib" },
-  { namaField: "Penerbit dan ISBN", tipeData: "Teks", statusIsian: "Wajib" },
-  { namaField: "Tanggal terbit", tipeData: "Tanggal", statusIsian: "Wajib" },
-  { namaField: "File bukti", tipeData: "File", statusIsian: "Opsional" },
+const INITIAL_FORMAT_BUKTI: FormatBuktiInput[] = [
+  { namaField: "", tipeData: "File", statusIsian: "Wajib" },
 ];
 
 const SATUAN_OPTIONS = [
@@ -73,9 +70,9 @@ export function TargetFormModal({
     () => editingTarget?.namaTarget ?? "",
   );
   const [kuantitasTotal, setKuantitasTotal] = useState(() =>
-    editingTarget ? String(editingTarget.kuantitasTotal) : "2",
+    editingTarget ? String(editingTarget.kuantitasTotal) : "",
   );
-  const [satuan, setSatuan] = useState(() => editingTarget?.satuan ?? "Buku");
+  const [satuan, setSatuan] = useState(() => editingTarget?.satuan ?? "");
   const [tahun, setTahun] = useState(() =>
     editingTarget ? String(editingTarget.tahun) : "2026",
   );
@@ -87,10 +84,33 @@ export function TargetFormModal({
           tipeData: fb.tipeData,
           statusIsian: fb.statusIsian,
         }))
-      : DEFAULT_FORMAT_BUKTI.map((item) => ({ ...item })),
+      : INITIAL_FORMAT_BUKTI.map((item) => ({ ...item })),
   );
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setKodeTarget(editingTarget?.kodeTarget ?? suggestedCode);
+      setLevel("Prodi");
+      setNamaTarget(editingTarget?.namaTarget ?? "");
+      setKuantitasTotal(editingTarget ? String(editingTarget.kuantitasTotal) : "");
+      setSatuan(editingTarget?.satuan ?? "");
+      setTahun(editingTarget ? String(editingTarget.tahun) : "2026");
+      setFormatBukti(
+        editingTarget
+          ? editingTarget.formatBukti.map((fb) => ({
+              id: fb.id,
+              namaField: fb.namaField,
+              tipeData: fb.tipeData,
+              statusIsian: fb.statusIsian,
+            }))
+          : INITIAL_FORMAT_BUKTI.map((item) => ({ ...item })),
+      );
+      setFieldErrors({});
+      setFormError(null);
+    }
+  }, [isOpen, editingTarget, suggestedCode]);
 
   function handleAddFormatField() {
     setFormatBukti((prev) => [
@@ -246,10 +266,13 @@ export function TargetFormModal({
             value={satuan}
             onChange={(e) => setSatuan(e.target.value)}
             error={fieldErrors.satuan}
-            options={SATUAN_OPTIONS.map((opt) => ({
-              value: opt,
-              label: opt,
-            }))}
+            options={[
+              { value: "", label: "-- Pilih Satuan --" },
+              ...SATUAN_OPTIONS.map((opt) => ({
+                value: opt,
+                label: opt,
+              })),
+            ]}
           />
 
           <Select

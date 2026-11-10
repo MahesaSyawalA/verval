@@ -1,7 +1,7 @@
 "use client";
 
 import { Plus, UploadCloud } from "lucide-react";
-import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
+import { useRef, useState, useEffect, type ChangeEvent, type FormEvent } from "react";
 import {
   Alert,
   alertToast,
@@ -51,11 +51,27 @@ export function UploadBuktiModal({
     return initial;
   });
 
-  const [uploadedFileName, setUploadedFileName] = useState<string>(
-    () => `Surat_Tugas_${ticket.kodeTiket.replace(/[^0-9]/g, "") || "014"}.pdf · 212 KB`,
-  );
+  const [uploadedFileName, setUploadedFileName] = useState<string>("");
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setActiveUrutan(1);
+      const maxExisting = ticket.isianBukti.reduce(
+        (max, b) => Math.max(max, b.urutanSubmisi),
+        1,
+      );
+      setTotalItems(Math.max(1, maxExisting));
+      const initial: Record<string, string> = {};
+      for (const ib of ticket.isianBukti) {
+        initial[`${ib.urutanSubmisi}:${ib.formatBuktiId}`] = ib.nilaiIsian;
+      }
+      setValuesMap(initial);
+      setUploadedFileName("");
+      setFormError(null);
+    }
+  }, [isOpen, ticket]);
 
   function getValue(urutan: number, formatBuktiId: string): string {
     return valuesMap[`${urutan}:${formatBuktiId}`] ?? "";
@@ -121,17 +137,8 @@ export function UploadBuktiModal({
     }
 
     if (submissions.length === 0) {
-      // Provide fallback entry if user only uploaded Surat Tugas
-      const firstFormat = ticket.formatBukti[0];
-      if (!firstFormat) {
-        setFormError("Format bukti belum tersedia pada target ini.");
-        return;
-      }
-      submissions.push({
-        formatBuktiId: firstFormat.id,
-        urutanSubmisi: 1,
-        nilaiIsian: uploadedFileName,
-      });
+      setFormError("Minimal 1 isian bukti kegiatan harus dilengkapi sebelum disimpan.");
+      return;
     }
 
     const safeSubmissions = validateAndSanitizeForm(submissions);
@@ -206,17 +213,19 @@ export function UploadBuktiModal({
             </p>
           </button>
 
-          <div className="flex items-center justify-between rounded-2xl bg-surface px-4 py-3">
-            <div className="flex items-center gap-3">
-              <span className="inline-flex items-center rounded-full bg-danger-bg px-3 py-1 text-body-sm font-bold text-danger-ink">
-                PDF
-              </span>
-              <span className="text-body-sm font-semibold text-ink">
-                {uploadedFileName}
-              </span>
+          {uploadedFileName ? (
+            <div className="flex items-center justify-between rounded-2xl bg-surface px-4 py-3">
+              <div className="flex items-center gap-3">
+                <span className="inline-flex items-center rounded-full bg-danger-bg px-3 py-1 text-body-sm font-bold text-danger-ink">
+                  PDF
+                </span>
+                <span className="text-body-sm font-semibold text-ink">
+                  {uploadedFileName}
+                </span>
+              </div>
+              <StatusChip status="Terunggah" tone="success" />
             </div>
-            <StatusChip status="Terunggah" tone="success" />
-          </div>
+          ) : null}
         </div>
 
         {/* Dynamic Fields from format_bukti */}

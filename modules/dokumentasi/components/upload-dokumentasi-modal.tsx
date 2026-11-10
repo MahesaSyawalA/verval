@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, Image as ImageIcon, Upload, X } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Alert, alertToast, BareInput, Button, ModalForm } from "@/components/ui";
 import { validateAndSanitizeForm } from "@/lib/security-client";
 import { cn } from "@/lib/utils";
@@ -43,24 +43,16 @@ export function UploadDokumentasiModal({
   const saveMutation = useSaveDokumentasi(rapat?.id ?? "");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const [photos, setPhotos] = useState<StagedPhotoItem[]>(() => [
-    {
-      id: "stg-1",
-      fileName: "IMG_2041.jpg",
-      fileGambar: "dokumentasi/IMG_2041.jpg",
-      sizeLabel: "2,4 MB",
-      caption: "Suasana rapat di Ruang Sidang B",
-    },
-    {
-      id: "stg-2",
-      fileName: "IMG_2043.jpg",
-      fileGambar: "dokumentasi/IMG_2043.jpg",
-      sizeLabel: "1,9 MB",
-      caption: "Pemaparan capaian kinerja dosen",
-    },
-  ]);
+  const [photos, setPhotos] = useState<StagedPhotoItem[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setPhotos([]);
+      setErrorMessage(null);
+    }
+  }, [isOpen]);
 
   if (!isOpen || !rapat) return null;
 
@@ -231,7 +223,12 @@ export function UploadDokumentasiModal({
           </div>
 
           <div className="space-y-3">
-            {photos.map((photo, idx) => (
+            {photos.length === 0 ? (
+              <p className="rounded-2xl border border-dashed border-border-soft p-4 text-center text-body-sm text-ink-muted">
+                Belum ada foto yang dipilih. Silakan klik &quot;Pilih Foto&quot; di atas untuk mengunggah dokumentasi rapat.
+              </p>
+            ) : (
+              photos.map((photo, idx) => (
               <div
                 key={photo.id}
                 className="flex items-start gap-3.5 rounded-2xl bg-surface p-3.5"
@@ -278,7 +275,7 @@ export function UploadDokumentasiModal({
                   />
                 </div>
               </div>
-            ))}
+            )))}
           </div>
         </div>
 

@@ -41,28 +41,37 @@ export function CreateAgendaModal({
   const createMutation = useCreateAgendaRapat();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const [judulRapat, setJudulRapat] = useState(
-    "Evaluasi Kinerja Dosen Semester Ganjil",
-  );
-  const [tanggal, setTanggal] = useState("2026-10-21");
-  const [waktuMulai, setWaktuMulai] = useState("13:00");
-  const [waktuSelesai, setWaktuSelesai] = useState("14:30");
+  const [judulRapat, setJudulRapat] = useState("");
+  const [tanggal, setTanggal] = useState("");
+  const [waktuMulai, setWaktuMulai] = useState("");
+  const [waktuSelesai, setWaktuSelesai] = useState("");
   const [format, setFormat] = useState<FormatRapatType>("Luring");
-  const [lokasi, setLokasi] = useState("Ruang Sidang B");
+  const [lokasi, setLokasi] = useState("");
   const [pesertaIds, setPesertaIds] = useState<string[]>([]);
   const [pesertaSelectValue, setPesertaSelectValue] = useState<string>("");
-  const [notulisId, setNotulisId] = useState<string>(
-    () => userOptions[1]?.id ?? userOptions[0]?.id ?? "",
-  );
+  const [notulisId, setNotulisId] = useState<string>("");
 
   useEffect(() => {
-    if (!notulisId && userOptions.length > 0) {
-      setNotulisId(userOptions[1]?.id ?? userOptions[0]?.id ?? "");
+    if (isOpen) {
+      setJudulRapat("");
+      setTanggal("");
+      setWaktuMulai("");
+      setWaktuSelesai("");
+      setFormat("Luring");
+      setLokasi("");
+      setPesertaIds([]);
+      setPesertaSelectValue("");
+      setNotulisId("");
+      setDeskripsiAgenda("");
+      setMetodeUndangan("Generate_Otomatis");
+      setFileUndangan("");
+      setUploadedFileName("");
+      setIsReminderActive(true);
+      setErrorMessage(null);
     }
-  }, [userOptions, notulisId]);
-  const [deskripsiAgenda, setDeskripsiAgenda] = useState(
-    "Evaluasi capaian publikasi, pengabdian, dan bimbingan tugas akhir semester ganjil.",
-  );
+  }, [isOpen]);
+
+  const [deskripsiAgenda, setDeskripsiAgenda] = useState("");
   const [metodeUndangan, setMetodeUndangan] =
     useState<MetodeUndanganType>("Generate_Otomatis");
   const [fileUndangan, setFileUndangan] = useState<string>("");
@@ -110,7 +119,6 @@ export function CreateAgendaModal({
 
   async function handleSubmit() {
     setErrorMessage(null);
-    const effectiveNotulisId = notulisId || userOptions[0]?.id || "";
 
     const sanitized = validateAndSanitizeForm({
       judulRapat,
@@ -120,7 +128,7 @@ export function CreateAgendaModal({
       format,
       lokasi,
       pesertaIds,
-      notulisId: effectiveNotulisId,
+      notulisId,
       deskripsiAgenda,
       metodeUndangan,
       fileUndangan: fileUndangan || undefined,
@@ -345,10 +353,13 @@ export function CreateAgendaModal({
               value={notulisId}
               onChange={(e) => setNotulisId(e.target.value)}
               helperText="Dosen yang ditunjuk akan mengisi notulensi rapat ini."
-              options={userOptions.map((u) => ({
-                value: u.id,
-                label: u.namaLengkap,
-              }))}
+              options={[
+                { value: "", label: "-- Pilih Notulis Rapat --" },
+                ...userOptions.map((u) => ({
+                  value: u.id,
+                  label: u.namaLengkap,
+                })),
+              ]}
             />
           </div>
 
