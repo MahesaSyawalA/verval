@@ -93,7 +93,14 @@ export function LoginForm() {
 
     try {
       const response = await loginMutation.mutateAsync(parsed.data);
-      router.push(getSafeRedirectPath(nextUrl, response.redirectTo));
+      const target = getSafeRedirectPath(nextUrl, response.redirectTo);
+      if (target.startsWith("/api/")) {
+        // Alur SSO (/api/sso/authorize) harus navigasi penuh karena berujung
+        // redirect ke modul lain, bukan halaman Next.
+        window.location.assign(target);
+        return;
+      }
+      router.push(target);
       router.refresh();
     } catch (err) {
       if (err instanceof AppError) {

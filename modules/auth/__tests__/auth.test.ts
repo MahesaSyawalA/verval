@@ -85,7 +85,7 @@ describe("Auth Module, Session, and Route Guard (Phase 02)", () => {
       );
 
       expect(result.user.role).toBe("Kaprodi");
-      expect(result.redirectTo).toBe("/dashboard");
+      expect(result.redirectTo).toBe("/menu");
     });
 
     it("throws 401 UNAUTHORIZED when user is not found or password mismatches", async () => {
