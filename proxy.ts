@@ -4,6 +4,7 @@ import { SESSION_COOKIE_NAME } from "@/lib/constants";
 import { verifySessionToken } from "@/lib/session";
 
 const PROTECTED_PREFIXES = [
+  "/menu",
   "/dashboard",
   "/target",
   "/tiket",
@@ -23,7 +24,7 @@ export async function proxy(request: NextRequest) {
   const session = await verifySessionToken(token);
 
   if (pathname === "/login" && session) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/menu", request.url));
   }
 
   if (isProtectedPath(pathname)) {
@@ -44,6 +45,7 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     "/login",
+    "/menu/:path*",
     "/dashboard/:path*",
     "/target/:path*",
     "/tiket/:path*",

@@ -13,7 +13,9 @@
     "test:watch": "vitest",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
-    "db:seed": "tsx prisma/seed.ts"
+    "db:seed": "tsx prisma/seed.ts",
+    "sso:client": "tsx scripts/sso-client.ts",
+    "sso:keys": "node scripts/generate-sso-key.mjs"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

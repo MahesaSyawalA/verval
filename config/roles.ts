@@ -13,24 +13,25 @@ export const ROLE_METADATA: Record<UserRole, RoleMetadata> = {
   Kaprodi: {
     role: "Kaprodi",
     label: "Ketua Program Studi",
-    defaultRedirect: "/dashboard",
+    defaultRedirect: "/menu",
     subtitle: "Ringkasan kinerja dan penugasan Anda",
   },
   Dosen: {
     role: "Dosen",
     label: "Dosen RPL",
-    defaultRedirect: "/dashboard",
+    defaultRedirect: "/menu",
     subtitle: "Ringkasan tugas dan capaian Anda",
   },
   Admin: {
     role: "Admin",
     label: "Administrator Prodi",
-    defaultRedirect: "/dashboard",
+    defaultRedirect: "/menu",
     subtitle: "Pengelolaan agenda rapat, dokumen, dan penugasan",
   },
 };
 
 export const ROUTE_ROLE_PERMISSIONS: Record<string, readonly UserRole[]> = {
+  "/menu": ["Kaprodi", "Dosen", "Admin"],
   "/dashboard": ["Kaprodi", "Dosen", "Admin"],
   "/target": ["Kaprodi", "Admin"],
   "/tiket": ["Kaprodi", "Dosen", "Admin"],

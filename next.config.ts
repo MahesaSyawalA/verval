@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
   },
   cacheComponents: true,
   partialPrefetching: true,
+  async redirects() {
+    // Root langsung ke login; pengguna yang sudah login diteruskan ke /menu oleh proxy.ts.
+    return [{ source: "/", destination: "/login", permanent: false }];
+  },
   turbopack: {
     rules: {
       "*.css": {
