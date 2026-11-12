@@ -29,12 +29,12 @@ export function getNotifikasiBadgeProps(tipe: TipeNotifikasi): {
     case "UNDANGAN_BARU":
       return {
         label: "U",
-        className: "bg-primary-50 text-primary",
+        className: "bg-primary-50 text-brand",
       };
     case "NOTULENSI_FINAL":
       return {
         label: "N",
-        className: "bg-primary-50 text-primary",
+        className: "bg-primary-50 text-brand",
       };
     case "TIKET_DITOLAK":
       return {
@@ -49,7 +49,7 @@ export function getNotifikasiBadgeProps(tipe: TipeNotifikasi): {
     default:
       return {
         label: "T",
-        className: "bg-primary-50 text-primary",
+        className: "bg-primary-50 text-brand",
       };
   }
 }
@@ -125,13 +125,13 @@ export function NotificationDropdown({
         aria-label="Notifikasi"
         aria-expanded={isOpen}
         onClick={() => setIsOpen((prev) => !prev)}
-        className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white text-ink shadow-xs border border-border-soft/70 hover:bg-primary-50 transition-colors cursor-pointer"
+        className="relative flex h-12 w-12 items-center justify-center rounded-full bg-card text-ink shadow-xs border border-border-soft/70 hover:bg-primary-50 transition-colors cursor-pointer"
       >
         <Bell className="h-5 w-5" />
         {unreadCount > 0 ? (
           <span
             data-testid="notifikasi-unread-dot"
-            className="absolute top-3 right-3 h-2.5 w-2.5 rounded-full bg-accent ring-2 ring-white"
+            className="absolute top-3 right-3 h-2.5 w-2.5 rounded-full bg-accent ring-2 ring-card"
           />
         ) : null}
       </button>
@@ -140,7 +140,7 @@ export function NotificationDropdown({
         <div
           role="dialog"
           aria-label="Panel Notifikasi"
-          className="absolute right-0 top-14 z-50 w-[350px] sm:w-[390px] rounded-[24px] border border-border-soft bg-white p-4 shadow-xl"
+          className="absolute right-0 top-14 z-50 w-[350px] sm:w-[390px] rounded-[24px] border border-border-soft bg-card p-4 shadow-xl"
         >
           <div className="mb-3 flex items-center justify-between px-1">
             <h2 className="font-heading text-body font-bold text-ink">
@@ -150,7 +150,7 @@ export function NotificationDropdown({
               type="button"
               disabled={unreadCount === 0 || markReadMutation.isPending}
               onClick={handleMarkAllRead}
-              className="text-caption font-semibold text-primary hover:underline disabled:opacity-50 cursor-pointer"
+              className="text-caption font-semibold text-brand hover:underline disabled:opacity-50 cursor-pointer"
             >
               Tandai dibaca
             </button>
@@ -171,7 +171,7 @@ export function NotificationDropdown({
                     className={cn(
                       "flex items-start gap-3 rounded-2xl border p-3.5 transition-colors cursor-pointer",
                       item.isRead
-                        ? "border-border-soft bg-white hover:bg-surface/60"
+                        ? "border-border-soft bg-card hover:bg-surface/60"
                         : "border-primary/15 bg-surface hover:bg-primary-50/50",
                     )}
                   >
@@ -202,7 +202,7 @@ export function NotificationDropdown({
                               e.stopPropagation();
                               setIsOpen(false);
                             }}
-                            className="inline-flex items-center justify-center rounded-full bg-accent px-3 py-1 text-[11px] font-semibold text-ink hover:bg-accent-500 transition-colors"
+                            className="inline-flex items-center justify-center rounded-full bg-accent px-3 py-1 text-[11px] font-semibold text-on-accent hover:bg-accent-500 transition-colors"
                           >
                             Isi Presensi
                           </Link>

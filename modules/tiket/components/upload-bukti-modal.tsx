@@ -200,10 +200,10 @@ export function UploadBuktiModal({
             onClick={() => fileInputRef.current?.click()}
             className="w-full rounded-2xl border-2 border-dashed border-primary/50 bg-surface/40 px-6 py-6 text-center hover:bg-primary-50/50 transition-colors cursor-pointer"
           >
-            <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-primary-50 text-primary">
+            <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-primary-50 text-brand">
               <UploadCloud className="h-5 w-5" />
             </div>
-            <p className="font-heading text-body-md font-semibold text-primary">
+            <p className="font-heading text-body-md font-semibold text-brand">
               {isUploadingFile
                 ? "Mengunggah berkas..."
                 : "Tarik file ke sini atau klik untuk memilih"}
@@ -286,7 +286,7 @@ export function UploadBuktiModal({
                 className={`rounded-full px-3.5 py-1.5 text-body-sm font-semibold transition-colors cursor-pointer ${
                   activeUrutan === u
                     ? "bg-primary text-white"
-                    : "bg-primary-50 text-primary hover:bg-primary-100"
+                    : "bg-primary-50 text-brand hover:bg-primary-100"
                 }`}
               >
                 {labelPreview.slice(0, 24)}

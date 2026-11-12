@@ -269,7 +269,7 @@ export function CreateAgendaModal({
                   <button
                     type="button"
                     onClick={() => setPesertaIds(userOptions.map((u) => u.id))}
-                    className="text-body-sm font-medium text-primary hover:underline cursor-pointer"
+                    className="text-body-sm font-medium text-brand hover:underline cursor-pointer"
                   >
                     Pilih Semua ({userOptions.length})
                   </button>
@@ -278,7 +278,7 @@ export function CreateAgendaModal({
                   <button
                     type="button"
                     onClick={() => setPesertaIds([])}
-                    className="text-body-sm font-medium text-danger hover:underline cursor-pointer"
+                    className="text-body-sm font-medium text-danger-ink hover:underline cursor-pointer"
                   >
                     Kosongkan
                   </button>
@@ -327,7 +327,7 @@ export function CreateAgendaModal({
                   <button
                     type="button"
                     onClick={() => handleRemovePeserta(p.id)}
-                    className="text-ink-muted hover:text-danger cursor-pointer transition-colors"
+                    className="text-ink-muted hover:text-danger-ink cursor-pointer transition-colors"
                     aria-label={`Hapus ${p.namaLengkap}`}
                   >
                     <X className="h-3.5 w-3.5" />
@@ -427,14 +427,14 @@ export function CreateAgendaModal({
                 <button
                   type="button"
                   onClick={() => setPreviewOpen(true)}
-                  className="text-body-sm font-bold text-primary hover:underline shrink-0 cursor-pointer"
+                  className="text-body-sm font-bold text-brand hover:underline shrink-0 cursor-pointer"
                 >
                   Lihat preview
                 </button>
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-primary/30 bg-surface px-4 py-6 text-center space-y-2">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-50 text-primary">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-50 text-brand">
                   <Upload className="h-5 w-5" />
                 </div>
                 <p className="text-body-sm font-bold text-ink">

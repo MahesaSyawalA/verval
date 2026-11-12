@@ -1,76 +1,207 @@
 @import "tailwindcss";
 
+/*
+  Warna dibaca lewat variabel mentah (--surface, --card, --ink, ...) agar bisa diganti
+  per tema. Mode gelap hanya aktif bila <html data-theme="dark">, yang dipasang oleh
+  ThemeScope khusus di area dashboard. Login dan Menu Utama SSO tidak memasangnya,
+  jadi selalu tampil terang.
+*/
 :root {
   --background: #F2F7FF;
   --foreground: #092C4C;
+  --primary: #0101B7;
+  --brand: #0101B7;
+  --primary-50: #ECECFF;
+  --primary-100: #D8D8FE;
+  --primary-200: #B3B3FC;
+  --primary-300: #8080F8;
+  --primary-400: #4D4DF0;
+  --primary-500: #1A1AE0;
+  --primary-600: #0101B7;
+  --primary-700: #010193;
+  --primary-800: #01016E;
+  --primary-900: #00004A;
+  --secondary: #8DCCF1;
+  --secondary-50: #F2F9FD;
+  --secondary-100: #E1F2FB;
+  --secondary-200: #C3E5F7;
+  --secondary-300: #A8D8F4;
+  --secondary-400: #8DCCF1;
+  --secondary-500: #5BB3E8;
+  --secondary-600: #3196D3;
+  --secondary-700: #2276AA;
+  --secondary-800: #1A5B84;
+  --secondary-900: #13415F;
+  --accent: #FFD166;
+  --accent-50: #FFFBEF;
+  --accent-100: #FFF3D6;
+  --accent-200: #FFE6AD;
+  --accent-300: #FFD985;
+  --accent-400: #FFD166;
+  --accent-500: #F5B82E;
+  --accent-600: #D4960C;
+  --accent-700: #A67305;
+  --accent-800: #8A6100;
+  --accent-900: #5C4000;
+  --surface: #F2F7FF;
+  --card: #FFFFFF;
+  --ink: #092C4C;
+  --ink-muted: #667A8F;
+  --ink-subtle: #8594A5;
+  --border-soft: #E3E8F2;
+  --border-default: #D3DBEA;
+  --success: #1FA85A;
+  --success-bg: #DDF5E6;
+  --success-ink: #14733C;
+  --warning: #FFD166;
+  --warning-bg: #FFF3D6;
+  --warning-ink: #8A6100;
+  --info: #0101B7;
+  --info-bg: #ECECFF;
+  --info-ink: #0101B7;
+  --danger: #B3261E;
+  --danger-bg: #FDE1E1;
+  --danger-ink: #B3261E;
+  --on-accent: #092C4C;
+  --on-secondary: #0101B7;
+  --chip: #F1F3F8;
+  --track: #E3E8F2;
+  --chart-primary: #0101B7;
+  --chart-primary-soft: #7E9BF7;
+  --chart-accent: #FFD166;
+  --chart-tick: #8594A5;
+  --logo-navy: #092C4C;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #0B1220;
+  --foreground: #E6ECF5;
+  --primary: #4654EA;
+  --brand: #93A0FF;
+  --primary-50: #1A2142;
+  --primary-100: #212B5C;
+  --primary-200: #2B387A;
+  --primary-300: #3F50B3;
+  --primary-400: #5C69F0;
+  --primary-500: #4654EA;
+  --primary-600: #4654EA;
+  --primary-700: #3B48D1;
+  --primary-800: #323EB5;
+  --primary-900: #2A3596;
+  --secondary: #8DCCF1;
+  --secondary-50: #14203A;
+  --secondary-100: #1B2A4A;
+  --secondary-200: #243860;
+  --secondary-300: #32557F;
+  --secondary-400: #8DCCF1;
+  --secondary-500: #5BB3E8;
+  --secondary-600: #3196D3;
+  --secondary-700: #7DBFE8;
+  --secondary-800: #A0D3F0;
+  --secondary-900: #C3E5F7;
+  --accent: #FFD166;
+  --accent-50: #2B2410;
+  --accent-100: #3A2F10;
+  --accent-200: #4D3E14;
+  --accent-300: #6B5519;
+  --accent-400: #FFD166;
+  --accent-500: #F5B82E;
+  --accent-600: #D4960C;
+  --accent-700: #F0C060;
+  --accent-800: #F5CC7A;
+  --accent-900: #FFE0A3;
+  --surface: #0B1220;
+  --card: #121B2E;
+  --ink: #E6ECF5;
+  --ink-muted: #9AA8BC;
+  --ink-subtle: #7F8DA3;
+  --border-soft: #25324B;
+  --border-default: #2E3C58;
+  --success: #2BB871;
+  --success-bg: #12301F;
+  --success-ink: #5FD08F;
+  --warning: #FFD166;
+  --warning-bg: #3A2F10;
+  --warning-ink: #FFD166;
+  --info: #5B6CFF;
+  --info-bg: #1A2142;
+  --info-ink: #8E9BFF;
+  --danger: #D93B33;
+  --danger-bg: #3B1618;
+  --danger-ink: #FF8A82;
+  --on-accent: #092C4C;
+  --on-secondary: #0B2A4D;
+  --chip: #1B2438;
+  --track: #25324B;
+  --chart-primary: #7C8CFF;
+  --chart-primary-soft: #6A86E8;
+  --chart-accent: #FFD166;
+  --chart-tick: #7F8DA3;
+  --logo-navy: #E6ECF5;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  /* Primary: Vibrant Blue (#0101B7) + scale 50-900 */
-  --color-primary: #0101B7;
-  --color-primary-50: #ECECFF;
-  --color-primary-100: #D8D8FE;
-  --color-primary-200: #B3B3FC;
-  --color-primary-300: #8080F8;
-  --color-primary-400: #4D4DF0;
-  --color-primary-500: #1A1AE0;
-  --color-primary-600: #0101B7;
-  --color-primary-700: #010193;
-  --color-primary-800: #01016E;
-  --color-primary-900: #00004A;
-
-  /* Secondary: Dreamy (#8DCCF1) + scale 50-900 */
-  --color-secondary: #8DCCF1;
-  --color-secondary-50: #F2F9FD;
-  --color-secondary-100: #E1F2FB;
-  --color-secondary-200: #C3E5F7;
-  --color-secondary-300: #A8D8F4;
-  --color-secondary-400: #8DCCF1;
-  --color-secondary-500: #5BB3E8;
-  --color-secondary-600: #3196D3;
-  --color-secondary-700: #2276AA;
-  --color-secondary-800: #1A5B84;
-  --color-secondary-900: #13415F;
-
-  /* Accent: WarmY (#FFD166) + scale 50-900 */
-  --color-accent: #FFD166;
-  --color-accent-50: #FFFBEF;
-  --color-accent-100: #FFF3D6;
-  --color-accent-200: #FFE6AD;
-  --color-accent-300: #FFD985;
-  --color-accent-400: #FFD166;
-  --color-accent-500: #F5B82E;
-  --color-accent-600: #D4960C;
-  --color-accent-700: #A67305;
-  --color-accent-800: #8A6100;
-  --color-accent-900: #5C4000;
-
-  /* Neutral & Ink */
-  --color-surface: #F2F7FF;
-  --color-ink: #092C4C;
-  --color-ink-muted: #667A8F;
-  --color-ink-subtle: #8594A5;
-  --color-border-soft: #E3E8F2;
-
-  /* Semantic Status Colors (derived from mockups) */
-  --color-success: #1FA85A;
-  --color-success-bg: #DDF5E6;
-  --color-success-ink: #14733C;
-
-  --color-warning: #FFD166;
-  --color-warning-bg: #FFF3D6;
-  --color-warning-ink: #8A6100;
-
-  --color-info: #0101B7;
-  --color-info-bg: #ECECFF;
-  --color-info-ink: #0101B7;
-
-  --color-danger: #B3261E;
-  --color-danger-bg: #FDE1E1;
-  --color-danger-ink: #B3261E;
+  --color-primary: var(--primary);
+  --color-brand: var(--brand);
+  --color-primary-50: var(--primary-50);
+  --color-primary-100: var(--primary-100);
+  --color-primary-200: var(--primary-200);
+  --color-primary-300: var(--primary-300);
+  --color-primary-400: var(--primary-400);
+  --color-primary-500: var(--primary-500);
+  --color-primary-600: var(--primary-600);
+  --color-primary-700: var(--primary-700);
+  --color-primary-800: var(--primary-800);
+  --color-primary-900: var(--primary-900);
+  --color-secondary: var(--secondary);
+  --color-secondary-50: var(--secondary-50);
+  --color-secondary-100: var(--secondary-100);
+  --color-secondary-200: var(--secondary-200);
+  --color-secondary-300: var(--secondary-300);
+  --color-secondary-400: var(--secondary-400);
+  --color-secondary-500: var(--secondary-500);
+  --color-secondary-600: var(--secondary-600);
+  --color-secondary-700: var(--secondary-700);
+  --color-secondary-800: var(--secondary-800);
+  --color-secondary-900: var(--secondary-900);
+  --color-accent: var(--accent);
+  --color-accent-50: var(--accent-50);
+  --color-accent-100: var(--accent-100);
+  --color-accent-200: var(--accent-200);
+  --color-accent-300: var(--accent-300);
+  --color-accent-400: var(--accent-400);
+  --color-accent-500: var(--accent-500);
+  --color-accent-600: var(--accent-600);
+  --color-accent-700: var(--accent-700);
+  --color-accent-800: var(--accent-800);
+  --color-accent-900: var(--accent-900);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-subtle: var(--ink-subtle);
+  --color-border-soft: var(--border-soft);
+  --color-border-default: var(--border-default);
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-success-ink: var(--success-ink);
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+  --color-warning-ink: var(--warning-ink);
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
+  --color-info-ink: var(--info-ink);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-danger-ink: var(--danger-ink);
+  --color-on-accent: var(--on-accent);
+  --color-on-secondary: var(--on-secondary);
+  --color-chip: var(--chip);
+  --color-track: var(--track);
 
   /* Font Families */
   --font-heading: var(--font-lexend), "Lexend", sans-serif;
@@ -99,8 +230,8 @@
 }
 
 body {
-  background-color: var(--color-surface);
-  color: var(--color-ink);
+  background-color: var(--surface);
+  color: var(--ink);
   font-family: var(--font-sans);
 }
 
@@ -177,7 +308,7 @@ h1, h2, h3, h4, h5, h6 {
   column-gap: 0.625rem;
   row-gap: 0.5rem;
   border: 1px solid var(--color-border-soft);
-  background-color: #ffffff;
+  background-color: var(--card);
   color: var(--color-ink);
   padding: 0.75rem 1rem;
   box-shadow: 0 12px 32px -8px rgba(9, 44, 76, 0.16);
@@ -372,7 +503,7 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   border: 1px solid var(--color-border-soft);
-  background-color: #ffffff;
+  background-color: var(--card);
   color: var(--color-ink);
   min-width: 2rem;
   height: 2rem;

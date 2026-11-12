@@ -114,7 +114,7 @@ export function Select({
         disabledKeys={disabledKeys}
         aria-label={ariaLabel ?? label}
         className={cn(
-          "flex flex-col rounded-2xl border border-border-soft bg-white px-3.5 py-1.5",
+          "flex flex-col rounded-2xl border border-border-soft bg-card px-3.5 py-1.5",
           className,
         )}
       >
@@ -137,17 +137,17 @@ export function Select({
           <HeroSelect.Value className="flex-1 truncate [&_[data-slot=list-box-item-indicator]]:hidden" />
           <HeroSelect.Indicator className="size-4 shrink-0 text-ink-muted transition-transform data-[open=true]:rotate-180" />
         </HeroSelect.Trigger>
-        <HeroSelect.Popover className="z-50 min-w-(--trigger-width) overflow-y-auto rounded-2xl border border-border-soft bg-white p-1.5 shadow-lg outline-none">
+        <HeroSelect.Popover className="z-50 min-w-(--trigger-width) overflow-y-auto rounded-2xl border border-border-soft bg-card p-1.5 shadow-lg outline-none">
           <ListBox className="flex flex-col gap-0.5 outline-none">
             {options.map((opt) => (
               <ListBox.Item
                 key={opt.value}
                 id={opt.value}
                 textValue={opt.label}
-                className="relative flex min-h-9 w-full items-center justify-between gap-2 rounded-xl px-3 py-1.5 text-body-sm font-medium text-ink outline-none transition-colors hover:bg-surface data-[selected=true]:bg-primary-50 data-[selected=true]:font-semibold data-[selected=true]:text-primary cursor-pointer"
+                className="relative flex min-h-9 w-full items-center justify-between gap-2 rounded-xl px-3 py-1.5 text-body-sm font-medium text-ink outline-none transition-colors hover:bg-surface data-[selected=true]:bg-primary-50 data-[selected=true]:font-semibold data-[selected=true]:text-brand cursor-pointer"
               >
                 <span className="truncate">{opt.label}</span>
-                <ListBox.ItemIndicator className="inline-flex size-4 shrink-0 items-center justify-center text-primary opacity-0 data-[visible=true]:opacity-100 [&>svg]:size-3.5" />
+                <ListBox.ItemIndicator className="inline-flex size-4 shrink-0 items-center justify-center text-brand opacity-0 data-[visible=true]:opacity-100 [&>svg]:size-3.5" />
               </ListBox.Item>
             ))}
           </ListBox>
@@ -183,7 +183,7 @@ export function Select({
       )}
       <HeroSelect.Trigger
         className={cn(
-          "relative flex h-11 w-full items-center justify-between gap-2 rounded-2xl border bg-white px-4 text-left text-ink transition-colors focus:outline-none focus:ring-2 cursor-pointer disabled:bg-surface disabled:opacity-70",
+          "relative flex h-11 w-full items-center justify-between gap-2 rounded-2xl border bg-card px-4 text-left text-ink transition-colors focus:outline-none focus:ring-2 cursor-pointer disabled:bg-surface disabled:opacity-70",
           size === "sm" ? "text-body-sm font-medium px-3.5" : "text-body-md",
           error
             ? "border-danger focus:border-danger focus:ring-danger/20"
@@ -200,7 +200,7 @@ export function Select({
         <HeroSelect.Indicator className="size-4 shrink-0 text-ink-muted transition-transform data-[open=true]:rotate-180" />
       </HeroSelect.Trigger>
       {error ? (
-        <FieldError className="text-body-sm font-medium text-danger">
+        <FieldError className="text-body-sm font-medium text-danger-ink">
           <span role="alert">{error}</span>
         </FieldError>
       ) : helperText ? (
@@ -208,17 +208,17 @@ export function Select({
           {helperText}
         </Description>
       ) : null}
-      <HeroSelect.Popover className="z-50 max-h-64 min-w-(--trigger-width) overflow-y-auto rounded-2xl border border-border-soft bg-white p-1.5 shadow-lg outline-none">
+      <HeroSelect.Popover className="z-50 max-h-64 min-w-(--trigger-width) overflow-y-auto rounded-2xl border border-border-soft bg-card p-1.5 shadow-lg outline-none">
         <ListBox className="flex flex-col gap-0.5 outline-none">
           {options.map((opt) => (
             <ListBox.Item
               key={opt.value}
               id={opt.value}
               textValue={opt.label}
-              className="relative flex min-h-9 w-full items-center justify-between gap-2 rounded-xl px-3 py-2 text-body-sm font-medium text-ink outline-none transition-colors hover:bg-surface data-[selected=true]:bg-primary-50 data-[selected=true]:font-semibold data-[selected=true]:text-primary cursor-pointer"
+              className="relative flex min-h-9 w-full items-center justify-between gap-2 rounded-xl px-3 py-2 text-body-sm font-medium text-ink outline-none transition-colors hover:bg-surface data-[selected=true]:bg-primary-50 data-[selected=true]:font-semibold data-[selected=true]:text-brand cursor-pointer"
             >
               <span className="truncate">{opt.label}</span>
-              <ListBox.ItemIndicator className="inline-flex size-4 shrink-0 items-center justify-center text-primary opacity-0 data-[visible=true]:opacity-100 [&>svg]:size-3.5" />
+              <ListBox.ItemIndicator className="inline-flex size-4 shrink-0 items-center justify-center text-brand opacity-0 data-[visible=true]:opacity-100 [&>svg]:size-3.5" />
             </ListBox.Item>
           ))}
         </ListBox>

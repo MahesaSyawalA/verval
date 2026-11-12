@@ -159,7 +159,7 @@ function NotulensiEditorForm({
           </div>
 
           {/* Template Document Box */}
-          <div className="rounded-2xl border border-border-soft bg-white p-6 space-y-5">
+          <div className="rounded-2xl border border-border-soft bg-card p-6 space-y-5">
             {/* Header Kop UPI */}
             <div className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-primary pb-4">
               <div className="flex items-center gap-3">
@@ -175,7 +175,7 @@ function NotulensiEditorForm({
                   </p>
                 </div>
               </div>
-              <span className="rounded-full bg-primary-50 px-3.5 py-1 text-[11px] font-bold text-primary">
+              <span className="rounded-full bg-primary-50 px-3.5 py-1 text-[11px] font-bold text-brand">
                 NOTULENSI RAPAT
               </span>
             </div>
@@ -313,7 +313,7 @@ function NotulensiEditorForm({
         <Card className="p-6 space-y-3">
           <h3 className="font-heading text-h6 font-bold text-ink">Notulis</h3>
           <div className="flex items-center gap-3">
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent font-heading text-body-md font-bold text-ink">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent font-heading text-body-md font-bold text-on-accent">
               {getInitials(rapat.notulisNama).slice(0, 1)}
             </span>
             <div>
@@ -434,7 +434,7 @@ function NotulensiEditorSkeleton() {
 
           <Skeleton className="h-12 w-full rounded-2xl" />
 
-          <div className="rounded-2xl border border-border-soft bg-white p-6 space-y-5">
+          <div className="rounded-2xl border border-border-soft bg-card p-6 space-y-5">
             <div className="flex items-center justify-between border-b-2 border-primary/20 pb-4">
               <div className="flex items-center gap-3">
                 <Skeleton className="h-11 w-11 rounded-full" />

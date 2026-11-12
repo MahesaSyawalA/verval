@@ -7,7 +7,6 @@ import {
   Calendar,
   LayoutGrid,
   LogOut,
-  Sun,
   Target,
   Ticket,
   X,
@@ -20,6 +19,7 @@ import {
 import { ROLE_METADATA, type UserRole } from "@/config/roles";
 import { cn, getInitials } from "@/lib/utils";
 import { BrandLogo } from "./logo";
+import { ThemeToggle } from "./theme-toggle";
 
 const ICON_MAP: Record<NavIconName, ReactNode> = {
   dashboard: <LayoutGrid className="h-5 w-5" />,
@@ -106,7 +106,7 @@ export function MobileSidebar({
         aria-label="Navigasi Menu Mobile"
         aria-hidden={!isOpen}
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-76 max-w-[85vw] flex-col justify-between bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:hidden",
+          "fixed inset-y-0 left-0 z-50 flex w-76 max-w-[85vw] flex-col justify-between bg-card shadow-2xl transition-transform duration-300 ease-in-out lg:hidden",
           isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
@@ -137,14 +137,14 @@ export function MobileSidebar({
 
           {/* User Profile Card */}
           <div className="mt-4 flex items-center gap-3 rounded-2xl bg-surface p-3 border border-border-soft/60">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-secondary font-heading text-body-sm font-bold text-primary">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-secondary font-heading text-body-sm font-bold text-on-secondary">
               {initials}
             </span>
             <div className="min-w-0 flex-1">
               <p className="truncate text-body-sm font-bold text-ink">
                 {fullName}
               </p>
-              <span className="inline-flex items-center rounded-full bg-primary-50 px-2 py-0.5 text-[11px] font-semibold text-primary">
+              <span className="inline-flex items-center rounded-full bg-primary-50 px-2 py-0.5 text-[11px] font-semibold text-brand">
                 {roleMeta?.label ?? role}
               </span>
             </div>
@@ -167,7 +167,7 @@ export function MobileSidebar({
                   "flex items-center gap-3.5 px-4 py-3 rounded-2xl text-body-sm font-semibold transition-all",
                   isActive
                     ? "bg-primary text-white shadow-xs"
-                    : "text-ink-muted hover:bg-primary-50 hover:text-primary",
+                    : "text-ink-muted hover:bg-primary-50 hover:text-brand",
                 )}
               >
                 <span
@@ -186,13 +186,10 @@ export function MobileSidebar({
 
         {/* Drawer Footer */}
         <div className="border-t border-border-soft p-4 space-y-2">
-          <button
-            type="button"
-            className="flex w-full items-center gap-3 px-4 py-2.5 rounded-2xl text-body-sm font-medium text-ink-muted hover:bg-primary-50 hover:text-primary transition-colors cursor-pointer"
-          >
-            <Sun className="h-5 w-5" />
-            <span>Mode Tampilan</span>
-          </button>
+          <ThemeToggle
+            showLabel
+            className="flex w-full items-center gap-3 px-4 py-2.5 rounded-2xl text-body-sm font-medium text-ink-muted hover:bg-primary-50 hover:text-brand transition-colors cursor-pointer"
+          />
 
           {onLogout ? (
             <button
@@ -201,7 +198,7 @@ export function MobileSidebar({
                 onClose();
                 onLogout();
               }}
-              className="flex w-full items-center gap-3 px-4 py-2.5 rounded-2xl text-body-sm font-semibold text-danger hover:bg-danger-bg transition-colors cursor-pointer"
+              className="flex w-full items-center gap-3 px-4 py-2.5 rounded-2xl text-body-sm font-semibold text-danger-ink hover:bg-danger-bg transition-colors cursor-pointer"
             >
               <LogOut className="h-5 w-5" />
               <span>Keluar dari Akun</span>
@@ -210,7 +207,7 @@ export function MobileSidebar({
             <Link
               href="/logout"
               onClick={onClose}
-              className="flex w-full items-center gap-3 px-4 py-2.5 rounded-2xl text-body-sm font-semibold text-danger hover:bg-danger-bg transition-colors"
+              className="flex w-full items-center gap-3 px-4 py-2.5 rounded-2xl text-body-sm font-semibold text-danger-ink hover:bg-danger-bg transition-colors"
             >
               <LogOut className="h-5 w-5" />
               <span>Keluar dari Akun</span>

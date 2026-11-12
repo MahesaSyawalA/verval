@@ -75,7 +75,7 @@ export function PreviewUndanganModal({
     >
       <div className="space-y-3">
         <div className="rounded-3xl bg-surface p-5">
-          <div className="rounded-2xl border border-border-soft bg-white p-6 space-y-5 shadow-xs">
+          <div className="rounded-2xl border border-border-soft bg-card p-6 space-y-5 shadow-xs">
             {/* Kop Surat UPI */}
             <div className="flex items-center gap-4 border-b-2 border-primary pb-4">
               <div className="flex h-13 w-13 shrink-0 items-center justify-center rounded-full bg-primary font-heading text-h5 font-bold text-white">

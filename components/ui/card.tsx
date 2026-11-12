@@ -17,7 +17,7 @@ export function Card({
       className={cn(
         "rounded-3xl p-6 transition-shadow",
         variant === "default" &&
-          "bg-white text-ink border border-border-soft/80 shadow-xs",
+          "bg-card text-ink border border-border-soft/80 shadow-xs",
         variant === "primary" && "bg-primary text-white shadow-sm",
         variant === "Subtle" && "bg-surface text-ink border border-border-soft",
         className,

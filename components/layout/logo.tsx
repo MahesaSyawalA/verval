@@ -4,7 +4,7 @@ export function BrandLogo({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-xs border border-border-soft/70 shrink-0",
+        "flex h-12 w-12 items-center justify-center rounded-2xl bg-card shadow-xs border border-border-soft/70 shrink-0",
         className,
       )}
       aria-label="Logo Sistem Informasi RPL NodeCraft.ID"
@@ -18,14 +18,14 @@ export function BrandLogo({ className }: { className?: string }) {
       >
         <path
           d="M6 6L14 14L6 22"
-          stroke="#FFD166"
+          stroke="var(--chart-accent)"
           strokeWidth="3.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M14 6L22 14L14 22"
-          stroke="#092C4C"
+          stroke="var(--logo-navy)"
           strokeWidth="3.5"
           strokeLinecap="round"
           strokeLinejoin="round"

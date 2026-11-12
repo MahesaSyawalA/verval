@@ -23,14 +23,14 @@ export function GaugeChart({ percentage, subtitle }: GaugeChartProps) {
         >
           <path
             d="M 24 104 A 80 80 0 0 1 184 104"
-            stroke="#E3E8F2"
+            stroke="var(--track)"
             strokeWidth="22"
             strokeLinecap="round"
             fill="none"
           />
           <path
             d="M 24 104 A 80 80 0 0 1 184 104"
-            stroke="#0101B7"
+            stroke="var(--chart-primary)"
             strokeWidth="22"
             strokeLinecap="round"
             fill="none"

@@ -124,7 +124,7 @@ export function DatePicker({
       <DateField.Group
         fullWidth
         className={cn(
-          "flex h-11 w-full items-center justify-between rounded-2xl border bg-white px-4 text-body-md text-ink transition-colors focus-within:ring-2",
+          "flex h-11 w-full items-center justify-between rounded-2xl border bg-card px-4 text-body-md text-ink transition-colors focus-within:ring-2",
           error
             ? "border-danger focus-within:border-danger focus-within:ring-danger/20"
             : "border-border-soft focus-within:border-primary focus-within:ring-primary/15",
@@ -134,18 +134,18 @@ export function DatePicker({
           {(segment) => (
             <DateField.Segment
               segment={segment}
-              className="rounded px-0.5 text-ink outline-none focus:bg-primary-50 focus:text-primary data-[placeholder=true]:text-ink-subtle"
+              className="rounded px-0.5 text-ink outline-none focus:bg-primary-50 focus:text-brand data-[placeholder=true]:text-ink-subtle"
             />
           )}
         </DateField.Input>
         <DateField.Suffix className="ml-2 flex shrink-0 items-center">
-          <HeroDatePicker.Trigger className="inline-flex h-7 w-7 items-center justify-center rounded-lg text-ink-muted transition-colors hover:bg-surface hover:text-primary focus:outline-none cursor-pointer">
+          <HeroDatePicker.Trigger className="inline-flex h-7 w-7 items-center justify-center rounded-lg text-ink-muted transition-colors hover:bg-surface hover:text-brand focus:outline-none cursor-pointer">
             <HeroDatePicker.TriggerIndicator className="size-4" />
           </HeroDatePicker.Trigger>
         </DateField.Suffix>
       </DateField.Group>
       {error ? (
-        <FieldError className="text-body-sm font-medium text-danger">
+        <FieldError className="text-body-sm font-medium text-danger-ink">
           <span role="alert">{error}</span>
         </FieldError>
       ) : helperText ? (
@@ -153,7 +153,7 @@ export function DatePicker({
           {helperText}
         </Description>
       ) : null}
-      <HeroDatePicker.Popover className="z-50 rounded-2xl border border-border-soft bg-white p-3 shadow-lg outline-none">
+      <HeroDatePicker.Popover className="z-50 rounded-2xl border border-border-soft bg-card p-3 shadow-lg outline-none">
         <Calendar
           aria-label={label ?? ariaLabel ?? "Kalender"}
           className="w-64"

@@ -186,7 +186,7 @@ export function RapatOverviewView({
                   ? "Agenda Rapat Hari Ini"
                   : "Jadwal Rapat Minggu Ini"}
               </h3>
-              <span className="text-body-sm font-semibold text-primary">
+              <span className="text-body-sm font-semibold text-brand">
                 {isKaprodiOrAdmin ? formatDayLabel(now) : formatWeekLabel(now)}
               </span>
             </div>
@@ -223,8 +223,8 @@ export function RapatOverviewView({
                         className={cn(
                           "flex min-w-[76px] flex-col items-center justify-center rounded-xl px-3 py-2 text-center",
                           isOngoing
-                            ? "bg-accent text-ink"
-                            : "bg-white text-ink shadow-2xs",
+                            ? "bg-accent text-on-accent"
+                            : "bg-card text-ink shadow-2xs",
                         )}
                       >
                         <span className="font-heading text-body-md font-bold leading-tight">
@@ -265,7 +265,7 @@ export function RapatOverviewView({
                             "rounded-full px-3 py-1 text-[12px] font-bold transition-colors",
                             isOngoing
                               ? "bg-white/20 text-white hover:bg-white/30"
-                              : "bg-primary-50 text-primary hover:bg-primary-100",
+                              : "bg-primary-50 text-brand hover:bg-primary-100",
                           )}
                         >
                           Editor Notulensi
@@ -276,7 +276,7 @@ export function RapatOverviewView({
                         <button
                           type="button"
                           onClick={() => handleOpenPresensi(rapat.id)}
-                          className="rounded-full bg-accent px-4 py-1 text-body-sm font-bold text-ink hover:bg-accent-500 cursor-pointer"
+                          className="rounded-full bg-accent px-4 py-1 text-body-sm font-bold text-on-accent hover:bg-accent-500 cursor-pointer"
                         >
                           {isKaprodiOrAdmin ? "Berlangsung" : "Isi Presensi"}
                         </button>
@@ -314,7 +314,7 @@ export function RapatOverviewView({
               </h3>
               <Link
                 href="/arsip"
-                className="text-body-sm font-semibold text-primary hover:underline"
+                className="text-body-sm font-semibold text-brand hover:underline"
               >
                 Lihat arsip
               </Link>
@@ -337,13 +337,13 @@ export function RapatOverviewView({
                           isComplete ? "bg-primary" : "bg-accent",
                         )}
                       />
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-50 font-heading text-[11px] font-bold text-primary">
+                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-50 font-heading text-[11px] font-bold text-brand">
                         {isDoc ? "DOC" : "PDF"}
                       </span>
                       <div>
                         <Link
                           href={`/arsip/${rapat.id}`}
-                          className="font-heading text-body-md font-bold text-ink hover:text-primary"
+                          className="font-heading text-body-md font-bold text-ink hover:text-brand"
                         >
                           {rapat.judulRapat}
                         </Link>
@@ -363,7 +363,7 @@ export function RapatOverviewView({
                       {isKaprodiOrAdmin && !isComplete && (
                         <Link
                           href={`/arsip/${rapat.id}`}
-                          className="rounded-full bg-accent px-3.5 py-1 text-body-sm font-bold text-ink hover:bg-accent-500"
+                          className="rounded-full bg-accent px-3.5 py-1 text-body-sm font-bold text-on-accent hover:bg-accent-500"
                         >
                           Lengkapi
                         </Link>
@@ -372,7 +372,7 @@ export function RapatOverviewView({
                       <Link
                         href={`/arsip/${rapat.id}`}
                         aria-label={`Unduh paket arsip ${rapat.judulRapat}`}
-                        className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-50 text-primary hover:bg-primary hover:text-white transition-colors"
+                        className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-50 text-brand hover:bg-primary hover:text-white transition-colors"
                       >
                         <Download className="h-4 w-4" />
                       </Link>
@@ -398,7 +398,7 @@ export function RapatOverviewView({
                   onClick={() => setCreateAgendaOpen(true)}
                   className="flex w-full items-center gap-3.5 rounded-2xl bg-primary p-4 text-left text-white hover:bg-primary-700 transition-colors cursor-pointer"
                 >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-primary">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-card text-brand">
                     <Plus className="h-5 w-5" />
                   </span>
                   <div>
@@ -421,7 +421,7 @@ export function RapatOverviewView({
                 }}
                 className="flex w-full items-center gap-3.5 rounded-2xl bg-primary p-4 text-left text-white hover:bg-primary-700 transition-colors cursor-pointer"
               >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-primary">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-card text-brand">
                   <CheckSquare className="h-5 w-5" />
                 </span>
                 <div>
@@ -436,7 +436,7 @@ export function RapatOverviewView({
 
               {!isKaprodiOrAdmin && (
                 <div className="flex w-full items-center gap-3.5 rounded-2xl bg-primary p-4 text-left text-white">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-primary">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-card text-brand">
                     <Bell className="h-5 w-5" />
                   </span>
                   <div>
@@ -494,7 +494,7 @@ export function RapatOverviewView({
                     cx="60"
                     cy="60"
                     r="52"
-                    stroke="#E3E8F2"
+                    stroke="var(--track)"
                     strokeWidth="12"
                     fill="transparent"
                   />
@@ -502,7 +502,7 @@ export function RapatOverviewView({
                     cx="60"
                     cy="60"
                     r="52"
-                    stroke="#0101B7"
+                    stroke="var(--chart-primary)"
                     strokeWidth="12"
                     strokeDasharray={circumference}
                     strokeDashoffset={strokeDashoffset}

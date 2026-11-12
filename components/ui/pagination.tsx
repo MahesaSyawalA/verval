@@ -142,7 +142,7 @@ export function TablePagination({
               <Pagination.Previous
                 isDisabled={page === 1}
                 onPress={() => onPageChange(page - 1)}
-                className="inline-flex items-center gap-1.5 px-3 h-8 text-body-sm font-medium rounded-lg border border-border-soft bg-white text-ink hover:bg-primary-50 hover:text-primary transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3 h-8 text-body-sm font-medium rounded-lg border border-border-soft bg-card text-ink hover:bg-primary-50 hover:text-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               >
                 <Pagination.PreviousIcon className="size-4 shrink-0 inline-flex items-center justify-center" />
                 <span>Sebelumnya</span>
@@ -162,7 +162,7 @@ export function TablePagination({
                       "inline-flex items-center justify-center min-w-8 h-8 px-2.5 text-body-sm font-medium rounded-lg transition-colors cursor-pointer",
                       p === page
                         ? "bg-primary text-white font-semibold shadow-xs border border-primary"
-                        : "border border-border-soft bg-white text-ink hover:bg-primary-50 hover:text-primary",
+                        : "border border-border-soft bg-card text-ink hover:bg-primary-50 hover:text-brand",
                     )}
                   >
                     {p}
@@ -174,7 +174,7 @@ export function TablePagination({
               <Pagination.Next
                 isDisabled={page === totalPages}
                 onPress={() => onPageChange(page + 1)}
-                className="inline-flex items-center gap-1.5 px-3 h-8 text-body-sm font-medium rounded-lg border border-border-soft bg-white text-ink hover:bg-primary-50 hover:text-primary transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3 h-8 text-body-sm font-medium rounded-lg border border-border-soft bg-card text-ink hover:bg-primary-50 hover:text-brand transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               >
                 <span>Berikutnya</span>
                 <Pagination.NextIcon className="size-4 shrink-0 inline-flex items-center justify-center" />

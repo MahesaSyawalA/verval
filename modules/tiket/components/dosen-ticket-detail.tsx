@@ -81,7 +81,7 @@ export function DosenTicketDetail({
             Tiket {ticket.kodeTiket}
           </h2>
           <p className="mt-1 text-body-sm text-ink-muted">
-            <Link href="/tiket" className="hover:text-primary hover:underline">
+            <Link href="/tiket" className="hover:text-brand hover:underline">
               Tiket Saya
             </Link>{" "}
             &rsaquo; Detail &middot; {ticket.namaTarget}
@@ -89,10 +89,10 @@ export function DosenTicketDetail({
         </div>
 
         <div className="flex items-center gap-2.5">
-          <span className="rounded-full bg-white px-4 py-1.5 text-body-sm font-semibold text-primary shadow-xs border border-border-soft">
+          <span className="rounded-full bg-card px-4 py-1.5 text-body-sm font-semibold text-brand shadow-xs border border-border-soft">
             Tahun {ticket.tahunTarget}
           </span>
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary font-heading text-body-sm font-bold text-primary">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary font-heading text-body-sm font-bold text-on-secondary">
             {getInitials(userFullName)}
           </span>
         </div>
@@ -269,7 +269,7 @@ export function DosenTicketDetail({
               }`}
             >
               <div className="flex items-center gap-2.5">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary font-heading text-body-sm font-bold text-primary">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary font-heading text-body-sm font-bold text-on-secondary">
                   IA
                 </span>
                 <div>

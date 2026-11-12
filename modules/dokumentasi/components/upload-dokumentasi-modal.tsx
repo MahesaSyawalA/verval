@@ -184,7 +184,7 @@ export function UploadDokumentasiModal({
 
         {/* Dropzone */}
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-primary/30 bg-surface px-4 py-6 text-center space-y-2.5">
-          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary-50 text-primary">
+          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary-50 text-brand">
             <Upload className="h-5 w-5" />
           </div>
           <p className="font-heading text-body-sm font-bold text-ink">
@@ -257,7 +257,7 @@ export function UploadDokumentasiModal({
                       type="button"
                       onClick={() => handleRemovePhoto(photo.id)}
                       aria-label={`Hapus ${photo.fileName}`}
-                      className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-ink-muted hover:text-danger cursor-pointer"
+                      className="flex h-7 w-7 items-center justify-center rounded-full bg-card text-ink-muted hover:text-danger-ink cursor-pointer"
                     >
                       <X className="h-4 w-4" />
                     </button>
@@ -271,7 +271,7 @@ export function UploadDokumentasiModal({
                       handleUpdateCaption(photo.id, e.target.value)
                     }
                     placeholder="Tambah keterangan (opsional)..."
-                    className="w-full rounded-xl border border-border-default bg-white px-3.5 py-2 text-body-sm text-ink placeholder:text-ink-subtle focus:border-primary focus:outline-none"
+                    className="w-full rounded-xl border border-border-default bg-card px-3.5 py-2 text-body-sm text-ink placeholder:text-ink-subtle focus:border-primary focus:outline-none"
                   />
                 </div>
               </div>

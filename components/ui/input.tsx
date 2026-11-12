@@ -87,7 +87,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <HeroInput
             ref={ref}
             className={cn(
-              "h-11 w-full rounded-2xl border bg-white px-4 text-body-md text-ink placeholder:text-ink-subtle transition-colors focus:outline-none focus:ring-2",
+              "h-11 w-full rounded-2xl border bg-card px-4 text-body-md text-ink placeholder:text-ink-subtle transition-colors focus:outline-none focus:ring-2",
               leftIcon ? "pl-10" : "pl-4",
               rightElement ? "pr-10" : "pr-4",
               error
@@ -104,7 +104,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
         </div>
         {error ? (
-          <FieldError className="text-body-sm font-medium text-danger">
+          <FieldError className="text-body-sm font-medium text-danger-ink">
             <span role="alert">{error}</span>
           </FieldError>
         ) : helperText ? (

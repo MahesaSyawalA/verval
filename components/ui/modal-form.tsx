@@ -40,7 +40,7 @@ export function ModalForm({
     >
       <div
         className={cn(
-          "relative w-full rounded-3xl bg-white p-6 shadow-xl border border-border-soft max-h-[90vh] flex flex-col",
+          "relative w-full rounded-3xl bg-card p-6 shadow-xl border border-border-soft max-h-[90vh] flex flex-col",
           SIZE_CLASSES[size],
         )}
       >
@@ -60,7 +60,7 @@ export function ModalForm({
             type="button"
             onClick={onClose}
             aria-label="Tutup modal"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-surface text-ink-muted hover:bg-primary-50 hover:text-primary transition-colors cursor-pointer"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-surface text-ink-muted hover:bg-primary-50 hover:text-brand transition-colors cursor-pointer"
           >
             <X className="h-5 w-5" />
           </button>

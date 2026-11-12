@@ -28,24 +28,32 @@ export function TrendChart({ data, height = 220 }: TrendChartProps) {
         <AreaChart data={data} margin={{ top: 10, right: 12, left: -20, bottom: 0 }}>
           <defs>
             <linearGradient id="capaianFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#0101B7" stopOpacity={0.14} />
-              <stop offset="95%" stopColor="#0101B7" stopOpacity={0.02} />
+              <stop offset="5%" stopColor="var(--chart-primary)" stopOpacity={0.14} />
+              <stop offset="95%" stopColor="var(--chart-primary)" stopOpacity={0.02} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E3E8F2" />
+          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border-soft)" />
           <XAxis
             dataKey="label"
             axisLine={false}
             tickLine={false}
-            tick={{ fill: "#8594A5", fontSize: 12 }}
+            tick={{ fill: "var(--chart-tick)", fontSize: 12 }}
           />
           <YAxis hide domain={[0, 100]} />
-          <Tooltip />
+          <Tooltip
+            contentStyle={{
+              background: "var(--card)",
+              border: "1px solid var(--border-soft)",
+              borderRadius: 12,
+              color: "var(--ink)",
+            }}
+            labelStyle={{ color: "var(--ink)" }}
+          />
           <Area
             type="monotone"
             dataKey="capaian"
             name="Capaian"
-            stroke="#0101B7"
+            stroke="var(--chart-primary)"
             strokeWidth={3}
             fill="url(#capaianFill)"
           />
@@ -53,7 +61,7 @@ export function TrendChart({ data, height = 220 }: TrendChartProps) {
             type="monotone"
             dataKey="target"
             name="Target"
-            stroke="#FFD166"
+            stroke="var(--chart-accent)"
             strokeWidth={2.5}
             fill="none"
           />
