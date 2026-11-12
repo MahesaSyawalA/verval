@@ -1,6 +1,7 @@
 "use client";
 
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+import { chartColor } from "./chart-colors";
 
 export interface DonutSlice {
   label: string;
@@ -25,7 +26,7 @@ export function DonutChart({
   const hasData = data.some((slice) => slice.value > 0);
   const slices = hasData
     ? data
-    : [{ label: "Belum ada data", value: 1, color: "#E3E8F2" }];
+    : [{ label: "Belum ada data", value: 1, color: "var(--track)" }];
 
   return (
     <div
@@ -44,7 +45,7 @@ export function DonutChart({
             stroke="none"
           >
             {slices.map((entry) => (
-              <Cell key={entry.label} fill={entry.color} />
+              <Cell key={entry.label} fill={chartColor(entry.color)} />
             ))}
           </Pie>
         </PieChart>

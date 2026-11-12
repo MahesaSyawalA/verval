@@ -242,7 +242,7 @@ export function CreateTicketModal({
             }`}
           >
             <span
-              className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
+              className={`inline-block h-5 w-5 transform rounded-full bg-card transition-transform ${
                 isReminderActive ? "translate-x-7" : "translate-x-1"
               }`}
             />

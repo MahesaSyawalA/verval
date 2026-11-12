@@ -127,10 +127,10 @@ export function MasterTargetView({ userFullName }: MasterTargetViewProps) {
         description={`Target tahunan dari Direktur Cibiru yang diturunkan ke prodi · ${targets.length} target`}
         actions={
           <div className="flex items-center gap-2.5">
-            <span className="rounded-full bg-white px-4 py-1.5 text-body-sm font-semibold text-primary shadow-xs border border-border-soft">
+            <span className="rounded-full bg-card px-4 py-1.5 text-body-sm font-semibold text-brand shadow-xs border border-border-soft">
               Tahun {tahunFilter === "Semua" ? "2026" : tahunFilter}
             </span>
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary font-heading text-body-sm font-bold text-primary">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary font-heading text-body-sm font-bold text-on-secondary">
               {getInitials(userFullName)}
             </span>
           </div>
@@ -169,7 +169,7 @@ export function MasterTargetView({ userFullName }: MasterTargetViewProps) {
               ]}
             />
 
-            <div className="flex flex-col rounded-2xl border border-border-soft bg-white px-4 py-1.5 min-w-[240px] flex-1 max-w-sm">
+            <div className="flex flex-col rounded-2xl border border-border-soft bg-card px-4 py-1.5 min-w-[240px] flex-1 max-w-sm">
               <label
                 htmlFor="filter-search-target"
                 className="text-[11px] text-ink-muted"

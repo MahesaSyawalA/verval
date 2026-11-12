@@ -79,7 +79,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           ref={ref}
           rows={rows}
           className={cn(
-            "w-full resize-none rounded-2xl border bg-white px-4 py-3 text-ink placeholder:text-ink-subtle transition-colors focus:outline-none focus:ring-2 disabled:bg-surface disabled:opacity-70",
+            "w-full resize-none rounded-2xl border bg-card px-4 py-3 text-ink placeholder:text-ink-subtle transition-colors focus:outline-none focus:ring-2 disabled:bg-surface disabled:opacity-70",
             size === "sm" ? "text-body-sm" : "text-body-md",
             error
               ? "border-danger focus:border-danger focus:ring-danger/20"
@@ -89,7 +89,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           {...(props as ComponentProps<typeof HeroTextArea>)}
         />
         {error ? (
-          <FieldError className="text-body-sm font-medium text-danger">
+          <FieldError className="text-body-sm font-medium text-danger-ink">
             <span role="alert">{error}</span>
           </FieldError>
         ) : helperText ? (

@@ -110,9 +110,9 @@ export function IsiPresensiModal({
         aria-labelledby="presensi-berhasil-title"
         className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 backdrop-blur-xs p-4"
       >
-        <div className="w-full max-w-md rounded-3xl bg-white p-8 text-center shadow-xl border border-border-soft space-y-5">
+        <div className="w-full max-w-md rounded-3xl bg-card p-8 text-center shadow-xl border border-border-soft space-y-5">
           <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-accent-100">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-ink">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-on-accent">
               <Check className="h-8 w-8 stroke-[2.5]" />
             </div>
           </div>
@@ -258,7 +258,7 @@ export function IsiPresensiModal({
                     maxLength={1}
                     value={digit}
                     onChange={(e) => handleDigitChange(idx, e.target.value)}
-                    className="h-14 w-full rounded-2xl border-2 border-primary/50 bg-primary-50/60 text-center font-heading text-h5 font-bold text-primary focus:border-primary focus:bg-white focus:outline-none"
+                    className="h-14 w-full rounded-2xl border-2 border-primary/50 bg-primary-50/60 text-center font-heading text-h5 font-bold text-brand focus:border-primary focus:bg-card focus:outline-none"
                   />
                 ))}
               </div>
@@ -288,7 +288,7 @@ export function IsiPresensiModal({
                     "inline-flex items-center justify-center gap-1.5 rounded-2xl border py-2.5 text-body-sm font-semibold transition-colors cursor-pointer",
                     active
                       ? "border-primary bg-primary text-white shadow-xs"
-                      : "border-border-default bg-white text-ink hover:bg-surface",
+                      : "border-border-default bg-card text-ink hover:bg-surface",
                   )}
                 >
                   {active && <Check className="h-4 w-4" />}

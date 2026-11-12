@@ -74,7 +74,7 @@ export function ArsipRapatDetailView({ rapatId }: ArsipRapatDetailViewProps) {
           <div className="space-y-1">
             <Link
               href="/arsip"
-              className="inline-flex items-center gap-1 text-body-sm font-semibold text-primary hover:underline"
+              className="inline-flex items-center gap-1 text-body-sm font-semibold text-brand hover:underline"
             >
               <ChevronLeft className="h-4 w-4" />
               <span>Arsip Rapat</span>
@@ -170,7 +170,7 @@ export function ArsipRapatDetailView({ rapatId }: ArsipRapatDetailViewProps) {
             <button
               type="button"
               onClick={() => setPreviewUndanganOpen(true)}
-              className="flex-1 rounded-2xl bg-primary-50 py-2.5 text-body-sm font-bold text-primary hover:bg-primary-100 transition-colors cursor-pointer"
+              className="flex-1 rounded-2xl bg-primary-50 py-2.5 text-body-sm font-bold text-brand hover:bg-primary-100 transition-colors cursor-pointer"
             >
               Lihat Undangan
             </button>
@@ -178,7 +178,7 @@ export function ArsipRapatDetailView({ rapatId }: ArsipRapatDetailViewProps) {
               type="button"
               onClick={() => setPreviewUndanganOpen(true)}
               aria-label="Unduh surat undangan"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-50 text-primary hover:bg-primary hover:text-white transition-colors cursor-pointer"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-50 text-brand hover:bg-primary hover:text-white transition-colors cursor-pointer"
             >
               <Download className="h-4 w-4" />
             </button>
@@ -234,7 +234,7 @@ export function ArsipRapatDetailView({ rapatId }: ArsipRapatDetailViewProps) {
                 ].map((box) => (
                   <div
                     key={box.label}
-                    className="rounded-xl bg-white p-2.5 space-y-1 shadow-2xs"
+                    className="rounded-xl bg-card p-2.5 space-y-1 shadow-2xs"
                   >
                     <p className="font-heading text-h6 font-bold text-ink">
                       {box.count}
@@ -261,14 +261,14 @@ export function ArsipRapatDetailView({ rapatId }: ArsipRapatDetailViewProps) {
           <div className="flex items-center gap-2.5">
             <Link
               href={`/rapat/${rapat.id}`}
-              className="flex-1 rounded-2xl bg-primary-50 py-2.5 text-center text-body-sm font-bold text-primary hover:bg-primary-100 transition-colors"
+              className="flex-1 rounded-2xl bg-primary-50 py-2.5 text-center text-body-sm font-bold text-brand hover:bg-primary-100 transition-colors"
             >
               Lihat Daftar Hadir
             </Link>
             <Link
               href={`/rapat/${rapat.id}`}
               aria-label="Unduh daftar hadir"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-50 text-primary hover:bg-primary hover:text-white transition-colors"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-50 text-brand hover:bg-primary hover:text-white transition-colors"
             >
               <Download className="h-4 w-4" />
             </Link>
@@ -324,14 +324,14 @@ export function ArsipRapatDetailView({ rapatId }: ArsipRapatDetailViewProps) {
           <div className="flex items-center gap-2.5">
             <Link
               href={`/rapat/${rapat.id}/notulensi`}
-              className="flex-1 rounded-2xl bg-primary-50 py-2.5 text-center text-body-sm font-bold text-primary hover:bg-primary-100 transition-colors"
+              className="flex-1 rounded-2xl bg-primary-50 py-2.5 text-center text-body-sm font-bold text-brand hover:bg-primary-100 transition-colors"
             >
               Baca Notulensi
             </Link>
             <Link
               href={`/rapat/${rapat.id}/notulensi`}
               aria-label="Unduh notulensi"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-50 text-primary hover:bg-primary hover:text-white transition-colors"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-50 text-brand hover:bg-primary hover:text-white transition-colors"
             >
               <Download className="h-4 w-4" />
             </Link>
@@ -405,7 +405,7 @@ export function ArsipRapatDetailView({ rapatId }: ArsipRapatDetailViewProps) {
               <button
                 type="button"
                 onClick={() => setUploadPhotoOpen(true)}
-                className="flex-1 rounded-2xl bg-primary-50 py-2.5 text-body-sm font-bold text-primary hover:bg-primary-100 transition-colors cursor-pointer"
+                className="flex-1 rounded-2xl bg-primary-50 py-2.5 text-body-sm font-bold text-brand hover:bg-primary-100 transition-colors cursor-pointer"
               >
                 Lihat Galeri
               </button>
@@ -413,7 +413,7 @@ export function ArsipRapatDetailView({ rapatId }: ArsipRapatDetailViewProps) {
               <button
                 type="button"
                 onClick={() => setUploadPhotoOpen(true)}
-                className="flex-1 rounded-2xl bg-accent py-2.5 text-body-sm font-bold text-ink hover:bg-accent-500 transition-colors cursor-pointer"
+                className="flex-1 rounded-2xl bg-accent py-2.5 text-body-sm font-bold text-on-accent hover:bg-accent-500 transition-colors cursor-pointer"
               >
                 Unggah Foto
               </button>
@@ -422,7 +422,7 @@ export function ArsipRapatDetailView({ rapatId }: ArsipRapatDetailViewProps) {
               type="button"
               onClick={() => setUploadPhotoOpen(true)}
               aria-label="Kelola foto dokumentasi"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-50 text-primary hover:bg-primary hover:text-white transition-colors cursor-pointer"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-50 text-brand hover:bg-primary hover:text-white transition-colors cursor-pointer"
             >
               <Download className="h-4 w-4" />
             </button>

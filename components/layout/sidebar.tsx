@@ -7,7 +7,6 @@ import {
   Calendar,
   LayoutGrid,
   LogOut,
-  Sun,
   Target,
   Ticket,
 } from "lucide-react";
@@ -18,6 +17,7 @@ import {
 } from "@/config/navigation";
 import type { UserRole } from "@/config/roles";
 import { cn, getInitials } from "@/lib/utils";
+import { ThemeToggle } from "./theme-toggle";
 
 const ICON_MAP: Record<NavIconName, ReactNode> = {
   dashboard: <LayoutGrid className="h-5 w-5" />,
@@ -41,7 +41,7 @@ export function Sidebar({ role, fullName, onLogout }: SidebarProps) {
   return (
     <aside
       aria-label="Navigasi Utama"
-      className="hidden lg:flex flex-col items-center justify-between w-18 rounded-[36px] bg-white py-4 px-2 shadow-xs border border-border-soft/70 shrink-0 min-h-[calc(100vh-7.5rem)] sticky top-6"
+      className="hidden lg:flex flex-col items-center justify-between w-18 rounded-[36px] bg-card py-4 px-2 shadow-xs border border-border-soft/70 shrink-0 min-h-[calc(100vh-7.5rem)] sticky top-6"
     >
       <nav className="flex flex-col items-center gap-3">
         {navItems.map((item) => {
@@ -59,7 +59,7 @@ export function Sidebar({ role, fullName, onLogout }: SidebarProps) {
                 "flex h-12 w-12 items-center justify-center rounded-full transition-all",
                 isActive
                   ? "bg-primary text-white shadow-sm"
-                  : "text-ink-muted hover:bg-primary-50 hover:text-primary",
+                  : "text-ink-muted hover:bg-primary-50 hover:text-brand",
               )}
             >
               {ICON_MAP[item.icon]}
@@ -69,14 +69,7 @@ export function Sidebar({ role, fullName, onLogout }: SidebarProps) {
       </nav>
 
       <div className="flex flex-col items-center gap-3 pt-6">
-        <button
-          type="button"
-          title="Pengaturan Tampilan"
-          aria-label="Pengaturan Tampilan"
-          className="flex h-11 w-11 items-center justify-center rounded-full text-ink-muted hover:bg-primary-50 hover:text-primary transition-colors cursor-pointer"
-        >
-          <Sun className="h-5 w-5" />
-        </button>
+        <ThemeToggle className="flex h-11 w-11 items-center justify-center rounded-full text-ink-muted hover:bg-primary-50 hover:text-brand transition-colors cursor-pointer" />
 
         {onLogout ? (
           <button
@@ -84,7 +77,7 @@ export function Sidebar({ role, fullName, onLogout }: SidebarProps) {
             onClick={onLogout}
             title="Keluar"
             aria-label="Keluar"
-            className="flex h-11 w-11 items-center justify-center rounded-full text-ink-muted hover:bg-danger-bg hover:text-danger transition-colors cursor-pointer"
+            className="flex h-11 w-11 items-center justify-center rounded-full text-ink-muted hover:bg-danger-bg hover:text-danger-ink transition-colors cursor-pointer"
           >
             <LogOut className="h-5 w-5" />
           </button>
@@ -93,7 +86,7 @@ export function Sidebar({ role, fullName, onLogout }: SidebarProps) {
             href="/logout"
             title="Keluar"
             aria-label="Keluar"
-            className="flex h-11 w-11 items-center justify-center rounded-full text-ink-muted hover:bg-danger-bg hover:text-danger transition-colors"
+            className="flex h-11 w-11 items-center justify-center rounded-full text-ink-muted hover:bg-danger-bg hover:text-danger-ink transition-colors"
           >
             <LogOut className="h-5 w-5" />
           </Link>
@@ -101,7 +94,7 @@ export function Sidebar({ role, fullName, onLogout }: SidebarProps) {
 
         <div
           title={`${fullName} (${role})`}
-          className="mt-1 flex h-12 w-12 items-center justify-center rounded-full bg-secondary font-heading text-body-md font-bold text-primary select-none"
+          className="mt-1 flex h-12 w-12 items-center justify-center rounded-full bg-secondary font-heading text-body-md font-bold text-on-secondary select-none"
         >
           {initials}
         </div>

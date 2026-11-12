@@ -108,7 +108,7 @@ export function SelectSkeleton({
       <div
         data-slot="select-skeleton-filter"
         className={cn(
-          "flex flex-col justify-center rounded-2xl border border-border-soft/80 bg-white px-3.5 py-1.5 min-w-[190px]",
+          "flex flex-col justify-center rounded-2xl border border-border-soft/80 bg-card px-3.5 py-1.5 min-w-[190px]",
           className,
         )}
         aria-hidden="true"

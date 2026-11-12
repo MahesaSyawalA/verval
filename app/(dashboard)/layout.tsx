@@ -1,8 +1,9 @@
 import { redirect } from "next/navigation";
 import { Suspense, type ReactNode } from "react";
-import { DashboardShell } from "@/components/layout";
+import { DashboardShell, ThemeScope } from "@/components/layout";
 import { Skeleton } from "@/components/ui";
 import { getServerSession } from "@/lib/session";
+import { THEME_INIT_SCRIPT } from "@/lib/theme";
 
 async function AuthenticatedShell({ children }: { children: ReactNode }) {
   const session = await getServerSession();
@@ -19,7 +20,11 @@ export default function DashboardGroupLayout({
   children: ReactNode;
 }) {
   return (
-    <Suspense
+    <>
+      {/* Pasang tema sebelum cat pertama; ThemeScope menjaganya saat navigasi klien. */}
+      <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      <ThemeScope />
+      <Suspense
       fallback={
         <div className="min-h-screen bg-surface p-7 space-y-6">
           <Skeleton className="h-16 w-full rounded-3xl" />
@@ -31,6 +36,7 @@ export default function DashboardGroupLayout({
       }
     >
       <AuthenticatedShell>{children}</AuthenticatedShell>
-    </Suspense>
+      </Suspense>
+    </>
   );
 }

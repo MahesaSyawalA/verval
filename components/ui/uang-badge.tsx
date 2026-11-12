@@ -28,7 +28,7 @@ export function UangBadge({
               size === "sm" ? "h-6 w-6 text-[11px]" : "h-7 w-7 text-body-sm",
               active
                 ? "bg-primary text-white"
-                : "bg-[#E3E8F2] text-ink-muted",
+                : "bg-track text-ink-muted",
             )}
           >
             {item}

@@ -19,11 +19,11 @@ describe("Phase 12 - Modul Notifikasi", () => {
     });
     expect(getNotifikasiBadgeProps("UNDANGAN_BARU")).toEqual({
       label: "U",
-      className: "bg-primary-50 text-primary",
+      className: "bg-primary-50 text-brand",
     });
     expect(getNotifikasiBadgeProps("NOTULENSI_FINAL")).toEqual({
       label: "N",
-      className: "bg-primary-50 text-primary",
+      className: "bg-primary-50 text-brand",
     });
     expect(getNotifikasiBadgeProps("TIKET_DITOLAK")).toEqual({
       label: "T",

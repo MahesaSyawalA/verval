@@ -210,7 +210,7 @@ export function DaftarHadirView({ rapatId }: DaftarHadirViewProps) {
                             {p.dosenNama}
                           </span>
                           {isKaprodi && (
-                            <span className="rounded-full bg-primary-50 px-2.5 py-0.5 text-[11px] font-bold text-primary">
+                            <span className="rounded-full bg-primary-50 px-2.5 py-0.5 text-[11px] font-bold text-brand">
                               Kaprodi
                             </span>
                           )}
@@ -290,7 +290,7 @@ export function DaftarHadirView({ rapatId }: DaftarHadirViewProps) {
                   cx="60"
                   cy="60"
                   r="52"
-                  stroke="#E3E8F2"
+                  stroke="var(--track)"
                   strokeWidth="12"
                   fill="transparent"
                 />
@@ -298,7 +298,7 @@ export function DaftarHadirView({ rapatId }: DaftarHadirViewProps) {
                   cx="60"
                   cy="60"
                   r="52"
-                  stroke="#0101B7"
+                  stroke="var(--chart-primary)"
                   strokeWidth="12"
                   strokeDasharray={circumference}
                   strokeDashoffset={strokeDashoffset}
@@ -373,7 +373,7 @@ export function DaftarHadirView({ rapatId }: DaftarHadirViewProps) {
             {rapat.kodePresensi && (
               <div className="flex items-center justify-between">
                 <dt className="text-ink-muted">Kode Presensi</dt>
-                <dd className="font-heading font-bold text-primary">
+                <dd className="font-heading font-bold text-brand">
                   {rapat.kodePresensi}
                 </dd>
               </div>

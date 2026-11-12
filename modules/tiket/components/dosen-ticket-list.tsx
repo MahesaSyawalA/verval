@@ -98,10 +98,10 @@ export function DosenTicketList({ userFullName }: DosenTicketListProps) {
         description="Tugas dari Kaprodi yang perlu kamu kerjakan dan buktikan"
         actions={
           <div className="flex items-center gap-2.5">
-            <span className="rounded-full bg-white px-4 py-1.5 text-body-sm font-semibold text-primary shadow-xs border border-border-soft">
+            <span className="rounded-full bg-card px-4 py-1.5 text-body-sm font-semibold text-brand shadow-xs border border-border-soft">
               Tahun 2026
             </span>
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary font-heading text-body-sm font-bold text-primary">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary font-heading text-body-sm font-bold text-on-secondary">
               {getInitials(userFullName)}
             </span>
           </div>
@@ -137,8 +137,8 @@ export function DosenTicketList({ userFullName }: DosenTicketListProps) {
                   className={cn(
                     "inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[11px] font-bold",
                     isActive
-                      ? "bg-white text-primary"
-                      : "bg-primary-50 text-primary",
+                      ? "bg-card text-brand"
+                      : "bg-primary-50 text-brand",
                   )}
                 >
                   {statusCounts[tab.key] ?? 0}
@@ -165,7 +165,7 @@ export function DosenTicketList({ userFullName }: DosenTicketListProps) {
             }))}
           />
 
-          <div className="flex flex-col rounded-2xl border border-border-soft bg-white px-4 py-1.5 min-w-[260px] flex-1 max-w-sm">
+          <div className="flex flex-col rounded-2xl border border-border-soft bg-card px-4 py-1.5 min-w-[260px] flex-1 max-w-sm">
             <label
               htmlFor="dosen-search-input"
               className="text-[11px] text-ink-muted"
@@ -233,7 +233,7 @@ export function DosenTicketList({ userFullName }: DosenTicketListProps) {
                       <td className="px-4 py-4">
                         <Link
                           href={`/tiket/${t.id}`}
-                          className="font-heading text-body-sm font-bold text-primary hover:underline"
+                          className="font-heading text-body-sm font-bold text-brand hover:underline"
                         >
                           {t.kodeTiket}
                         </Link>
@@ -277,7 +277,7 @@ export function DosenTicketList({ userFullName }: DosenTicketListProps) {
                           <button
                             type="button"
                             onClick={() => setUploadingTicket(t)}
-                            className="inline-flex h-9 items-center justify-center rounded-full bg-accent px-4 text-body-sm font-semibold text-ink hover:bg-accent-500 transition-colors cursor-pointer"
+                            className="inline-flex h-9 items-center justify-center rounded-full bg-accent px-4 text-body-sm font-semibold text-on-accent hover:bg-accent-500 transition-colors cursor-pointer"
                           >
                             Unggah Bukti
                           </button>
@@ -291,7 +291,7 @@ export function DosenTicketList({ userFullName }: DosenTicketListProps) {
                         ) : (
                           <Link
                             href={`/tiket/${t.id}`}
-                            className="inline-flex h-9 items-center justify-center rounded-full border border-primary/30 bg-white px-4 text-body-sm font-semibold text-primary hover:bg-primary-50 transition-colors"
+                            className="inline-flex h-9 items-center justify-center rounded-full border border-primary/30 bg-card px-4 text-body-sm font-semibold text-brand hover:bg-primary-50 transition-colors"
                           >
                             Lihat
                           </Link>

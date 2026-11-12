@@ -311,7 +311,7 @@ export function TargetFormModal({
                         namaField: e.target.value,
                       })
                     }
-                    className="h-11 w-full rounded-2xl border border-border-soft bg-white px-4 text-body-md text-ink placeholder:text-ink-subtle focus:border-primary focus:outline-none"
+                    className="h-11 w-full rounded-2xl border border-border-soft bg-card px-4 text-body-md text-ink placeholder:text-ink-subtle focus:border-primary focus:outline-none"
                   />
                 </div>
 
@@ -356,7 +356,7 @@ export function TargetFormModal({
                     type="button"
                     onClick={() => handleRemoveFormatField(idx)}
                     aria-label={`Hapus isian ${idx + 1}`}
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-danger-bg text-danger hover:opacity-80 transition-opacity cursor-pointer"
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-danger-bg text-danger-ink hover:opacity-80 transition-opacity cursor-pointer"
                   >
                     <X className="h-4 w-4" />
                   </button>

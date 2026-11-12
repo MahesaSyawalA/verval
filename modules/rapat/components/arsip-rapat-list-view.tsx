@@ -127,7 +127,7 @@ export function ArsipRapatListView() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Cari judul rapat atau notulis..."
-              className="h-11 w-full rounded-2xl border border-border-default bg-white pl-10 pr-4 text-body-sm text-ink placeholder:text-ink-subtle focus:border-primary focus:outline-none"
+              className="h-11 w-full rounded-2xl border border-border-default bg-card pl-10 pr-4 text-body-sm text-ink placeholder:text-ink-subtle focus:border-primary focus:outline-none"
             />
           </div>
 
@@ -198,13 +198,13 @@ export function ArsipRapatListView() {
                     isComplete ? "bg-primary" : "bg-accent",
                   )}
                 />
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary-50 font-heading text-[12px] font-bold text-primary">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary-50 font-heading text-[12px] font-bold text-brand">
                   {isDoc ? "DOC" : "PDF"}
                 </span>
                 <div>
                   <Link
                     href={`/arsip/${rapat.id}`}
-                    className="font-heading text-body-md font-bold text-ink hover:text-primary"
+                    className="font-heading text-body-md font-bold text-ink hover:text-brand"
                   >
                     {rapat.judulRapat}
                   </Link>
@@ -224,7 +224,7 @@ export function ArsipRapatListView() {
                 <Link
                   href={`/arsip/${rapat.id}`}
                   aria-label={`Buka detail arsip ${rapat.judulRapat}`}
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-50 text-primary hover:bg-primary hover:text-white transition-colors"
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-50 text-brand hover:bg-primary hover:text-white transition-colors"
                 >
                   <ChevronRight className="h-4 w-4" />
                 </Link>

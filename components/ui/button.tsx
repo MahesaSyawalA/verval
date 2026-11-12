@@ -27,13 +27,13 @@ const variantClasses: Record<ButtonVariant, string> = {
   primary:
     "bg-primary text-white hover:bg-primary-700 active:bg-primary-800 shadow-xs",
   accent:
-    "bg-accent text-ink hover:bg-accent-500 active:bg-accent-600 font-semibold",
+    "bg-accent text-on-accent hover:bg-accent-500 active:bg-accent-600 font-semibold",
   secondary:
-    "bg-secondary-100 text-primary hover:bg-secondary-200 font-medium",
+    "bg-secondary-100 text-brand hover:bg-secondary-200 font-medium",
   outline:
-    "border border-primary/30 bg-white text-primary hover:bg-primary-50 font-medium",
+    "border border-primary/30 bg-card text-brand hover:bg-primary-50 font-medium",
   ghost:
-    "bg-transparent text-ink-muted hover:bg-primary-50 hover:text-primary",
+    "bg-transparent text-ink-muted hover:bg-primary-50 hover:text-brand",
   danger:
     "bg-danger text-white hover:opacity-90 font-medium",
 };

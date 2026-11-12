@@ -49,10 +49,10 @@ const STATUS_TONE_MAP: Record<string, StatusTone> = {
 const TONE_CLASSES: Record<StatusTone, string> = {
   success: "bg-success-bg text-success-ink",
   warning: "bg-warning-bg text-warning-ink",
-  accent: "bg-accent text-ink",
-  primary: "bg-primary-50 text-primary",
+  accent: "bg-accent text-on-accent",
+  primary: "bg-primary-50 text-brand",
   danger: "bg-danger-bg text-danger-ink",
-  neutral: "bg-[#F1F3F8] text-ink-muted",
+  neutral: "bg-chip text-ink-muted",
 };
 
 export function StatusChip({ status, tone, className }: StatusChipProps) {

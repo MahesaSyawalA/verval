@@ -36,7 +36,7 @@ export function Topbar({
             type="button"
             onClick={onOpenMobileMenu}
             aria-label="Buka menu navigasi"
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white text-ink shadow-xs border border-border-soft/70 hover:bg-primary-50 hover:text-primary transition-colors cursor-pointer lg:hidden"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-card text-ink shadow-xs border border-border-soft/70 hover:bg-primary-50 hover:text-brand transition-colors cursor-pointer lg:hidden"
           >
             <Menu className="h-5 w-5" />
           </button>
@@ -56,7 +56,7 @@ export function Topbar({
         {/* Right Side: Search + Messages + Notifications */}
         <div className="flex items-center gap-2 sm:gap-3">
           {/* Desktop & Tablet Search Bar */}
-          <div className="relative hidden md:flex items-center w-72 lg:w-96 rounded-full bg-white pl-5 pr-1.5 py-1.5 shadow-xs border border-border-soft/70">
+          <div className="relative hidden md:flex items-center w-72 lg:w-96 rounded-full bg-card pl-5 pr-1.5 py-1.5 shadow-xs border border-border-soft/70">
             <BareInput
               type="search"
               placeholder="Cari tugas, rapat, dokumen..."
@@ -77,7 +77,7 @@ export function Topbar({
             type="button"
             onClick={() => setShowMobileSearch((prev) => !prev)}
             aria-label={showMobileSearch ? "Tutup pencarian" : "Buka pencarian"}
-            className="flex md:hidden h-11 w-11 items-center justify-center rounded-full bg-white text-ink shadow-xs border border-border-soft/70 hover:bg-primary-50 transition-colors cursor-pointer"
+            className="flex md:hidden h-11 w-11 items-center justify-center rounded-full bg-card text-ink shadow-xs border border-border-soft/70 hover:bg-primary-50 transition-colors cursor-pointer"
           >
             {showMobileSearch ? (
               <X className="h-5 w-5" />
@@ -89,7 +89,7 @@ export function Topbar({
           <button
             type="button"
             aria-label="Pesan"
-            className="relative flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white text-ink shadow-xs border border-border-soft/70 hover:bg-primary-50 transition-colors cursor-pointer"
+            className="relative flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-card text-ink shadow-xs border border-border-soft/70 hover:bg-primary-50 transition-colors cursor-pointer"
           >
             <MessageSquare className="h-5 w-5" />
             <span className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 h-2 w-2 rounded-full bg-accent" />
@@ -102,7 +102,7 @@ export function Topbar({
       {/* Expandable Mobile Search Input (Visible on mobile when toggled) */}
       {showMobileSearch && (
         <div className="mt-3 md:hidden">
-          <div className="relative flex items-center w-full rounded-full bg-white pl-4 pr-1.5 py-1.5 shadow-xs border border-border-soft/70">
+          <div className="relative flex items-center w-full rounded-full bg-card pl-4 pr-1.5 py-1.5 shadow-xs border border-border-soft/70">
             <BareInput
               type="search"
               autoFocus

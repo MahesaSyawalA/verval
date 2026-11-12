@@ -46,7 +46,7 @@ export function EmptyState({
         className,
       )}
     >
-      <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 text-primary">
+      <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 text-brand">
         {icon ?? <Inbox className="h-6 w-6" />}
       </div>
       <h3 className="font-heading text-h6 font-semibold text-ink">{title}</h3>
@@ -81,7 +81,7 @@ export function ErrorState({
         className,
       )}
     >
-      <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-danger-bg text-danger">
+      <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-danger-bg text-danger-ink">
         <AlertTriangle className="h-6 w-6" />
       </div>
       <h3 className="font-heading text-h6 font-semibold text-ink">{title}</h3>

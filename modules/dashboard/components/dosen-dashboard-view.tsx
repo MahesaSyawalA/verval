@@ -7,7 +7,12 @@ import {
   ClipboardList,
   Clock,
 } from "lucide-react";
-import { DonutChart, GaugeChart, TrendChart } from "@/components/charts";
+import {
+  DonutChart,
+  GaugeChart,
+  TrendChart,
+  chartColor,
+} from "@/components/charts";
 import {
   Card,
   DataTable,
@@ -36,7 +41,7 @@ export function DosenDashboardView({ initialData }: DosenDashboardViewProps) {
       render: (row) => (
         <Link
           href={`/tiket/${row.id}`}
-          className="font-semibold text-body-sm text-ink hover:text-primary transition-colors"
+          className="font-semibold text-body-sm text-ink hover:text-brand transition-colors"
         >
           {row.namaTarget}
         </Link>
@@ -162,7 +167,7 @@ export function DosenDashboardView({ initialData }: DosenDashboardViewProps) {
                 <div className="flex items-center gap-2 text-ink-muted">
                   <span
                     className="h-2.5 w-2.5 rounded-full shrink-0"
-                    style={{ backgroundColor: slice.color }}
+                    style={{ backgroundColor: chartColor(slice.color) }}
                   />
                   <span>{slice.label}</span>
                 </div>
@@ -206,7 +211,7 @@ export function DosenDashboardView({ initialData }: DosenDashboardViewProps) {
                         ? "bg-danger-soft text-danger-ink"
                         : item.badgeTone === "warning"
                           ? "bg-warning-bg text-warning-ink"
-                          : "bg-primary-50 text-primary",
+                          : "bg-primary-50 text-brand",
                     )}
                   >
                     {item.badgeLabel}
@@ -227,7 +232,7 @@ export function DosenDashboardView({ initialData }: DosenDashboardViewProps) {
             </h2>
             <Link
               href="/tiket"
-              className="text-body-sm font-semibold text-primary hover:underline"
+              className="text-body-sm font-semibold text-brand hover:underline"
             >
               Lihat semua
             </Link>
@@ -262,7 +267,7 @@ export function DosenDashboardView({ initialData }: DosenDashboardViewProps) {
 
           <Link
             href="/tiket"
-            className="inline-flex w-full items-center justify-center rounded-full bg-accent px-5 py-3 text-body-sm font-bold text-ink hover:bg-accent-500 transition-colors"
+            className="inline-flex w-full items-center justify-center rounded-full bg-accent px-5 py-3 text-body-sm font-bold text-on-accent hover:bg-accent-500 transition-colors"
           >
             Unggah Bukti
           </Link>

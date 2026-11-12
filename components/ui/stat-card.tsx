@@ -51,8 +51,8 @@ export function StatCard({
               className={cn(
                 "flex h-10 w-10 items-center justify-center rounded-full",
                 highlighted
-                  ? "bg-white text-primary"
-                  : "bg-primary-50 text-primary",
+                  ? "bg-card text-brand"
+                  : "bg-primary-50 text-brand",
               )}
             >
               {icon}
@@ -73,7 +73,7 @@ export function StatCard({
             className={cn(
               "inline-flex items-center rounded-full px-2.5 py-0.5 text-body-sm font-semibold",
               highlighted
-                ? "bg-accent text-ink"
+                ? "bg-accent text-on-accent"
                 : "bg-warning-bg text-warning-ink",
             )}
           >
@@ -103,7 +103,7 @@ export function StatCard({
           >
             <path
               d={sparklinePath}
-              stroke={highlighted ? "#FFD166" : "#0101B7"}
+              stroke={highlighted ? "var(--chart-accent)" : "var(--chart-primary)"}
               strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
