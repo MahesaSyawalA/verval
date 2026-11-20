@@ -1,4 +1,4 @@
-import type { UserRole } from "@/config/roles";
+import { isPrivilegedRole, type UserRole } from "@/config/roles";
 import prisma from "@/lib/db";
 
 // Aturan unggahan dipindah ke upload-rules (murni, bisa dipakai browser);
@@ -26,7 +26,7 @@ export async function canReadStoredFile(
   relativePath: string,
   db: StorageDb = prisma,
 ): Promise<boolean> {
-  if (actor.role === "Kaprodi" || actor.role === "Admin") return true;
+  if (isPrivilegedRole(actor.role)) return true;
 
   const folder = relativePath.split("/")[0];
   const rapatMilikku = {

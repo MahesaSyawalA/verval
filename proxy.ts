@@ -35,7 +35,8 @@ export async function proxy(request: NextRequest) {
     }
 
     if (!canAccessRoute(session.role, pathname)) {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
+      // /menu terbuka untuk semua role, jadi tidak pernah memicu loop redirect.
+      return NextResponse.redirect(new URL("/menu", request.url));
     }
   }
 

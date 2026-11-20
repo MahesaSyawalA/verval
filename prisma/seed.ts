@@ -26,7 +26,7 @@ export async function runSeed(client: PrismaClient = prisma) {
   await client.master_target.deleteMany();
   await client.users.deleteMany();
 
-  // 1. Seed Users (Kaprodi, Dosen, Admin)
+  // 1. Seed Users (Kaprodi, Dosen, Admin, Staff Kaprodi, Mahasiswa)
   const kaprodi = await client.users.create({
     data: {
       nip: "198204152008121002",
@@ -123,6 +123,26 @@ export async function runSeed(client: PrismaClient = prisma) {
       nama_lengkap: "Admin Prodi RPL",
       email: "admin.rpl@upi.edu",
       role: "Admin",
+      password: passwordHash,
+    },
+  });
+
+  await client.users.create({
+    data: {
+      nip: "199406182021032005",
+      nama_lengkap: "Staff Kaprodi RPL",
+      email: "staff.kaprodi@upi.edu",
+      role: "Staff_Kaprodi",
+      password: passwordHash,
+    },
+  });
+
+  await client.users.create({
+    data: {
+      nip: "2105001",
+      nama_lengkap: "Mahasiswa RPL",
+      email: "mahasiswa.rpl@students.upi.edu",
+      role: "Mahasiswa",
       password: passwordHash,
     },
   });
@@ -629,7 +649,7 @@ export async function runSeed(client: PrismaClient = prisma) {
   });
 
   return {
-    usersCount: allLecturers.length + 1,
+    usersCount: allLecturers.length + 3,
     targetsCount: 5,
     ticketsCount: 7,
     meetingsCount: 4,

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { apiError, formatZodError, handleRouteError } from "@/lib/http";
+import { PRIVILEGED_ROLES, STAFF_ROLES } from "@/config/roles";
 import { requireServerSession } from "@/lib/session";
 import { masterTargetSchema } from "@/modules/target/schemas/target.schema";
 import {
@@ -14,7 +15,7 @@ interface RouteContext {
 
 export async function GET(_request: NextRequest, context: RouteContext) {
   try {
-    await requireServerSession();
+    await requireServerSession(STAFF_ROLES);
     const { id } = await context.params;
     const data = await getMasterTargetById(id);
     return NextResponse.json({ data }, { status: 200 });
@@ -25,7 +26,7 @@ export async function GET(_request: NextRequest, context: RouteContext) {
 
 export async function PUT(request: NextRequest, context: RouteContext) {
   try {
-    await requireServerSession(["Kaprodi", "Admin"]);
+    await requireServerSession(PRIVILEGED_ROLES);
     const { id } = await context.params;
     const body = await request.json().catch(() => null);
     const parsed = masterTargetSchema.safeParse(body);
@@ -48,7 +49,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
 
 export async function DELETE(_request: NextRequest, context: RouteContext) {
   try {
-    await requireServerSession(["Kaprodi", "Admin"]);
+    await requireServerSession(PRIVILEGED_ROLES);
     const { id } = await context.params;
     await deleteMasterTarget(id);
     return NextResponse.json({ success: true }, { status: 200 });

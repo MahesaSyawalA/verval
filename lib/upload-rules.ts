@@ -35,7 +35,7 @@ const CONTENT_TYPE_BY_EXTENSION: Record<string, string> = {
 
 /** Hanya Kaprodi/Admin yang menyiapkan surat undangan; folder lain terbuka untuk semua. */
 const UPLOAD_ROLES: Partial<Record<UploadFolder, readonly UserRole[]>> = {
-  undangan: ["Kaprodi", "Admin"],
+  undangan: ["Kaprodi", "Admin", "Staff_Kaprodi"],
 };
 
 const PATHNAME_PATTERN = /^(bukti|undangan|dokumentasi|lampiran)\/([A-Za-z0-9._-]+)$/;

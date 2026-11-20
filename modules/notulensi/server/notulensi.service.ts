@@ -1,4 +1,4 @@
-import type { UserRole } from "@/config/roles";
+import { isPrivilegedRole, type UserRole } from "@/config/roles";
 import { AppError } from "@/lib/http";
 import { createTicketAssignment } from "@/modules/tiket/server/tiket.service";
 import type { TicketItem } from "@/modules/tiket/types";
@@ -70,7 +70,7 @@ export async function createFollowUpTicketFromNotulensi(
   actor: { id: string; role: UserRole },
   deps: NotulensiRepositoryDeps = defaultDeps,
 ): Promise<TicketItem> {
-  if (actor.role !== "Kaprodi" && actor.role !== "Admin") {
+  if (!isPrivilegedRole(actor.role)) {
     throw new AppError(
       "FORBIDDEN",
       "Hanya Kaprodi yang dapat menugaskan tiket tindak lanjut dari keputusan rapat.",

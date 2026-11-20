@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { apiError, formatZodError, handleRouteError } from "@/lib/http";
 import { protectPayload, sanitizeString } from "@/lib/security";
+import { PRIVILEGED_ROLES, STAFF_ROLES } from "@/config/roles";
 import { requireServerSession } from "@/lib/session";
 import { masterTargetSchema } from "@/modules/target/schemas/target.schema";
 import {
@@ -10,7 +11,7 @@ import {
 
 export async function GET(request: NextRequest) {
   try {
-    await requireServerSession();
+    await requireServerSession(STAFF_ROLES);
     const { searchParams } = request.nextUrl;
     const tahunParam = searchParams.get("tahun");
     const rawSearch = searchParams.get("search");
@@ -29,7 +30,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    await requireServerSession(["Kaprodi", "Admin"]);
+    await requireServerSession(PRIVILEGED_ROLES);
     const rawBody = await request.json().catch(() => null);
     const body = protectPayload(rawBody);
     const parsed = masterTargetSchema.safeParse(body);

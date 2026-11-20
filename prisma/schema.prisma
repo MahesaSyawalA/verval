@@ -11,6 +11,8 @@ enum Role {
   Kaprodi
   Dosen
   Admin
+  Staff_Kaprodi
+  Mahasiswa
 }
 
 enum TipeDataBukti {

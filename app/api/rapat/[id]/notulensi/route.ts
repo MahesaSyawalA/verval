@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { apiError, formatZodError, handleRouteError } from "@/lib/http";
 import { protectPayload } from "@/lib/security";
+import { STAFF_ROLES } from "@/config/roles";
 import { requireServerSession } from "@/lib/session";
 import { saveNotulensiSchema } from "@/modules/notulensi/schemas/notulensi.schema";
 import { saveNotulensiRapat } from "@/modules/notulensi/server/notulensi.service";
@@ -11,7 +12,7 @@ interface RouteContext {
 
 export async function POST(request: NextRequest, context: RouteContext) {
   try {
-    const session = await requireServerSession();
+    const session = await requireServerSession(STAFF_ROLES);
     const { id } = await context.params;
     const rawBody = await request.json().catch(() => null);
     const body = protectPayload(rawBody);

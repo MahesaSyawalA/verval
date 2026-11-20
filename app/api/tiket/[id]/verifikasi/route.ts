@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { apiError, formatZodError, handleRouteError } from "@/lib/http";
 import { protectPayload } from "@/lib/security";
+import { PRIVILEGED_ROLES } from "@/config/roles";
 import { requireServerSession } from "@/lib/session";
 import { verifyTiketSchema } from "@/modules/tiket/schemas/tiket.schema";
 import { verifyTicketByKaprodi } from "@/modules/tiket/server/tiket.service";
@@ -11,7 +12,7 @@ interface RouteContext {
 
 export async function POST(request: NextRequest, context: RouteContext) {
   try {
-    const session = await requireServerSession(["Kaprodi", "Admin"]);
+    const session = await requireServerSession(PRIVILEGED_ROLES);
     const { id } = await context.params;
     const rawBody = await request.json().catch(() => null);
     const body = protectPayload(rawBody);

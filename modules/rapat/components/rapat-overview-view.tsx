@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import type { UserRole } from "@/config/roles";
+import { isPrivilegedRole, type UserRole } from "@/config/roles";
 import {
   Button,
   Card,
@@ -72,7 +72,7 @@ export function RapatOverviewView({
     [data?.userOptions],
   );
 
-  const isKaprodiOrAdmin = userRole === "Kaprodi" || userRole === "Admin";
+  const isKaprodiOrAdmin = isPrivilegedRole(userRole);
 
   const activeRapat = useMemo(
     () =>

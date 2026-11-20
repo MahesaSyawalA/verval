@@ -1,4 +1,4 @@
-import type { UserRole } from "@/config/roles";
+import { isPrivilegedRole, type UserRole } from "@/config/roles";
 import { AppError } from "@/lib/http";
 import { createEventNotifikasi } from "@/modules/notifikasi/server/notifikasi.service";
 import type {
@@ -162,8 +162,7 @@ export async function transitionTicketStatus(
 
   if (
     (nextStatus === "Tercapai" || nextStatus === "Ditolak") &&
-    actor.role !== "Kaprodi" &&
-    actor.role !== "Admin"
+    !isPrivilegedRole(actor.role)
   ) {
     throw new AppError(
       "FORBIDDEN",
@@ -247,7 +246,7 @@ export async function verifyTicketByKaprodi(
   actor: { id: string; role: UserRole },
   deps: TiketRepositoryDeps = defaultDeps,
 ): Promise<TicketItem> {
-  if (actor.role !== "Kaprodi" && actor.role !== "Admin") {
+  if (!isPrivilegedRole(actor.role)) {
     throw new AppError(
       "FORBIDDEN",
       "Hanya Kaprodi yang berhak memverifikasi tiket penugasan.",

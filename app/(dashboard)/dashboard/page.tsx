@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui";
+import { isPrivilegedRole } from "@/config/roles";
 import { getServerSession } from "@/lib/session";
 import {
   DosenDashboardView,
@@ -17,7 +18,7 @@ async function DashboardContent() {
     redirect("/login");
   }
 
-  if (session.role === "Kaprodi" || session.role === "Admin") {
+  if (isPrivilegedRole(session.role)) {
     const summary = await getKaprodiDashboardSummary();
     return <KaprodiDashboardView initialData={summary} />;
   }

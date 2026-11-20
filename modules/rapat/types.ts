@@ -1,3 +1,4 @@
+import type { UserRole } from "@/config/roles";
 import type { UangCompletenessStatus } from "@/lib/utils";
 
 export const FORMAT_RAPAT_VALUES = ["Luring", "Daring", "Hybrid"] as const;
@@ -32,7 +33,7 @@ export interface RapatUserOption {
   nip: string;
   namaLengkap: string;
   email: string;
-  role: "Kaprodi" | "Dosen" | "Admin";
+  role: UserRole;
 }
 
 export interface PesertaRapatItem {
@@ -40,7 +41,7 @@ export interface PesertaRapatItem {
   dosenId: string;
   dosenNama: string;
   dosenNip: string;
-  dosenRole: "Kaprodi" | "Dosen" | "Admin";
+  dosenRole: UserRole;
   statusKehadiran: StatusKehadiranType;
   waktuPresensi: string | null;
   metodePresensi: MetodePresensiType | null;

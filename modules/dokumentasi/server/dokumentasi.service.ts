@@ -1,4 +1,4 @@
-import type { UserRole } from "@/config/roles";
+import { isPrivilegedRole, type UserRole } from "@/config/roles";
 import { AppError } from "@/lib/http";
 import type { SaveDokumentasiInput } from "../schemas/dokumentasi.schema";
 import type { DokumentasiPhotoItem } from "../types";
@@ -32,7 +32,7 @@ export async function saveDokumentasiRapat(
     throw new AppError("NOT_FOUND", "Rapat tidak ditemukan.", 404);
   }
 
-  const isPrivileged = actor.role === "Kaprodi" || actor.role === "Admin";
+  const isPrivileged = isPrivilegedRole(actor.role);
   const isParticipantOrNotulis =
     ctx.notulisId === actor.id || ctx.pesertaIds.includes(actor.id);
 

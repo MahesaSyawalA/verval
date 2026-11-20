@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { apiError, formatZodError, handleRouteError } from "@/lib/http";
+import { PRIVILEGED_ROLES } from "@/config/roles";
 import { requireServerSession } from "@/lib/session";
 import { updateStatusRapatSchema } from "@/modules/rapat/schemas/rapat.schema";
 import {
@@ -24,7 +25,7 @@ export async function GET(_request: NextRequest, context: RouteContext) {
 
 export async function PATCH(request: NextRequest, context: RouteContext) {
   try {
-    const session = await requireServerSession(["Kaprodi", "Admin"]);
+    const session = await requireServerSession(PRIVILEGED_ROLES);
     const { id } = await context.params;
     const body = await request.json().catch(() => null);
     const parsed = updateStatusRapatSchema.safeParse(body);

@@ -1,5 +1,5 @@
 import { randomInt } from "node:crypto";
-import type { UserRole } from "@/config/roles";
+import { isPrivilegedRole, type UserRole } from "@/config/roles";
 import { AppError } from "@/lib/http";
 import type { CreateAgendaRapatInput } from "../schemas/rapat.schema";
 import type {
@@ -35,8 +35,7 @@ export function redactKodePresensi(
   actor: { id: string; role: UserRole },
 ): RapatItem {
   const canSeeCode =
-    actor.role === "Kaprodi" ||
-    actor.role === "Admin" ||
+    isPrivilegedRole(actor.role) ||
     rapat.notulisId === actor.id;
   return canSeeCode ? rapat : { ...rapat, kodePresensi: "" };
 }
@@ -96,7 +95,7 @@ export async function createAgendaRapat(
   actor: { id: string; role: UserRole },
   deps: RapatRepositoryDeps = defaultDeps,
 ): Promise<RapatItem> {
-  if (actor.role !== "Kaprodi" && actor.role !== "Admin") {
+  if (!isPrivilegedRole(actor.role)) {
     throw new AppError(
       "FORBIDDEN",
       "Hanya Kaprodi atau Admin yang dapat membuat agenda rapat.",
@@ -123,7 +122,7 @@ export async function changeRapatStatus(
   actor: { id: string; role: UserRole },
   deps: RapatRepositoryDeps = defaultDeps,
 ): Promise<RapatItem> {
-  if (actor.role !== "Kaprodi" && actor.role !== "Admin") {
+  if (!isPrivilegedRole(actor.role)) {
     throw new AppError(
       "FORBIDDEN",
       "Hanya Kaprodi atau Admin yang dapat mengubah status rapat.",

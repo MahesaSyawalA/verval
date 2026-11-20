@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { apiError, formatZodError, handleRouteError } from "@/lib/http";
 import { protectPayload, sanitizeString } from "@/lib/security";
+import { PRIVILEGED_ROLES, STAFF_ROLES } from "@/config/roles";
 import { requireServerSession } from "@/lib/session";
 import { createTiketSchema } from "@/modules/tiket/schemas/tiket.schema";
 import {
@@ -12,7 +13,7 @@ import type { StatusTiketType } from "@/modules/tiket/types";
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await requireServerSession();
+    const session = await requireServerSession(STAFF_ROLES);
     const { searchParams } = request.nextUrl;
     const status = (searchParams.get("status") as StatusTiketType) || undefined;
     const dosenId = searchParams.get("dosenId")
@@ -34,7 +35,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await requireServerSession(["Kaprodi", "Admin"]);
+    const session = await requireServerSession(PRIVILEGED_ROLES);
     const rawBody = await request.json().catch(() => null);
     const body = protectPayload(rawBody);
     const parsed = createTiketSchema.safeParse(body);
