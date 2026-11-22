@@ -40,6 +40,13 @@ const DEMO_ACCOUNTS: readonly DemoAccountInfo[] = [
     nip: "199501102020121003",
     description: "Pengelolaan Agenda Rapat, Dokumen & Penugasan",
   },
+  {
+    role: "Admin_SSO",
+    name: "Admin Integrasi SSO",
+    email: "admin.sso@upi.edu",
+    nip: "199605152022031004",
+    description: "Manajemen Integrasi & Pendaftaran Modul SSO",
+  },
 ];
 
 function LoginBackdrop() {
@@ -63,7 +70,15 @@ function LoginBackdrop() {
   );
 }
 
-export function LoginForm() {
+export interface LoginFormProps {
+  /** Informasi modul asal bila pengguna diarahkan dari alur SSO eksternal. */
+  targetModule?: {
+    name: string;
+    description: string | null;
+  } | null;
+}
+
+export function LoginForm({ targetModule }: LoginFormProps = {}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const nextUrl = searchParams.get("next");
@@ -154,6 +169,18 @@ export function LoginForm() {
                 {BRAND_NAME}
               </span>
             </div>
+
+            {targetModule && (
+              <div className="mb-5 rounded-2xl border border-primary/20 bg-primary-50/80 px-4 py-3 text-body-sm text-ink">
+                <p className="font-semibold text-primary">
+                  Masuk untuk melanjutkan ke {targetModule.name}
+                </p>
+                <p className="mt-0.5 text-ink-muted">
+                  Setelah berhasil masuk, Anda akan langsung diarahkan kembali ke
+                  halaman tujuan sebelumnya.
+                </p>
+              </div>
+            )}
 
             {formError && (
               <Alert status="error" className="mb-4">
