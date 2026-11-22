@@ -25,9 +25,8 @@ export const INTERNAL_MODULES: readonly LaunchableModule[] = [
 
 export const SSO_ADMIN_MODULE: LaunchableModule = {
   id: "sso-clients-management",
-  name: "Kelola Integrasi Modul SSO",
-  description:
-    "Daftarkan modul baru, atur Redirect URI dan role akses, putar client_secret, serta aktif/nonaktifkan integrasi SSO.",
+  name: "Integrasi Modul SSO",
+  description: "Kelola pendaftaran modul, callback URI, role, dan secret.",
   url: "/sso-clients",
   external: false,
 };
