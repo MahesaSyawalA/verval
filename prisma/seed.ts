@@ -147,6 +147,16 @@ export async function runSeed(client: PrismaClient = prisma) {
     },
   });
 
+  await client.users.create({
+    data: {
+      nip: "199605152022031004",
+      nama_lengkap: "Admin Integrasi SSO",
+      email: "admin.sso@upi.edu",
+      role: "Admin_SSO",
+      password: passwordHash,
+    },
+  });
+
   // 2. Seed Master Target & Format Bukti (T-01 .. T-05)
   const targetT01 = await client.master_target.create({
     data: {

@@ -1,4 +1,11 @@
-export const ROLES = ["Kaprodi", "Dosen", "Admin", "Staff_Kaprodi", "Mahasiswa"] as const;
+export const ROLES = [
+  "Kaprodi",
+  "Dosen",
+  "Admin",
+  "Staff_Kaprodi",
+  "Mahasiswa",
+  "Admin_SSO",
+] as const;
 
 export type UserRole = (typeof ROLES)[number];
 
@@ -8,8 +15,15 @@ export const PRIVILEGED_ROLES = ["Kaprodi", "Admin", "Staff_Kaprodi"] as const;
 /** Semua role internal prodi; Mahasiswa hanya boleh baca arsip rapat. */
 export const STAFF_ROLES = [...PRIVILEGED_ROLES, "Dosen"] as const;
 
+/** Role khusus pengelola integrasi modul SSO (registrasi klien, secret, status). */
+export const SSO_ADMIN_ROLES = ["Admin_SSO"] as const;
+
 export function isPrivilegedRole(role: UserRole): boolean {
   return (PRIVILEGED_ROLES as readonly string[]).includes(role);
+}
+
+export function isSsoAdminRole(role: UserRole): boolean {
+  return (SSO_ADMIN_ROLES as readonly string[]).includes(role);
 }
 
 export interface RoleMetadata {
@@ -50,10 +64,24 @@ export const ROLE_METADATA: Record<UserRole, RoleMetadata> = {
     defaultRedirect: "/menu",
     subtitle: "Ringkasan aktivitas akademik Anda",
   },
+  Admin_SSO: {
+    role: "Admin_SSO",
+    label: "Admin Integrasi SSO",
+    defaultRedirect: "/menu",
+    subtitle: "Pengelolaan integrasi dan pendaftaran modul SSO",
+  },
 };
 
 export const ROUTE_ROLE_PERMISSIONS: Record<string, readonly UserRole[]> = {
-  "/menu": ["Kaprodi", "Dosen", "Admin", "Staff_Kaprodi", "Mahasiswa"],
+  "/menu": [
+    "Kaprodi",
+    "Dosen",
+    "Admin",
+    "Staff_Kaprodi",
+    "Mahasiswa",
+    "Admin_SSO",
+  ],
+  "/sso-clients": ["Admin_SSO"],
   "/dashboard": ["Kaprodi", "Dosen", "Admin", "Staff_Kaprodi"],
   "/target": ["Kaprodi", "Admin", "Staff_Kaprodi"],
   "/tiket": ["Kaprodi", "Dosen", "Admin", "Staff_Kaprodi"],

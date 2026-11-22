@@ -13,6 +13,7 @@ enum Role {
   Admin
   Staff_Kaprodi
   Mahasiswa
+  Admin_SSO
 }
 
 enum TipeDataBukti {
