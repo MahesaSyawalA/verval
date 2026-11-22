@@ -24,6 +24,7 @@ function mapClient(row: {
   post_logout_redirect_uris: unknown;
   allowed_roles: unknown;
   is_active: boolean;
+  created_at?: Date;
 }): SsoClient {
   return {
     id: row.id,
@@ -36,6 +37,7 @@ function mapClient(row: {
     postLogoutRedirectUris: toStringArray(row.post_logout_redirect_uris),
     allowedRoles: toStringArray(row.allowed_roles),
     isActive: row.is_active,
+    createdAt: row.created_at,
   };
 }
 
@@ -48,12 +50,101 @@ export async function findClientByClientId(
   return row ? mapClient(row) : null;
 }
 
+export async function findClientById(id: string): Promise<SsoClient | null> {
+  const row = await prisma.sso_clients.findUnique({
+    where: { id },
+  });
+  return row ? mapClient(row) : null;
+}
+
 export async function listActiveClients(): Promise<SsoClient[]> {
   const rows = await prisma.sso_clients.findMany({
     where: { is_active: true },
     orderBy: { name: "asc" },
   });
   return rows.map(mapClient);
+}
+
+export async function listAllClients(): Promise<SsoClient[]> {
+  const rows = await prisma.sso_clients.findMany({
+    orderBy: { created_at: "desc" },
+  });
+  return rows.map(mapClient);
+}
+
+export async function createSsoClient(input: {
+  clientId: string;
+  name: string;
+  description: string | null;
+  launchUrl: string;
+  secretHash: string | null;
+  redirectUris: string[];
+  postLogoutRedirectUris: string[];
+  allowedRoles: string[];
+}): Promise<SsoClient> {
+  const row = await prisma.sso_clients.create({
+    data: {
+      client_id: input.clientId,
+      name: input.name,
+      description: input.description,
+      launch_url: input.launchUrl,
+      client_secret_hash: input.secretHash,
+      redirect_uris: input.redirectUris,
+      post_logout_redirect_uris: input.postLogoutRedirectUris,
+      allowed_roles: input.allowedRoles,
+    },
+  });
+  return mapClient(row);
+}
+
+export async function updateSsoClient(
+  id: string,
+  input: {
+    name?: string;
+    description?: string | null;
+    launchUrl?: string;
+    redirectUris?: string[];
+    postLogoutRedirectUris?: string[];
+    allowedRoles?: string[];
+    isActive?: boolean;
+  },
+): Promise<SsoClient> {
+  const row = await prisma.sso_clients.update({
+    where: { id },
+    data: {
+      ...(input.name !== undefined ? { name: input.name } : {}),
+      ...(input.description !== undefined ? { description: input.description } : {}),
+      ...(input.launchUrl !== undefined ? { launch_url: input.launchUrl } : {}),
+      ...(input.redirectUris !== undefined ? { redirect_uris: input.redirectUris } : {}),
+      ...(input.postLogoutRedirectUris !== undefined
+        ? { post_logout_redirect_uris: input.postLogoutRedirectUris }
+        : {}),
+      ...(input.allowedRoles !== undefined ? { allowed_roles: input.allowedRoles } : {}),
+      ...(input.isActive !== undefined ? { is_active: input.isActive } : {}),
+    },
+  });
+  return mapClient(row);
+}
+
+export async function updateSsoClientSecret(
+  id: string,
+  secretHash: string,
+): Promise<SsoClient> {
+  const row = await prisma.sso_clients.update({
+    where: { id },
+    data: { client_secret_hash: secretHash },
+  });
+  return mapClient(row);
+}
+
+export async function revokeAllRefreshTokensForClient(
+  clientDbId: string,
+  at: Date,
+): Promise<void> {
+  await prisma.sso_refresh_tokens.updateMany({
+    where: { client_id: clientDbId, revoked_at: null },
+    data: { revoked_at: at },
+  });
 }
 
 export async function findSsoUserById(id: string): Promise<SsoUser | null> {

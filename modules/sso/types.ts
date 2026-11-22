@@ -15,6 +15,28 @@ export interface SsoClient {
   postLogoutRedirectUris: string[];
   allowedRoles: string[];
   isActive: boolean;
+  createdAt?: Date;
+}
+
+/** Bentuk data klien SSO yang aman dikirim ke UI manajemen (tanpa secretHash). */
+export interface SsoClientAdminItem {
+  id: string;
+  clientId: string;
+  name: string;
+  description: string | null;
+  launchUrl: string;
+  isPublic: boolean;
+  redirectUris: string[];
+  postLogoutRedirectUris: string[];
+  allowedRoles: UserRole[];
+  isActive: boolean;
+  createdAt: string;
+}
+
+export interface SsoClientSecretPayload {
+  client: SsoClientAdminItem;
+  /** Hanya tampil satu kali saat pembuatan klien rahasia atau rotasi secret. */
+  clientSecret: string | null;
 }
 
 export interface SsoUser {
