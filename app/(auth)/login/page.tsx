@@ -32,7 +32,7 @@ async function resolveTargetModule(
   }
 }
 
-export default async function LoginPage({
+async function LoginContent({
   searchParams,
 }: {
   searchParams: Promise<{ next?: string | string[] }>;
@@ -41,6 +41,14 @@ export default async function LoginPage({
   const rawNext = Array.isArray(params.next) ? params.next[0] : params.next;
   const targetModule = await resolveTargetModule(rawNext);
 
+  return <LoginForm targetModule={targetModule} />;
+}
+
+export default function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ next?: string | string[] }>;
+}) {
   return (
     <Suspense
       fallback={
@@ -49,7 +57,7 @@ export default async function LoginPage({
         </div>
       }
     >
-      <LoginForm targetModule={targetModule} />
+      <LoginContent searchParams={searchParams} />
     </Suspense>
   );
 }
